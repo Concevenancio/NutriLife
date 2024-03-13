@@ -2,108 +2,158 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Alerta from "./Alerta";
 import usePacientes from "../hooks/usePacientes";
-import { useLocation } from 'react-router-dom';
-
-
+import { useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Formulario = () => {
-  
+  const { state } = useLocation();
   const [nombre, setNombre] = useState("");
   const [telefono, setTelefono] = useState("");
   const [direccionDeEntrega, setDireccionDeEntrega] = useState("");
   const [ejercicio, setEjercicio] = useState("");
-  const [padecimiento, setPadecimiento] = useState("")
-  const [alergias, setAlergias] = useState("")
-  const [tipopaquete, setTipopaquete] = useState("")
-  const [especial, setEspecial] = useState("")
-  const [mesa, setMesa] = useState("")
-  const [fecha, setFecha] = useState("")
-  const [ noconsume, setNoConsume] = useState("")
-  const [diasadeber, setDiasADeber] = useState("0")
-  const [id, setId] = useState(null)
+  const [padecimiento, setPadecimiento] = useState("");
+  const [alergias, setAlergias] = useState("");
+  const [tipopaquete, setTipopaquete] = useState("");
+  const [especial, setEspecial] = useState("");
+  const [mesa, setMesa] = useState("");
+  const [fecha, setFecha] = useState("");
+  const [noconsume, setNoConsume] = useState("");
+  const [diasadeber, setDiasADeber] = useState("0");
+  const [id, setId] = useState(null);
+  const [userState] = useState(state?.paciente || "");
 
   const [alerta, setAlerta] = useState({});
 
-  const { guardarPaciente, paciente } = usePacientes()
+  const { guardarPaciente, paciente } = usePacientes();
+  useEffect(() => {
+    if (userState) {
+      console.log("entre", userState);
+      setNombre(userState.nombre);
+      setTelefono(userState.telefono);
+      setDireccionDeEntrega(userState.direccionDeEntrega);
+      setEjercicio(userState.ejercicio);
+      setPadecimiento(userState.padecimiento);
+      setAlergias(userState.alergias);
+      setTipopaquete(userState.tipopaquete);
+      setEspecial(userState.especial);
+      setMesa(userState.mesa);
+      setNoConsume(userState.noconsume);
+      setDiasADeber(userState.diasadeber);
+      setFecha(userState.fecha);
 
-useEffect(() => {
-    if(paciente?.nombre){
-        setNombre(paciente.nombre)
-        setTelefono(paciente.telefono)
-        setDireccionDeEntrega(paciente.direccionDeEntrega)
-        setEjercicio(paciente.ejercicio)
-        setPadecimiento(paciente.padecimiento)
-        setAlergias(paciente.alergias)
-        setTipopaquete(paciente.tipopaquete)
-        setEspecial(paciente.especial)
-        setMesa(paciente.mesa)
-        setNoConsume(paciente.noconsume)
-        setDiasADeber(paciente.diasadeber)
-        setFecha(paciente.fecha)
-        
-        
-        setId(paciente._id)
+      setId(userState._id);
     }
-}, [paciente])
+  }, [userState]);
 
-const handleTelefonoChange = (e) => {
-  const inputTelefono = e.target.value;
-  // Remover todos los caracteres no numéricos del valor del input
-  const telefonoNumerico = inputTelefono.replace(/\D/g, '');
-  // Formatear el número de teléfono agregando guiones
-  let telefonoFormateado = '';
-  if (telefonoNumerico.length <= 10) {
-    telefonoFormateado = telefonoNumerico.replace(/(\d{3})(\d{1,3})?(\d{1,4})?/, (_, p1, p2, p3) =>
-      p2 ? `${p1}-${p2}${p3 ? `-${p3}` : ''}` : p1
-    );
-  } else {
-    // Si el número de teléfono es mayor de 10 dígitos, solo mostrar los primeros 10 dígitos
-    telefonoFormateado = telefonoNumerico.substring(0, 10).replace(/(\d{3})(\d{1,3})?(\d{1,4})?/, (_, p1, p2, p3) =>
-      p2 ? `${p1}-${p2}${p3 ? `-${p3}` : ''}` : p1
-    );
-  }
-  // Actualizar el estado del teléfono con el nuevo valor formateado
-  setTelefono(telefonoFormateado);
-};
+  useEffect(() => {
+    if (paciente?.nombre) {
+      setNombre(paciente.nombre);
+      setTelefono(paciente.telefono);
+      setDireccionDeEntrega(paciente.direccionDeEntrega);
+      setEjercicio(paciente.ejercicio);
+      setPadecimiento(paciente.padecimiento);
+      setAlergias(paciente.alergias);
+      setTipopaquete(paciente.tipopaquete);
+      setEspecial(paciente.especial);
+      setMesa(paciente.mesa);
+      setNoConsume(paciente.noconsume);
+      setDiasADeber(paciente.diasadeber);
+      setFecha(paciente.fecha);
 
+      setId(paciente._id);
+    }
+  }, [paciente]);
 
+  const handleTelefonoChange = (e) => {
+    const inputTelefono = e.target.value;
+    // Remover todos los caracteres no numéricos del valor del input
+    const telefonoNumerico = inputTelefono.replace(/\D/g, "");
+    // Formatear el número de teléfono agregando guiones
+    let telefonoFormateado = "";
+    if (telefonoNumerico.length <= 10) {
+      telefonoFormateado = telefonoNumerico.replace(
+        /(\d{3})(\d{1,3})?(\d{1,4})?/,
+        (_, p1, p2, p3) => (p2 ? `${p1}-${p2}${p3 ? `-${p3}` : ""}` : p1)
+      );
+    } else {
+      // Si el número de teléfono es mayor de 10 dígitos, solo mostrar los primeros 10 dígitos
+      telefonoFormateado = telefonoNumerico
+        .substring(0, 10)
+        .replace(/(\d{3})(\d{1,3})?(\d{1,4})?/, (_, p1, p2, p3) =>
+          p2 ? `${p1}-${p2}${p3 ? `-${p3}` : ""}` : p1
+        );
+    }
+    // Actualizar el estado del teléfono con el nuevo valor formateado
+    setTelefono(telefonoFormateado);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     //Validar Formulario
-    if ([nombre,telefono, direccionDeEntrega, ejercicio, padecimiento, alergias, fecha,tipopaquete, especial, mesa, diasadeber, noconsume].includes("")) {
+    if (
+      [
+        nombre,
+        telefono,
+        direccionDeEntrega,
+        ejercicio,
+        padecimiento,
+        alergias,
+        fecha,
+        tipopaquete,
+        especial,
+        mesa,
+        diasadeber,
+        noconsume,
+      ].includes("")
+    ) {
       setAlerta({
         msg: "Todos los campos son obligatorios",
         error: true,
       });
       return;
     }
-    
-    guardarPaciente({ nombre,telefono, direccionDeEntrega, ejercicio, padecimiento, alergias,  fecha,tipopaquete, especial, mesa, diasadeber, noconsume, id });
+
+    guardarPaciente({
+      nombre,
+      telefono,
+      direccionDeEntrega,
+      ejercicio,
+      padecimiento,
+      alergias,
+      fecha,
+      tipopaquete,
+      especial,
+      mesa,
+      diasadeber,
+      noconsume,
+      id,
+    });
     setAlerta({
-        msg: 'Guardado Correctamente'
+      msg: "Guardado Correctamente",
     });
 
-    setNombre('');
-    setTelefono('');
-    setEjercicio('');
-    setPadecimiento('');
-    setDireccionDeEntrega('');
-    setAlergias('');
-    setFecha('');
-    setTipopaquete('');
-    setEspecial('');
-    setMesa('');
-    setNoConsume('');
-    setDiasADeber('');
-    setId('');
-};
+    setNombre("");
+    setTelefono("");
+    setEjercicio("");
+    setPadecimiento("");
+    setDireccionDeEntrega("");
+    setAlergias("");
+    setFecha("");
+    setTipopaquete("");
+    setEspecial("");
+    setMesa("");
+    setNoConsume("");
+    setDiasADeber("");
+    setId("");
+  };
 
   const { msg } = alerta;
   return (
     <>
-    <h2 className="font-black text-3xl text-center">Administrador de Pacientes</h2>
+      <h2 className="font-black text-3xl text-center">
+        Administrador de Pacientes
+      </h2>
       <p className="text-xl text-center mt-5 mb-10">
         Añadir y administrar{" "}
         <span className=" text-green-600 font-bold"> Pacientes</span>
@@ -111,8 +161,17 @@ const handleTelefonoChange = (e) => {
 
       {msg && <Alerta alerta={alerta} />}
 
+      <Link to="/admin/administracion">
+        <button
+          type="button"
+          className="py-2 px-4 bg-green-700 jus hover:bg-green-800 text-white uppercase font-medium rounded-lg mb-5"
+        >
+          Regresar
+        </button>
+      </Link>
+
       <form
-        className="bg-white py-10 px-5 mb-10 lg:mb-0 shadow-md rounded-md"
+        className="bg-white py-10 px-5 mb-10 lg:mb-0 shadow-md rounded-md "
         onSubmit={handleSubmit}
       >
         <div className="mb-5">
@@ -166,8 +225,11 @@ const handleTelefonoChange = (e) => {
         </div>
 
         <div className="mb-5">
-          <label htmlFor="ejercicio" className=" uppercase text-gray-700 font-bold">
-          Ejercicio:
+          <label
+            htmlFor="ejercicio"
+            className=" uppercase text-gray-700 font-bold"
+          >
+            Ejercicio:
           </label>
           <textarea
             id="ejercicio"
@@ -180,8 +242,11 @@ const handleTelefonoChange = (e) => {
         </div>
 
         <div className="mb-5">
-          <label htmlFor="padecimiento" className=" uppercase text-gray-700 font-bold">
-          Padecimiento:
+          <label
+            htmlFor="padecimiento"
+            className=" uppercase text-gray-700 font-bold"
+          >
+            Padecimiento:
           </label>
           <textarea
             id="padecimiento"
@@ -275,10 +340,7 @@ const handleTelefonoChange = (e) => {
         </div>
 
         <div className="mb-5">
-          <label
-            htmlFor="mesa"
-            className="uppercase text-gray-700 font-bold"
-          >
+          <label htmlFor="mesa" className="uppercase text-gray-700 font-bold">
             Mesa
           </label>
           <select
@@ -314,12 +376,10 @@ const handleTelefonoChange = (e) => {
           />
         </div>
 
-        
-
         <input
           type="submit"
           className=" bg-green-600 w-full p-3 text-white uppercase font-bold hover:bg-green-700 cursor-pointer transition-colors rounded-md"
-          value={id ? 'Guardar Cambios' : 'Agregar Paciente'}
+          value={id ? "Guardar Cambios" : "Agregar Paciente"}
         />
       </form>
     </>
