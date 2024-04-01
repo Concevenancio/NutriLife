@@ -45,11 +45,13 @@ const actualizarPaciente = async (req, res) => {
 
     //Actualizar Paciente
     paciente.nombre = req.body.nombre || paciente.nombre;
-    paciente.telefono = req,body.telefono || paciente.telefono;
+    paciente.telefono = req.body.telefono || paciente.telefono;
     paciente.direccionDeEntrega = req.body.direccionDeEntrega || paciente.direccionDeEntrega;
     paciente.ejercicio = req.body.ejercicio || paciente.ejercicio;
     paciente.padecimiento = req.body.padecimiento || paciente.padecimiento;
     paciente.alergias = req.body.alergias || paciente.alergias;
+    paciente.pago = req.body.pago || paciente.pago;
+    paciente.fromadepago = req.body.fromadepago || paciente.fromadepago;
     paciente.noconsume = req.body.noconsume || paciente.noconsume;
     paciente.fecha = req.body.fecha || paciente.fecha;
     paciente.tipopaquete = req.body.tipopaquete || paciente.tipopaquete;

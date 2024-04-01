@@ -5,7 +5,7 @@ const pacienteSchema = mongoose.Schema(
     nombre: {
       type: String,
       required: true,
-    },
+    },  
     telefono: {
       type: String,
       required: true,
@@ -38,6 +38,15 @@ const pacienteSchema = mongoose.Schema(
     tipopaquete: {
       type: String,
       enum: ['Dia', 'Semana', 'Mes'],
+      required: true,
+    },
+    formadepago:{
+      type: String,
+      enum: ['Tarjeta', 'Effectivo'],
+      required: true,
+    },
+    pago:{
+      type: String,
       required: true,
     },
     especial: {
