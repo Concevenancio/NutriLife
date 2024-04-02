@@ -9,6 +9,10 @@ const ListadoPacientes = () => {
   const [indice, setIndice] = useState(0);
   const [mostrarTodos, setMostrarTodos] = useState(false);
 
+  if (!Array.isArray(pacientes)) {
+    window.location.reload();
+  }
+
   const handleBusquedaChange = (event) => {
     setBusqueda(event.target.value);
     setIndice(0);

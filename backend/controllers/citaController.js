@@ -1,47 +1,64 @@
-/* // citaController.js
+/* 
 import Paciente from '../models/Paciente.js';
 
-const obtenerCitas = async (req, res) => {
-  try {
-    // Obtener todas las citas de los pacientes
-    const citas = await Paciente.find({}, 'ProxCita');
-
-    // Mapear solo las fechas de las citas
-    const fechasCitas = citas.map(cita => cita.ProxCita);
-
-    res.status(200).json({ citas: fechasCitas });
-  } catch (error) {
-    res.status(500).json({ error: 'Error al obtener las citas.' });
-  }
-};
-
-export { obtenerCitas };
- */
-
-// citaController.js
-import Paciente from '../models/Paciente.js';
 const obtenerCitas = async (req, res) => {
     const pacientes = await Paciente.find();
-    const ProxCitas = pacientes.map(paciente => paciente.ProxCita);
-    res.json(ProxCitas);
+    const fechaproxcita = pacientes.map(paciente => paciente.fechaproxcita);
+
+    // Organizar las fechas en un objeto donde las claves son las fechas y los valores son arrays de citas para esa fecha
+    const calendario = fechaproxcita.reduce((calendario, cita) => {
+        const fecha = cita.toISOString().split('T')[0]; // Convertir la fecha a formato YYYY-MM-DD
+        if (!calendario[fecha]) {
+            calendario[fecha] = [];
+        }
+        calendario[fecha].push(cita);
+        return calendario;
+    }, {});
+
+    res.json(calendario);
 }
 
+export {obtenerCitas} */
+/* import Paciente from '../models/Paciente.js';
 
+const obtenerCitas = async (req, res) => {
+    try {
+        const pacientes = await Paciente.find({}, 'nombre fechaproxcita'); // Obtener solo el nombre y la fecha de la próxima cita de cada paciente
+        const citas = pacientes.map(paciente => ({
+            nombre: paciente.nombre,
+            fecha: paciente.fechaproxcita.toISOString().split('T')[0] // Convertir la fecha a formato YYYY-MM-DD
+        }));
+        
+        res.json(citas);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Error al obtener citas" });
+    }
+}
 
-/* const obtenerCitas = async (req, res) => {
-  try {
-    // Obtener citas futuras
-    const citas = await Paciente.find(ProxCita);
+export { obtenerCitas } */
+import Paciente from '../models/Paciente.js';
 
-    // Mapear solo las fechas de las citas
-    const fechasCitas = citas.map(cita => cita.ProxCita);
+const obtenerCitas = async (req, res) => {
+    try {
+        const pacientes = await Paciente.find({}, 'nombre fechaproxcita'); // Obtener solo el nombre y la fecha de la próxima cita de cada paciente
+        
+        // Organizar las citas por fecha
+        const citasPorFecha = {};
+        pacientes.forEach(paciente => {
+            const fechaCita = paciente.fechaproxcita.toISOString().split('T')[0]; // Convertir la fecha a formato YYYY-MM-DD
+            if (!citasPorFecha[fechaCita]) {
+                citasPorFecha[fechaCita] = [];
+            }
+            citasPorFecha[fechaCita].push(paciente.nombre);
+        });
+        
+        res.json(citasPorFecha);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Error al obtener citas" });
+    }
+}
 
-    res.status(200).json({ citas: fechasCitas });
-  } catch (error) {
-    res.status(500).json({ error: 'Error al obtener las citas.' });
-  }
-};
+export { obtenerCitas }
 
-export { obtenerCitas };
- */
-export {obtenerCitas}

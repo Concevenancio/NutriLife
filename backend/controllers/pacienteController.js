@@ -54,6 +54,7 @@ const actualizarPaciente = async (req, res) => {
     paciente.fromadepago = req.body.fromadepago || paciente.fromadepago;
     paciente.noconsume = req.body.noconsume || paciente.noconsume;
     paciente.fecha = req.body.fecha || paciente.fecha;
+    paciente.fechaproxcita = req.body.fechaproxcita || paciente.fechaproxcita;
     paciente.tipopaquete = req.body.tipopaquete || paciente.tipopaquete;
     paciente.especial = req.body.especial || paciente.especial;
     paciente.mesa = req.body.mesa || paciente.mesa;

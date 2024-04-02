@@ -1,4 +1,4 @@
-/* import Pagos from '../models/Pagos.js';
+import Pagos from '../models/Pagos.js';
 import obtenerHistorialPagos from '../queries/obtenerHistorialPagos.js';
 
 const crearPago = async (req,res) => {
@@ -38,7 +38,7 @@ const obtenerHistorialPagosController = async (req, res) => {
       });
     }
   };
-/* 
+ 
     try {
         const pagos = await Pagos.find();
 
@@ -46,10 +46,10 @@ const obtenerHistorialPagosController = async (req, res) => {
     } catch (error) {
         res.status(500).json({message: 'Error al obtener pagos'})
     }
-} */
 
 
-/*export {
+
+export {
     crearPago,
     obtenerHistorialPagosController
-} */
+}

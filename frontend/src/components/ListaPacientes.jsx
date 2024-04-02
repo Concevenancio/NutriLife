@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+
 import usePacientes from "../hooks/usePacientes";
 
 const Paciente = ({ paciente }) => {
@@ -20,10 +21,11 @@ const Paciente = ({ paciente }) => {
     return fechaFormateada;
   };
 
-  const handleEditar = () => {
+   const handleEditar = () => {
     setEdicion(paciente);
-    navigate("/admin/administracion", { state: { paciente } });
+    navigate("/admin/Formulario", { state: { paciente } });
   };
+ 
 
   return (
     <>

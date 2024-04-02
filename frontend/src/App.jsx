@@ -38,7 +38,7 @@ function App() {
               <Route index element={<AdminPage />} />
               <Route path="perfil" element={<EditarPerfil />} />
               <Route path="cambiar-contraseña" element={<CambiarPassword />} />
-              <Route path="administracion" element={<AdministrarPacientes />} />
+              <Route path="Formulario" element={<AdministrarPacientes />} />
               <Route path="editar-paciente/:id" element={<EditarPacientes />} />
             </Route>
           </Routes>

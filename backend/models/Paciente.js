@@ -35,6 +35,11 @@ const pacienteSchema = mongoose.Schema(
       required: true,
       default: Date.now(),
     },
+    fechaproxcita:{
+      type: Date,
+      required: true,
+      default:Date.now(),
+    },
     tipopaquete: {
       type: String,
       enum: ['Dia', 'Semana', 'Mes'],
