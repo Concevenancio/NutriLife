@@ -35,10 +35,10 @@ function App() {
             </Route>
 
             <Route path="/admin" element={<AdminLayout />}>
-              <Route index element={<AdministrarPacientes />} />
+              <Route index element={<AdminPage />} />
               <Route path="perfil" element={<EditarPerfil />} />
               <Route path="cambiar-contraseña" element={<CambiarPassword />} />
-              <Route path="administracion" element={<AdminPage />} />
+              <Route path="administracion" element={<AdministrarPacientes />} />
               <Route path="editar-paciente/:id" element={<EditarPacientes />} />
             </Route>
           </Routes>

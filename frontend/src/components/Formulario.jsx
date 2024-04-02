@@ -18,13 +18,17 @@ const Formulario = () => {
   const [mesa, setMesa] = useState("");
   const [fecha, setFecha] = useState("");
   const [noconsume, setNoConsume] = useState("");
+  const [formadepago, setFormadepago] = useState("");
   const [diasadeber, setDiasADeber] = useState("0");
+  const [fechaproxcita, setFechaProxCita] = useState("");
+  const [pago, setPago] = useState("");
   const [id, setId] = useState(null);
   const [userState] = useState(state?.paciente || "");
 
   const [alerta, setAlerta] = useState({});
 
   const { guardarPaciente, paciente } = usePacientes();
+
   useEffect(() => {
     if (userState) {
       console.log("entre", userState);
@@ -35,11 +39,14 @@ const Formulario = () => {
       setPadecimiento(userState.padecimiento);
       setAlergias(userState.alergias);
       setTipopaquete(userState.tipopaquete);
+      setFormadepago(userState.formadepago);
+      setPago(userState.pago);
       setEspecial(userState.especial);
       setMesa(userState.mesa);
       setNoConsume(userState.noconsume);
       setDiasADeber(userState.diasadeber);
       setFecha(userState.fecha);
+      setFechaProxCita(userState.fechaproxcita);
 
       setId(userState._id);
     }
@@ -54,11 +61,14 @@ const Formulario = () => {
       setPadecimiento(paciente.padecimiento);
       setAlergias(paciente.alergias);
       setTipopaquete(paciente.tipopaquete);
+      setFormadepago(paciente.formadepago);
+      setPago(paciente.pago);
       setEspecial(paciente.especial);
       setMesa(paciente.mesa);
       setNoConsume(paciente.noconsume);
       setDiasADeber(paciente.diasadeber);
       setFecha(paciente.fecha);
+      setProxCita(paciente.fechaproxcita);
 
       setId(paciente._id);
     }
@@ -86,7 +96,11 @@ const Formulario = () => {
     // Actualizar el estado del teléfono con el nuevo valor formateado
     setTelefono(telefonoFormateado);
   };
-
+  const handlePagoChange = (e) => {
+    const inputValue = e.target.value;
+    const numericValue = inputValue.replace(/\D/g, ""); // Remueve todos los caracteres que no son números
+    setPago(numericValue); // Actualiza el estado solo con los números
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -100,7 +114,10 @@ const Formulario = () => {
         padecimiento,
         alergias,
         fecha,
+        fechaproxcita,
         tipopaquete,
+        formadepago,
+        pago,
         especial,
         mesa,
         diasadeber,
@@ -122,7 +139,10 @@ const Formulario = () => {
       padecimiento,
       alergias,
       fecha,
+      fechaproxcita,
       tipopaquete,
+      formadepago,
+      pago,
       especial,
       mesa,
       diasadeber,
@@ -141,10 +161,13 @@ const Formulario = () => {
     setAlergias("");
     setFecha("");
     setTipopaquete("");
+    setFormadepago("");
+    setPago("");
     setEspecial("");
     setMesa("");
     setNoConsume("");
     setDiasADeber("");
+    setFechaProxCita("");
     setId("");
   };
 
@@ -161,7 +184,7 @@ const Formulario = () => {
 
       {msg && <Alerta alerta={alerta} />}
 
-      <Link to="/admin/administracion">
+      <Link to="/admin">
         <button
           type="button"
           className="py-2 px-4 bg-green-700 jus hover:bg-green-800 text-white uppercase font-medium rounded-lg mb-5"
@@ -302,6 +325,23 @@ const Formulario = () => {
             onChange={(e) => setFecha(e.target.value)}
           />
         </div>
+
+        <div className="mb-5">
+          <label
+            htmlFor="fechaproxcita"
+            className=" uppercase text-gray-700 font-bold"
+          >
+            Proxima Cita:
+          </label>
+          <input
+            id="fechaproxcita"
+            type="date"
+            className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+            value={fechaproxcita}
+            onChange={(e) => setFechaProxCita(e.target.value)}
+          />
+        </div>
+
         <div className="mb-5">
           <label
             htmlFor="tipopaquete"
@@ -320,6 +360,43 @@ const Formulario = () => {
             <option value="Semana">Semana</option>
             <option value="Mes">Mes</option>
           </select>
+        </div>
+
+        <div className="mb-5">
+          <label
+            htmlFor="formadepago"
+            className="uppercase text-gray-700 font-bold"
+          >
+            Forma de pago:
+          </label>
+          <select
+            id="formadepago"
+            className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+            value={formadepago}
+            onChange={(e) => setFormadepago(e.target.value)}
+          >
+            <option value="">Selecciona la forma de pago</option>
+            <option value="Tarjeta">Tarjeta</option>
+            <option value="Effectivo">Effectivo</option>
+          </select>
+        </div>
+        <div className="mb-5">
+          <label htmlFor="pago" className=" uppercase text-gray-700 font-bold">
+            Pago del Paciente:
+          </label>
+          <div className="relative">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+              <span className="text-gray-500 font-medium">$</span>
+            </span>
+            <input
+              id="pago"
+              type="text"
+              placeholder="Monto"
+              className="pl-8 border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              value={pago}
+              onChange={handlePagoChange} // Cambiado a handlePagoChange
+            />
+          </div>
         </div>
 
         <div className="mb-5">

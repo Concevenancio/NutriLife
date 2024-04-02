@@ -22,8 +22,8 @@ const Paciente = ({ paciente }) => {
 
   const handleEditar = () => {
     setEdicion(paciente);
-    navigate("/admin", { state: { paciente } });
-  }
+    navigate("/admin/administracion", { state: { paciente } });
+  };
 
   return (
     <>

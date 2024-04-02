@@ -64,10 +64,10 @@ const ListadoPacientes = () => {
             Mostrar Todos
           </button>
         )}
-        <Link to="/admin">
+        <Link to="/admin/administracion">
           <button
             type="button"
-            className="py-2 px-4 bg-blue-700 hover:bg-green-800 text-white uppercase font-medium rounded-lg"
+            className="py-2 px-4 bg-green-700 hover:bg-green-800 text-white uppercase font-medium rounded-lg"
           >
             Crear Paciente
           </button>
@@ -75,7 +75,7 @@ const ListadoPacientes = () => {
       </div>
       {pacientesMostrados.length ? (
         <>
-          <table className="w-full border-collapse border border-gray-300 mb-4">
+          <table className="w-full border-collapse border border-gray-300 mb-4 ">
             <thead className="bg-gray-200">
               <tr className="text-center">
                 <th className="px-4 py-2 text-center">Nombre</th>
