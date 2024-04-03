@@ -20,6 +20,8 @@ const Formulario = () => {
   const [fechavencimiento, setFechaVencimiento] = useState("");
   const [noconsume, setNoConsume] = useState("");
   const [formadepago, setFormadepago] = useState("");
+  const [anticipo, setAnticipo] = useState("");
+  const [adeudoneto, setAdeudoNeto] = useState("");
   const [diasadeber, setDiasADeber] = useState("0");
   const [fechaproxcita, setFechaProxCita] = useState("");
   const [pago, setPago] = useState("");
@@ -42,6 +44,7 @@ const Formulario = () => {
       setTipopaquete(userState.tipopaquete);
       setFormadepago(userState.formadepago);
       setPago(userState.pago);
+      
       setEspecial(userState.especial);
       setFechaVencimiento(userState.fechavencimiento);
       setMesa(userState.mesa);
@@ -51,11 +54,12 @@ const Formulario = () => {
       setFechaProxCita(userState.fechaproxcita);
       setId(userState._id);
 
-      const fechaFormateada = userState.fecha.split('T')[0];
+      const fechaFormateada = userState.fecha.split("T")[0];
       setFecha(fechaFormateada);
-      const fechaFormateadaProx = userState.fechaproxcita.split('T')[0];
+      const fechaFormateadaProx = userState.fechaproxcita.split("T")[0];
       setFechaProxCita(fechaFormateadaProx);
-      const fechaFormateadaVencimiento = userState.fechavencimiento.split('T')[0];
+      const fechaFormateadaVencimiento =
+        userState.fechavencimiento.split("T")[0];
       setFechaVencimiento(fechaFormateadaVencimiento);
     }
   }, [userState]);
@@ -80,7 +84,6 @@ const Formulario = () => {
       setProxCita(paciente.fechaproxcita);
 
       setId(paciente._id);
-
     }
   }, [paciente]);
 
@@ -110,6 +113,24 @@ const Formulario = () => {
     const inputValue = e.target.value;
     const numericValue = inputValue.replace(/\D/g, ""); // Remueve todos los caracteres que no son números
     setPago(numericValue); // Actualiza el estado solo con los números
+  };
+  const handleTipoPaqueteChange = (e) => {
+    const newValue = e.target.value;
+    setTipopaquete(newValue);
+    switch (newValue) {
+      case "Semanal":
+        setPago("1099");
+        break;
+      case "Quincenal":
+        setPago("2099");
+        break;
+      case "Mensual":
+        setPago("3999");
+        break;
+      default:
+        setPago(""); // Si no se selecciona un tipo de paquete, se borra el valor del pago
+        break;
+    }
   };
 
   const handleEspecialChange = (e) => {
@@ -407,13 +428,32 @@ const Formulario = () => {
             id="tipopaquete"
             className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             value={tipopaquete}
-            onChange={(e) => setTipopaquete(e.target.value)}
+            onChange={handleTipoPaqueteChange}
           >
             <option value="">Selecciona el Paquete</option>
-            <option value="Semana 1">Semana 1</option>
-            <option value="Semana 2">Semana 2</option>
-            <option value="Semana 3">Semana 3</option>
+            <option value="Semanal">Semanal</option>
+            <option value="Quincenal">Quincenal</option>
+            <option value="Mensual">Mensual</option>
           </select>
+        </div>
+
+        <div className="mb-5">
+          <label htmlFor="pago" className=" uppercase text-gray-700 font-bold">
+            Costo del paquete:
+          </label>
+          <div className="relative">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+              <span className="text-gray-500 font-medium">$</span>
+            </span>
+            <input
+              id="pago"
+              type="text"
+              placeholder="Monto"
+              className="pl-8 border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              value={pago}
+              onChange={handlePagoChange} // Cambiado a handlePagoChange
+            />
+          </div>
         </div>
 
         <div className="mb-5">
@@ -434,24 +474,7 @@ const Formulario = () => {
             <option value="Effectivo">Effectivo</option>
           </select>
         </div>
-        <div className="mb-5">
-          <label htmlFor="pago" className=" uppercase text-gray-700 font-bold">
-            Pago del Paciente:
-          </label>
-          <div className="relative">
-            <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-              <span className="text-gray-500 font-medium">$</span>
-            </span>
-            <input
-              id="pago"
-              type="text"
-              placeholder="Monto"
-              className="pl-8 border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-              value={pago}
-              onChange={handlePagoChange} // Cambiado a handlePagoChange
-            />
-          </div>
-        </div>
+        
 
         <div className="mb-5">
           <label

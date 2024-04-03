@@ -13,6 +13,7 @@ import EditarPerfil from "./paginas/Admin/EditarPerfil";
 import CambiarPassword from "./paginas/Admin/CambiarPassword";
 import AdminPage from "./paginas/Admin/AdminPage";
 import EditarPacientes from "./paginas/Admin/EditarPacientes";
+import HistorialPagos from "./paginas/Admin/HistorialPagos";
 
 import { AuthProvider } from "./context/AuthProvider";
 import { PacientesProvider } from "./context/PacientesProvider";
@@ -39,7 +40,7 @@ function App() {
               <Route path="perfil" element={<EditarPerfil />} />
               <Route path="cambiar-contraseña" element={<CambiarPassword />} />
               <Route path="Formulario" element={<AdministrarPacientes />} />
-              <Route path="editar-paciente/:id" element={<EditarPacientes />} />
+              <Route path="historial-pagos" element={<HistorialPagos />} />
             </Route>
           </Routes>
         </PacientesProvider>
@@ -49,3 +50,4 @@ function App() {
 }
 
 export default App;
+  

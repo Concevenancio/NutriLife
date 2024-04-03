@@ -5,12 +5,11 @@ import Alerta from "../../components/Alerta";
 import clienteAxios from "../../config/axios";
 
 const Login = () => {
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [alerta, setAlerta] = useState({});
 
-  const { setAuth } = useAuth()
+  const { setAuth } = useAuth();
 
   const navigate = useNavigate();
 
@@ -30,27 +29,25 @@ const Login = () => {
         email,
         password,
       });
-      
+
       localStorage.setItem("token", data.token);
       setAuth(data);
-  
+
       // Verificar si el correo electrónico coincide con el correo específico
-      if (data.email === 'examplecorreo.com') {
-        // Redirigir a una ruta específica
-        navigate("/ruta-especifica");
+      if (data.email === "historial@gmail.com") {
+        navigate("/admin/historial-pagos");
       } else {
         navigate("/admin");
       }
-  
+
       console.log(data);
     } catch (error) {
       setAlerta({
         msg: error.response.data.msg,
         error: true,
-      });
-    }
+      });
+    }
   };
-  
 
   const { msg } = alerta;
   return (

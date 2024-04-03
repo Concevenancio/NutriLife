@@ -47,7 +47,7 @@ const pacienteSchema = mongoose.Schema(
     },
     tipopaquete: {
       type: String,
-      enum: ['Semana 1', 'Semana 2', 'Semana 3'],
+      enum: ['Semanal', 'Quincenal', 'Mensual'],
       required: true,
     },
     formadepago:{
@@ -57,6 +57,14 @@ const pacienteSchema = mongoose.Schema(
     },
     pago:{
       type: String,
+      required: true,
+    },
+    anticipo:{
+      type: String,
+      required: true,
+    },
+    adeudoneto:{
+      type:String,
       required: true,
     },
     especial: {
