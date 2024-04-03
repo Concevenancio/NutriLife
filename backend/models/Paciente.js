@@ -40,6 +40,11 @@ const pacienteSchema = mongoose.Schema(
       required: true,
       default:Date.now(),
     },
+    fechavencimeiento:{
+      type: String,
+      required: true,
+      default:Date.now(),
+    },
     tipopaquete: {
       type: String,
       enum: ['Semana 1', 'Semana 2', 'Semana 3'],
@@ -64,7 +69,7 @@ const pacienteSchema = mongoose.Schema(
       enum: ['A', 'B', 'C', 'D', 'E', 'F'],
       required: true,
     },
-    
+
     diasadeber: {
       type: String,
       required: true,

@@ -17,6 +17,7 @@ const Formulario = () => {
   const [especial, setEspecial] = useState("");
   const [mesa, setMesa] = useState("");
   const [fecha, setFecha] = useState("");
+  const [fechavencimeiento,setFechaVencimeiento] = useState("");
   const [noconsume, setNoConsume] = useState("");
   const [formadepago, setFormadepago] = useState("");
   const [diasadeber, setDiasADeber] = useState("0");
@@ -42,12 +43,12 @@ const Formulario = () => {
       setFormadepago(userState.formadepago);
       setPago(userState.pago);
       setEspecial(userState.especial);
+      setFechaVencimeiento(userState.fechavencimeiento);
       setMesa(userState.mesa);
       setNoConsume(userState.noconsume);
       setDiasADeber(userState.diasadeber);
       setFecha(userState.fecha);
       setFechaProxCita(userState.fechaproxcita);
-
       setId(userState._id);
       const fechaFormateada = userState.fecha.split('T')[0];
       setFecha(fechaFormateada);
@@ -66,6 +67,7 @@ const Formulario = () => {
       setAlergias(paciente.alergias);
       setTipopaquete(paciente.tipopaquete);
       setFormadepago(paciente.formadepago);
+      setFechaVencimeiento(paciente.fechavencimeiento);
       setPago(paciente.pago);
       setEspecial(paciente.especial);
       setMesa(paciente.mesa);
@@ -123,6 +125,7 @@ const Formulario = () => {
         nombre,
         telefono,
         direccionDeEntrega,
+        fechavencimeiento,
         ejercicio,
         padecimiento,
         alergias,
@@ -153,6 +156,7 @@ const Formulario = () => {
       alergias,
       fecha,
       fechaproxcita,
+      fechavencimeiento,
       tipopaquete,
       formadepago,
       pago,
@@ -177,6 +181,7 @@ const Formulario = () => {
     setFormadepago("");
     setPago("");
     setEspecial("");
+    setFechaVencimeiento("");
     setMesa("");
     setNoConsume("");
     setDiasADeber("");
@@ -352,6 +357,22 @@ const Formulario = () => {
             className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             value={fechaproxcita}
             onChange={(e) => setFechaProxCita(e.target.value)}
+          />
+        </div>
+
+        <div className="mb-5">
+          <label
+            htmlFor="fechavencimeiento"
+            className=" uppercase text-gray-700 font-bold"
+          >
+            Vencimiento de Paquete
+          </label>
+          <input
+            id="fechavencimeiento"
+            type="date"
+            className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+            value={fechavencimeiento}
+            onChange={(e) => setFechaVencimeiento(e.target.value)}
           />
         </div>
 
