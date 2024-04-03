@@ -30,18 +30,27 @@ const Login = () => {
         email,
         password,
       });
+      
       localStorage.setItem("token", data.token);
-      setAuth(data)
-      navigate("/admin");
-
+      setAuth(data);
+  
+      // Verificar si el correo electrónico coincide con el correo específico
+      if (data.email === 'examplecorreo.com') {
+        // Redirigir a una ruta específica
+        navigate("/ruta-especifica");
+      } else {
+        navigate("/admin");
+      }
+  
       console.log(data);
     } catch (error) {
       setAlerta({
         msg: error.response.data.msg,
         error: true,
-      });
-    }
+      });
+    }
   };
+  
 
   const { msg } = alerta;
   return (

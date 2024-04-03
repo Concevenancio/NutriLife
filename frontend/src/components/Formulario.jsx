@@ -17,7 +17,7 @@ const Formulario = () => {
   const [especial, setEspecial] = useState("");
   const [mesa, setMesa] = useState("");
   const [fecha, setFecha] = useState("");
-  const [fechavencimeiento,setFechaVencimeiento] = useState("");
+  const [fechavencimiento, setFechaVencimiento] = useState("");
   const [noconsume, setNoConsume] = useState("");
   const [formadepago, setFormadepago] = useState("");
   const [diasadeber, setDiasADeber] = useState("0");
@@ -43,17 +43,20 @@ const Formulario = () => {
       setFormadepago(userState.formadepago);
       setPago(userState.pago);
       setEspecial(userState.especial);
-      setFechaVencimeiento(userState.fechavencimeiento);
+      setFechaVencimiento(userState.fechavencimiento);
       setMesa(userState.mesa);
       setNoConsume(userState.noconsume);
       setDiasADeber(userState.diasadeber);
       setFecha(userState.fecha);
       setFechaProxCita(userState.fechaproxcita);
       setId(userState._id);
+
       const fechaFormateada = userState.fecha.split('T')[0];
       setFecha(fechaFormateada);
       const fechaFormateadaProx = userState.fechaproxcita.split('T')[0];
       setFechaProxCita(fechaFormateadaProx);
+      const fechaFormateadaVencimiento = userState.fechavencimiento.split('T')[0];
+      setFechaVencimiento(fechaFormateadaVencimiento);
     }
   }, [userState]);
 
@@ -67,7 +70,7 @@ const Formulario = () => {
       setAlergias(paciente.alergias);
       setTipopaquete(paciente.tipopaquete);
       setFormadepago(paciente.formadepago);
-      setFechaVencimeiento(paciente.fechavencimeiento);
+      setFechaVencimiento(paciente.fechavencimiento);
       setPago(paciente.pago);
       setEspecial(paciente.especial);
       setMesa(paciente.mesa);
@@ -125,7 +128,7 @@ const Formulario = () => {
         nombre,
         telefono,
         direccionDeEntrega,
-        fechavencimeiento,
+        fechavencimiento,
         ejercicio,
         padecimiento,
         alergias,
@@ -156,7 +159,7 @@ const Formulario = () => {
       alergias,
       fecha,
       fechaproxcita,
-      fechavencimeiento,
+      fechavencimiento,
       tipopaquete,
       formadepago,
       pago,
@@ -181,7 +184,7 @@ const Formulario = () => {
     setFormadepago("");
     setPago("");
     setEspecial("");
-    setFechaVencimeiento("");
+    setFechaVencimiento("");
     setMesa("");
     setNoConsume("");
     setDiasADeber("");
@@ -371,8 +374,8 @@ const Formulario = () => {
             id="fechavencimeiento"
             type="date"
             className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-            value={fechavencimeiento}
-            onChange={(e) => setFechaVencimeiento(e.target.value)}
+            value={fechavencimiento}
+            onChange={(e) => setFechaVencimiento(e.target.value)}
           />
         </div>
 
