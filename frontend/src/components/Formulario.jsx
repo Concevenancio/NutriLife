@@ -44,7 +44,8 @@ const Formulario = () => {
       setTipopaquete(userState.tipopaquete);
       setFormadepago(userState.formadepago);
       setPago(userState.pago);
-      
+      setAdeudoNeto(userState.adeudoneto);
+      setAnticipo(userState.anticipo);
       setEspecial(userState.especial);
       setFechaVencimiento(userState.fechavencimiento);
       setMesa(userState.mesa);
@@ -78,6 +79,8 @@ const Formulario = () => {
       setPago(paciente.pago);
       setEspecial(paciente.especial);
       setMesa(paciente.mesa);
+      setAdeudoNeto(paciente.adeudoneto);
+      setAnticipo(paciente.anticipo);
       setNoConsume(paciente.noconsume);
       setDiasADeber(paciente.diasadeber);
       setFecha(paciente.fecha);
@@ -109,23 +112,68 @@ const Formulario = () => {
     // Actualizar el estado del teléfono con el nuevo valor formateado
     setTelefono(telefonoFormateado);
   };
-  const handlePagoChange = (e) => {
+  /*    const handlePagoChange = (e) => {
     const inputValue = e.target.value;
     const numericValue = inputValue.replace(/\D/g, ""); // Remueve todos los caracteres que no son números
     setPago(numericValue); // Actualiza el estado solo con los números
+  }; */
+  const handlePagoChange = (e) => {
+    const inputValue = e.target.value;
+    const numericValue = inputValue.replace(/\D/g, "");
+    setPago(numericValue);
+    // Calcular el adeudoneto al cambiar el pago
+    const adeudo = parseInt(pago) - parseInt(anticipo);
+    setAdeudoNeto(adeudo.toNumber());
   };
+
+  const handleAdeudoChange = (e) => {
+    const inputValue = e.target.value;
+    const numericValue = inputValue.replace(/\D/g, ""); // Remueve todos los caracteres que no son números
+    setAdeudoNeto(numericValue); // Actualiza el estado solo con los números
+  };
+
+  /* const handleAnticipoChange = (e) => {
+    const inputValue = e.target.value;
+    const numericValue = inputValue.replace(/\D/g, ""); // Remueve todos los caracteres que no son números
+    setAnticipo(numericValue); // Actualiza el estado solo con los números
+  }; */
+  const handleAnticipoChange = (e) => {
+    let inputValue = e.target.value;
+
+    // Eliminar cero inicial si existe
+    if (inputValue.length === 2 && inputValue[0] === "0") {
+      inputValue = inputValue[1];
+    }
+
+    const numericValue = inputValue.replace(/\D/g, ""); // Remueve todos los caracteres que no son números
+    setAnticipo(numericValue); // Actualiza el estado solo con los números
+
+    // Verificar si el valor de anticipo es vacío
+    if (numericValue === "") {
+      // Si es vacío, establecer anticipo en 0
+      setAnticipo(0);
+    }
+
+    // Calcular el nuevo valor de adeudoneto
+    const adeudo = parseInt(pago) - parseInt(numericValue || 0);
+    setAdeudoNeto(adeudo);
+  };
+
   const handleTipoPaqueteChange = (e) => {
     const newValue = e.target.value;
     setTipopaquete(newValue);
     switch (newValue) {
       case "Semanal":
         setPago("1099");
+        setAdeudoNeto("1099");
         break;
       case "Quincenal":
         setPago("2099");
+        setAdeudoNeto("2099");
         break;
       case "Mensual":
         setPago("3999");
+        setAdeudoNeto("3999");
         break;
       default:
         setPago(""); // Si no se selecciona un tipo de paquete, se borra el valor del pago
@@ -157,6 +205,8 @@ const Formulario = () => {
         fechaproxcita,
         tipopaquete,
         formadepago,
+        adeudoneto,
+        anticipo,
         pago,
         especial,
         mesa,
@@ -181,6 +231,8 @@ const Formulario = () => {
       fecha,
       fechaproxcita,
       fechavencimiento,
+      anticipo,
+      adeudoneto,
       tipopaquete,
       formadepago,
       pago,
@@ -207,6 +259,8 @@ const Formulario = () => {
     setEspecial("");
     setFechaVencimiento("");
     setMesa("");
+    setAnticipo("");
+    setAdeudoNeto("");
     setNoConsume("");
     setDiasADeber("");
     setFechaProxCita("");
@@ -474,7 +528,50 @@ const Formulario = () => {
             <option value="Effectivo">Effectivo</option>
           </select>
         </div>
-        
+
+        <div className="mb-5">
+          <label
+            htmlFor="anticipo"
+            className=" uppercase text-gray-700 font-bold"
+          >
+            Anticipo:
+          </label>
+          <div className="relative">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+              <span className="text-gray-500 font-medium">$</span>
+            </span>
+            <input
+              id="anticipo"
+              type="text"
+              placeholder="Anticipo"
+              className="pl-8 border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              value={anticipo}
+              onChange={handleAnticipoChange}
+            />
+          </div>
+        </div>
+
+        <div className="mb-5">
+          <label
+            htmlFor="adeudoneto"
+            className=" uppercase text-gray-700 font-bold"
+          >
+            Adeudo Neto:
+          </label>
+          <div className="relative">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+              <span className="text-gray-500 font-medium">$</span>
+            </span>
+            <input
+              id="adeudoneto"
+              type="text"
+              placeholder="Adeudo"
+              className="pl-8 border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              value={adeudoneto}
+              onChange={handleAdeudoChange}
+            />
+          </div>
+        </div>
 
         <div className="mb-5">
           <label
