@@ -42,7 +42,7 @@ const pacienteSchema = mongoose.Schema(
     },
     tipopaquete: {
       type: String,
-      enum: ['Dia', 'Semana', 'Mes'],
+      enum: ['Semana 1', 'Semana 2', 'Semana 3'],
       required: true,
     },
     formadepago:{
@@ -56,6 +56,7 @@ const pacienteSchema = mongoose.Schema(
     },
     especial: {
       type: String,
+      enum:['Si', 'No'],
       required: true,
     },
     mesa:{
@@ -63,6 +64,7 @@ const pacienteSchema = mongoose.Schema(
       enum: ['A', 'B', 'C', 'D', 'E', 'F'],
       required: true,
     },
+    
     diasadeber: {
       type: String,
       required: true,

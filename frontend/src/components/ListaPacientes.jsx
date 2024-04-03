@@ -4,7 +4,7 @@ import usePacientes from "../hooks/usePacientes";
 
 const Paciente = ({ paciente }) => {
   const { setEdicion, eliminarPaciente } = usePacientes();
-  const { _id, nombre, telefono, tipopaquete, mesa, fecha } = paciente;
+  const { _id, nombre, telefono, tipopaquete, mesa, fechaproxcita } = paciente;
   const navigate = useNavigate();
 
   const formatearFecha = (fecha) => {
@@ -21,11 +21,10 @@ const Paciente = ({ paciente }) => {
     return fechaFormateada;
   };
 
-   const handleEditar = () => {
+  const handleEditar = () => {
     setEdicion(paciente);
     navigate("/admin/Formulario", { state: { paciente } });
   };
- 
 
   return (
     <>
@@ -35,7 +34,7 @@ const Paciente = ({ paciente }) => {
         <td className="border px-2 py-1 hidden xl:table-cell">{tipopaquete}</td>
         <td className="border px-2 py-1 hidden xl:table-cell">{mesa}</td>
         <td className="border px-2 py-1 text-center hidden xl:table-cell">
-          {formatearFecha(fecha)}
+          {formatearFecha(fechaproxcita)}
         </td>
         <td className="border px-2 py-1 text-center">
           <button

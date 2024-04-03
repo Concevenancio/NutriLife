@@ -49,6 +49,10 @@ const Formulario = () => {
       setFechaProxCita(userState.fechaproxcita);
 
       setId(userState._id);
+      const fechaFormateada = userState.fecha.split('T')[0];
+      setFecha(fechaFormateada);
+      const fechaFormateadaProx = userState.fechaproxcita.split('T')[0];
+      setFechaProxCita(fechaFormateadaProx);
     }
   }, [userState]);
 
@@ -71,6 +75,7 @@ const Formulario = () => {
       setProxCita(paciente.fechaproxcita);
 
       setId(paciente._id);
+
     }
   }, [paciente]);
 
@@ -100,6 +105,14 @@ const Formulario = () => {
     const inputValue = e.target.value;
     const numericValue = inputValue.replace(/\D/g, ""); // Remueve todos los caracteres que no son números
     setPago(numericValue); // Actualiza el estado solo con los números
+  };
+
+  const handleEspecialChange = (e) => {
+    const newValue = e.target.value;
+    setEspecial(newValue);
+    if (newValue === "Si") {
+      setMesa("F");
+    }
   };
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -344,6 +357,23 @@ const Formulario = () => {
 
         <div className="mb-5">
           <label
+            htmlFor="diasadeber"
+            className=" uppercase text-gray-700 font-bold"
+          >
+            Dias a deber:
+          </label>
+          <input
+            id="diasadeber"
+            type="text"
+            placeholder="Dias que le debo al Paciente"
+            className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+            value={diasadeber}
+            onChange={(e) => setDiasADeber(e.target.value)}
+          />
+        </div>
+
+        <div className="mb-5">
+          <label
             htmlFor="tipopaquete"
             className="uppercase text-gray-700 font-bold"
           >
@@ -356,9 +386,9 @@ const Formulario = () => {
             onChange={(e) => setTipopaquete(e.target.value)}
           >
             <option value="">Selecciona el Paquete</option>
-            <option value="Dia">Día</option>
-            <option value="Semana">Semana</option>
-            <option value="Mes">Mes</option>
+            <option value="Semana 1">Semana 1</option>
+            <option value="Semana 2">Semana 2</option>
+            <option value="Semana 3">Semana 3</option>
           </select>
         </div>
 
@@ -402,18 +432,19 @@ const Formulario = () => {
         <div className="mb-5">
           <label
             htmlFor="especial"
-            className=" uppercase text-gray-700 font-bold"
+            className="uppercase text-gray-700 font-bold"
           >
             Especial:
           </label>
-          <input
+          <select
             id="especial"
-            type="text"
-            placeholder="Especial"
             className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             value={especial}
-            onChange={(e) => setEspecial(e.target.value)}
-          />
+            onChange={handleEspecialChange} // Cambiado a handleEspecialChange
+          >
+            <option value="No">No</option>
+            <option value="Si">Si</option>
+          </select>
         </div>
 
         <div className="mb-5">
@@ -434,23 +465,6 @@ const Formulario = () => {
             <option value="E">E</option>
             <option value="F">F</option>
           </select>
-        </div>
-
-        <div className="mb-5">
-          <label
-            htmlFor="diasadeber"
-            className=" uppercase text-gray-700 font-bold"
-          >
-            Dias a deber:
-          </label>
-          <input
-            id="diasadeber"
-            type="text"
-            placeholder="Dias que le debo al Paciente"
-            className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-            value={diasadeber}
-            onChange={(e) => setDiasADeber(e.target.value)}
-          />
         </div>
 
         <input
