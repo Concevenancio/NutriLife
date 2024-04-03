@@ -4,7 +4,7 @@ import usePacientes from "../hooks/usePacientes";
 
 const Paciente = ({ paciente }) => {
   const { setEdicion, eliminarPaciente } = usePacientes();
-  const { _id, nombre, telefono, tipopaquete, mesa, fechaproxcita } = paciente;
+  const { _id, nombre, telefono, tipopaquete, mesa, fechaproxcita, diasadeber } = paciente;
   const navigate = useNavigate();
 
   const formatearFecha = (fecha) => {
@@ -36,6 +36,7 @@ const Paciente = ({ paciente }) => {
         <td className="border px-2 py-1 text-center hidden xl:table-cell">
           {formatearFecha(fechaproxcita)}
         </td>
+        <td className="border px-2 py-1 hidden xl:table-cell">{diasadeber}</td>
         <td className="border px-2 py-1 text-center">
           <button
             type="button"

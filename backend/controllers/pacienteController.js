@@ -61,6 +61,7 @@ const actualizarPaciente = async (req, res) => {
     paciente.mesa = req.body.mesa || paciente.mesa;
     paciente.diasadeber = req.body.diasadeber || paciente.diasadeber;
     
+    
     try {
         const pacienteActualizado = await paciente.save();
         res.json(pacienteActualizado)

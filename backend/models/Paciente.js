@@ -40,7 +40,7 @@ const pacienteSchema = mongoose.Schema(
       required: true,
       default:Date.now(),
     },
-    fechavencimeiento:{
+    fechavencimiento:{
       type: String,
       required: true,
       default:Date.now(),

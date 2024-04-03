@@ -142,6 +142,9 @@ const ListadoPacientes = () => {
                 <th className="px-4 py-2 text-center hidden xl:table-cell">
                   Próxima Cita
                 </th>
+                <th className="px-4 py-2 text-center hidden xl:table-cell">
+                  Dias a Deber
+                  </th>
                 <th className="px-4 py-2 text-center">Editar</th>
                 <th className="px-4 py-2 text-center">Eliminar</th>
               </tr>
