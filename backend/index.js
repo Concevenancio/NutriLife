@@ -5,7 +5,7 @@ import conectarDB from "./config/db.js";
 import nutriologoRoutes from './routes/nutriologoRoutes.js'
 import pacienteRoutes from './routes/pacienteRoutes.js'
 import obtenerCitas from './routes/citaRoutes.js'
-//import pagosRoutes from './routes/pagosRoutes.js'
+
 
 const app = express();
 app.use(express.json());
@@ -31,7 +31,7 @@ app.use(cors());
 app.use('/api/nutriologos', nutriologoRoutes);
 app.use('/api/pacientes', pacienteRoutes);
 app.use('/api/citas', obtenerCitas);
-//app.use('/api/pagos', pagosRoutes);
+
 
 const PORT = process.env.PORT || 4000
 app.listen(PORT, ()=> {
