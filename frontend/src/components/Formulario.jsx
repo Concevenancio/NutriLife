@@ -112,11 +112,7 @@ const Formulario = () => {
     // Actualizar el estado del teléfono con el nuevo valor formateado
     setTelefono(telefonoFormateado);
   };
-  /*    const handlePagoChange = (e) => {
-    const inputValue = e.target.value;
-    const numericValue = inputValue.replace(/\D/g, ""); // Remueve todos los caracteres que no son números
-    setPago(numericValue); // Actualiza el estado solo con los números
-  }; */
+
   const handlePagoChange = (e) => {
     const inputValue = e.target.value;
     const numericValue = inputValue.replace(/\D/g, "");
@@ -132,12 +128,7 @@ const Formulario = () => {
     setAdeudoNeto(numericValue); // Actualiza el estado solo con los números
   };
 
-  /* const handleAnticipoChange = (e) => {
-    const inputValue = e.target.value;
-    const numericValue = inputValue.replace(/\D/g, ""); // Remueve todos los caracteres que no son números
-    setAnticipo(numericValue); // Actualiza el estado solo con los números
-  }; */
-  const handleAnticipoChange = (e) => {
+  /*    const handleAnticipoChange = (e) => {
     let inputValue = e.target.value;
 
     // Eliminar cero inicial si existe
@@ -156,6 +147,19 @@ const Formulario = () => {
 
     // Calcular el nuevo valor de adeudoneto
     const adeudo = parseInt(pago) - parseInt(numericValue || 0);
+    setAdeudoNeto(adeudo);
+  }; */
+  const handleAnticipoChange = (e) => {
+    let inputValue = e.target.value;
+    if (inputValue.length === 2 && inputValue[0] === "0") {
+      inputValue = inputValue[1];
+    }
+    const numericValue = inputValue.replace(/\D/g, "");
+    setAnticipo(numericValue);
+    if (numericValue === "") {
+      setAnticipo(0);
+    }
+    const adeudo = parseInt(pago || 0) - parseInt(numericValue || 0);
     setAdeudoNeto(adeudo);
   };
 
