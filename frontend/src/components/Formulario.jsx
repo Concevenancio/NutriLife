@@ -4,10 +4,11 @@ import Alerta from "./Alerta";
 import usePacientes from "../hooks/usePacientes";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
-import clienteAxios from "../config/axios";
+//import clienteAxios from "../config/axios";
 
 const Formulario = () => {
   const { state } = useLocation();
+  //console.log("state:", state);
   const [nombre, setNombre] = useState("");
   const [telefono, setTelefono] = useState("");
   const [direccionDeEntrega, setDireccionDeEntrega] = useState("");
@@ -17,14 +18,18 @@ const Formulario = () => {
   const [tipopaquete, setTipopaquete] = useState("");
   const [especial, setEspecial] = useState("");
   const [mesa, setMesa] = useState("");
-  const [fecha, setFecha] = useState("");
+
+  const fechaActual = new Date().toISOString().split("T")[0];
+  const [fecha, setFecha] = useState(fechaActual);
+
   const [fechavencimiento, setFechaVencimiento] = useState("");
+  const [fechaproxcita, setFechaProxCita] = useState("");
+  
   const [noconsume, setNoConsume] = useState("");
   const [formadepago, setFormadepago] = useState("");
   const [anticipo, setAnticipo] = useState("");
   const [adeudoneto, setAdeudoNeto] = useState("");
   const [diasadeber, setDiasADeber] = useState("0");
-  const [fechaproxcita, setFechaProxCita] = useState("");
   const [pago, setPago] = useState("");
   const [id, setId] = useState(null);
   const [resetAdeudo, setResetAdeudo] = useState(0);
@@ -35,7 +40,12 @@ const Formulario = () => {
   const { guardarPaciente, paciente } = usePacientes();
 
   useEffect(() => {
+    //console.log("userState:", userState);
     if (userState) {
+<<<<<<< HEAD
+=======
+      console.log("entre", userState);
+>>>>>>> bd22035f141e8e22eff067debeee05d5275f2ab8
       setNombre(userState.nombre);
       setTelefono(userState.telefono);
       setDireccionDeEntrega(userState.direccionDeEntrega);
@@ -64,12 +74,16 @@ const Formulario = () => {
         userState.fechavencimiento.split("T")[0];
       setFechaVencimiento(fechaFormateadaVencimiento);
 
+<<<<<<< HEAD
       setAdeudoNeto(userState.adeudoneto);
       setResetAdeudo(userState.adeudoneto);
       setAnticipo(0);
+=======
+      
+>>>>>>> bd22035f141e8e22eff067debeee05d5275f2ab8
     }
   }, [userState]);
-
+ 
   useEffect(() => {
     if (paciente?.nombre) {
       setNombre(paciente.nombre);
@@ -89,8 +103,7 @@ const Formulario = () => {
       setNoConsume(paciente.noconsume);
       setDiasADeber(paciente.diasadeber);
       setFecha(paciente.fecha);
-      setProxCita(paciente.fechaproxcita);
-
+      setFechaProxCita(paciente.fechaproxcita);
       setId(paciente._id);
     }
   }, [paciente]);
@@ -209,32 +222,75 @@ const Formulario = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // console.log("ID antes de enviar el formulario:", id);
+    console.log({
+      nombre,
+      telefono,
+      direccionDeEntrega,
+      fechavencimiento,
+      ejercicio,
+      padecimiento,
+      alergias,
+      fecha,
+      fechaproxcita,
+      tipopaquete,
+      formadepago,
+      adeudoneto,
+      anticipo,
+      pago,
+      especial,
+      mesa,
+      diasadeber,
+      noconsume,
+      id,
+    });
 
     //Validar Formulario
     if (
       [
-        nombre,
-        telefono,
-        direccionDeEntrega,
-        fechavencimiento,
-        ejercicio,
-        padecimiento,
-        alergias,
-        fecha,
-        fechaproxcita,
-        tipopaquete,
-        formadepago,
-        adeudoneto,
-        anticipo,
-        pago,
-        especial,
-        mesa,
-        diasadeber,
-        noconsume,
-      ].includes("")
+        { nombre: "Nombre del Paciente", valor: nombre },
+        { nombre: "Teléfono del Paciente", valor: telefono },
+        { nombre: "Dirección de Entrega del Paciente", valor: direccionDeEntrega },
+        { nombre: "Fecha de Vencimiento", valor: fechavencimiento },
+        { nombre: "Ejercicio", valor: ejercicio },
+        { nombre: "Padecimiento", valor: padecimiento },
+        { nombre: "Alergias", valor: alergias },
+        { nombre: "Fecha de Alta", valor: fecha },
+        { nombre: "Próxima Cita", valor: fechaproxcita },
+        { nombre: "Tipo de Paquete", valor: tipopaquete },
+        { nombre: "Forma de Pago", valor: formadepago },
+        { nombre: "Adeudo Neto", valor: adeudoneto },
+        { nombre: "Anticipo", valor: anticipo },
+        { nombre: "Pago", valor: pago },
+        { nombre: "Especial", valor: especial },
+        { nombre: "Mesa", valor: mesa },
+        { nombre: "Días a deber", valor: diasadeber },
+        { nombre: "Alimentos que no consume", valor: noconsume },
+      ].some((campo) => campo.valor === "")
     ) {
+      const camposFaltantes = [
+        { nombre: "Nombre del Paciente", valor: nombre },
+        { nombre: "Teléfono del Paciente", valor: telefono },
+        { nombre: "Dirección de Entrega del Paciente", valor: direccionDeEntrega },
+        { nombre: "Fecha de Vencimiento", valor: fechavencimiento },
+        { nombre: "Ejercicio", valor: ejercicio },
+        { nombre: "Padecimiento", valor: padecimiento },
+        { nombre: "Alergias", valor: alergias },
+        { nombre: "Fecha de Alta", valor: fecha },
+        { nombre: "Próxima Cita", valor: fechaproxcita },
+        { nombre: "Tipo de Paquete", valor: tipopaquete },
+        { nombre: "Forma de Pago", valor: formadepago },
+        { nombre: "Adeudo Neto", valor: adeudoneto },
+        { nombre: "Anticipo", valor: anticipo },
+        { nombre: "Pago", valor: pago },
+        { nombre: "Especial", valor: especial },
+        { nombre: "Mesa", valor: mesa },
+        { nombre: "Días a deber", valor: diasadeber },
+        { nombre: "Alimentos que no consume", valor: noconsume },
+      ].filter((campo) => campo.valor === "").map((campo) => campo.nombre);
+    
       setAlerta({
-        msg: "Todos los campos son obligatorios",
+        msg: `Los siguientes campos son obligatorios: ${camposFaltantes.join(", ")}`,
         error: true,
       });
       return;
@@ -262,38 +318,20 @@ const Formulario = () => {
       id,
     });
 
-    try {
-      await clienteAxios.post("/historial-pagos/almacenar", {
-        id,
-        pago,
-      });
-    } catch (error) {
-      console.error("Error al guardar el pago:", error);
-    }
+    // try {
+    //   await clienteAxios.post("/historial-pagos/almacenar", {
+    //     id,
+    //     pago,
+    //   });
+    // } catch (error) {
+    //   console.error("Error al guardar el pago:", error);
+    // }
 
     setAlerta({
       msg: "Guardado Correctamente",
     });
 
-    setNombre("");
-    setTelefono("");
-    setEjercicio("");
-    setPadecimiento("");
-    setDireccionDeEntrega("");
-    setAlergias("");
-    setFecha("");
-    setTipopaquete("");
-    setFormadepago("");
-    setPago("");
-    setEspecial("");
-    setFechaVencimiento("");
-    setMesa("");
-    setAnticipo("");
-    setAdeudoNeto("");
-    setNoConsume("");
-    setDiasADeber("");
-    setFechaProxCita("");
-    setId("");
+    setId("")
   };
 
   const { msg } = alerta;
@@ -317,45 +355,114 @@ const Formulario = () => {
           Regresar
         </button>
       </Link>
+      <div className="flex justify-center">
+        <form
+          className="bg-white py-10 px-5 mb-10 lg:mb-0 shadow-md rounded-md grid grid-cols-1 lg:grid-cols-3 gap-5 lg:items-center lg:justify-center"
+          onSubmit={handleSubmit}
+        >
+          <div>
+            <div className="mb-5">
+              <label
+                htmlFor="nombre"
+                className=" uppercase text-gray-700 font-bold"
+              >
+                Nombre del Paciente:
+              </label>
+              <input
+                id="nombre"
+                type="text"
+                placeholder="Nombre del Paciente"
+                className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                value={nombre}
+                onChange={(e) => setNombre(e.target.value)}
+              />
+            </div>
+            <div className="mb-5">
+              <label
+                htmlFor="nombre"
+                className=" uppercase text-gray-700 font-bold"
+              >
+                Telefono del Paciente:
+              </label>
+              <input
+                id="telefono"
+                type="text"
+                placeholder="Telefono del Paciente"
+                className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                value={telefono}
+                onChange={handleTelefonoChange}
+              />
+            </div>
 
-      <form
-        className="bg-white py-10 px-5 mb-10 lg:mb-0 shadow-md rounded-md grid grid-cols-1 lg:grid-cols-3 gap-5"
-        onSubmit={handleSubmit}
-      >
-        <div>
-          <div className="mb-5">
-            <label
-              htmlFor="nombre"
-              className=" uppercase text-gray-700 font-bold"
-            >
-              Nombre del Paciente:
-            </label>
-            <input
-              id="nombre"
-              type="text"
-              placeholder="Nombre del Paciente"
-              className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-              value={nombre}
-              onChange={(e) => setNombre(e.target.value)}
-            />
-          </div>
-          <div className="mb-5">
-            <label
-              htmlFor="nombre"
-              className=" uppercase text-gray-700 font-bold"
-            >
-              Telefono del Paciente:
-            </label>
-            <input
-              id="telefono"
-              type="text"
-              placeholder="Telefono del Paciente"
-              className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-              value={telefono}
-              onChange={handleTelefonoChange}
-            />
+            <div className="mb-5">
+              <label
+                htmlFor="direccionDeEntrega"
+                className=" uppercase text-gray-700 font-bold"
+              >
+                Direccion De Entrega del Paciente:
+              </label>
+              <input
+                id="direccionDeEntrega"
+                type="text"
+                placeholder="Direccion De Entrega"
+                className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                value={direccionDeEntrega}
+                onChange={(e) => setDireccionDeEntrega(e.target.value)}
+              />
+            </div>
+
+            <div className="mb-5">
+              <label
+                htmlFor="ejercicio"
+                className=" uppercase text-gray-700 font-bold"
+              >
+                Ejercicio:
+              </label>
+              <input
+                id="ejercicio"
+                type="text"
+                placeholder="Ejercicio"
+                className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                value={ejercicio}
+                onChange={(e) => setEjercicio(e.target.value)}
+              />
+            </div>
+
+            <div className="mb-5">
+              <label
+                htmlFor="padecimiento"
+                className=" uppercase text-gray-700 font-bold"
+              >
+                Padecimiento:
+              </label>
+              <textarea
+                id="padecimiento"
+                type="text"
+                placeholder="Padecimiento del Paciente"
+                className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                value={padecimiento}
+                onChange={(e) => setPadecimiento(e.target.value)}
+              />
+            </div>
+
+            <div className="mb-5">
+              <label
+                htmlFor="alergias"
+                className=" uppercase text-gray-700 font-bold"
+              >
+                Alergias:
+              </label>
+              <textarea
+                id="alergias"
+                placeholder="Alergias del Paciente"
+                className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                value={alergias}
+                onChange={(e) => setAlergias(e.target.value)}
+              />
+            </div>
           </div>
 
+<<<<<<< HEAD
           <div className="mb-5">
             <label
               htmlFor="direccionDeEntrega"
@@ -433,14 +540,27 @@ const Formulario = () => {
               Fecha de Alta:
             </label>
             <input
+=======
+          <div>
+            <div className="mb-5">
+              <label
+                htmlFor="fecha"
+                className=" uppercase text-gray-700 font-bold"
+              >
+                Fecha de Alta:
+              </label>
+              <input
+>>>>>>> bd22035f141e8e22eff067debeee05d5275f2ab8
               id="fecha"
               type="date"
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-              value={fecha}
-              onChange={(e) => setFecha(e.target.value)}
+              value={fechaActual} // Establecer el valor predeterminado
+              //readOnly
+              disabled
             />
-          </div>
+            </div>
 
+<<<<<<< HEAD
           <div className="mb-5">
             <label
               htmlFor="fechaproxcita"
@@ -557,36 +677,114 @@ const Formulario = () => {
               <span className="absolute inset-y-0 left-0 flex items-center pl-3">
                 <span className="text-gray-500 font-medium">$</span>
               </span>
+=======
+            <div className="mb-5">
+              <label
+                htmlFor="fechaproxcita"
+                className=" uppercase text-gray-700 font-bold"
+              >
+                Próxima Cita:
+              </label>
+>>>>>>> bd22035f141e8e22eff067debeee05d5275f2ab8
               <input
-                id="pago"
-                type="text"
-                placeholder="Monto"
-                className="pl-8 border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-                value={pago}
-                onChange={handlePagoChange} // Cambiado a handlePagoChange
+                id="fechaproxcita"
+                type="date"
+                className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                value={fechaproxcita}
+                onChange={(e) => setFechaProxCita(e.target.value)}
               />
+            </div>
+
+            <div className="mb-5">
+              <label
+                htmlFor="fechavencimeiento"
+                className=" uppercase text-gray-700 font-bold"
+              >
+                Vencimiento de Paquete
+              </label>
+              <input
+                id="fechavencimeiento"
+                type="date"
+                className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                value={fechavencimiento}
+                onChange={(e) => setFechaVencimiento(e.target.value)}
+              />
+            </div>
+
+            <div className="mb-5">
+              <label
+                htmlFor="diasadeber"
+                className=" uppercase text-gray-700 font-bold"
+              >
+                Dias a deber:
+              </label>
+              <input
+                id="diasadeber"
+                type="text"
+                placeholder="Dias que le debo al Paciente"
+                className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                value={diasadeber}
+                onChange={(e) => setDiasADeber(e.target.value)}
+              />
+            </div>
+
+            <div className="mb-5">
+              <label
+                htmlFor="noconsume"
+                className=" uppercase text-gray-700 font-bold"
+              >
+                Alimentos que no consume:
+              </label>
+              <textarea
+                id="noconsume"
+                placeholder="Alimentos que no consume el Paciente"
+                className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                value={noconsume}
+                onChange={(e) => setNoConsume(e.target.value)}
+              />
+            </div>
+
+            <div className="mb-5">
+              <label
+                htmlFor="especial"
+                className="uppercase text-gray-700 font-bold"
+              >
+                Especial:
+              </label>
+              <select
+                id="especial"
+                className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                value={especial}
+                onChange={handleEspecialChange} // Cambiado a handleEspecialChange
+              >
+                <option value="No">No</option>
+                <option value="Si">Si</option>
+              </select>
             </div>
           </div>
 
-          <div className="mb-5">
-            <label
-              htmlFor="formadepago"
-              className="uppercase text-gray-700 font-bold"
-            >
-              Forma de pago:
-            </label>
-            <select
-              id="formadepago"
-              className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-              value={formadepago}
-              onChange={(e) => setFormadepago(e.target.value)}
-            >
-              <option value="">Selecciona la forma de pago</option>
-              <option value="Tarjeta">Tarjeta</option>
-              <option value="Effectivo">Effectivo</option>
-            </select>
-          </div>
+          <div>
+            <div className="mb-5">
+              <label
+                htmlFor="tipopaquete"
+                className="uppercase text-gray-700 font-bold"
+              >
+                Tipo de Paquete:
+              </label>
+              <select
+                id="tipopaquete"
+                className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                value={tipopaquete}
+                onChange={handleTipoPaqueteChange}
+              >
+                <option value="">Selecciona el Paquete</option>
+                <option value="Semanal">Semanal</option>
+                <option value="Quincenal">Quincenal</option>
+                <option value="Mensual">Mensual</option>
+              </select>
+            </div>
 
+<<<<<<< HEAD
           <div className="mb-5">
             <label
               htmlFor="anticipo"
@@ -659,6 +857,123 @@ const Formulario = () => {
           value={id ? "Guardar Cambios" : "Agregar Paciente"}
         />
       </form>
+=======
+            <div className="mb-5">
+              <label
+                htmlFor="pago"
+                className=" uppercase text-gray-700 font-bold"
+              >
+                Costo del paquete:
+              </label>
+              <div className="relative">
+                <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+                  <span className="text-gray-500 font-medium">$</span>
+                </span>
+                <input
+                  id="pago"
+                  type="text"
+                  placeholder="Monto"
+                  className="pl-8 border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                  value={pago}
+                  onChange={handlePagoChange} // Cambiado a handlePagoChange
+                />
+              </div>
+            </div>
+
+            <div className="mb-5">
+              <label
+                htmlFor="formadepago"
+                className="uppercase text-gray-700 font-bold"
+              >
+                Forma de pago:
+              </label>
+              <select
+                id="formadepago"
+                className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                value={formadepago}
+                onChange={(e) => setFormadepago(e.target.value)}
+              >
+                <option value="">Selecciona la forma de pago</option>
+                <option value="Tarjeta">Tarjeta</option>
+                <option value="Effectivo">Efectivo</option>
+              </select>
+            </div>
+
+            <div className="mb-5">
+              <label
+                htmlFor="anticipo"
+                className=" uppercase text-gray-700 font-bold"
+              >
+                Anticipo:
+              </label>
+              <div className="relative">
+                <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+                  <span className="text-gray-500 font-medium">$</span>
+                </span>
+                <input
+                  id="anticipo"
+                  type="text"
+                  placeholder="Anticipo"
+                  className="pl-8 border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                  value={anticipo}
+                  onChange={handleAnticipoChange}
+                />
+              </div>
+            </div>
+
+            <div className="mb-5">
+              <label
+                htmlFor="adeudoneto"
+                className=" uppercase text-gray-700 font-bold"
+              >
+                Adeudo Neto:
+              </label>
+              <div className="relative">
+                <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+                  <span className="text-gray-500 font-medium">$</span>
+                </span>
+                <input
+                  id="adeudoneto"
+                  type="text"
+                  placeholder="Adeudo"
+                  className="pl-8 border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                  value={adeudoneto}
+                  onChange={handleAdeudoChange}
+                />
+              </div>
+            </div>
+            <div className="mb-5">
+              <label
+                htmlFor="mesa"
+                className="uppercase text-gray-700 font-bold"
+              >
+                Mesa
+              </label>
+              <select
+                id="mesa"
+                className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                value={mesa}
+                onChange={(e) => setMesa(e.target.value)}
+              >
+                <option value="">Selecciona Mesa</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+              </select>
+            </div>
+          </div>
+          <div>{/* Espacio para que quede centrado el botón */}</div>
+          <input
+            type="submit"
+            className="bg-green-600 w-full items-center mt-5 p-3 text-white uppercase font-bold hover:bg-green-700 cursor-pointer transition-colors rounded-md mx-auto block"
+            value={id ? "Guardar Cambios" : "Agregar Paciente"}
+          />
+        </form>
+      </div>
+>>>>>>> bd22035f141e8e22eff067debeee05d5275f2ab8
     </>
   );
 };

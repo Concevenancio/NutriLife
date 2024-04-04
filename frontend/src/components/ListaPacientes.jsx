@@ -32,11 +32,12 @@ const Paciente = ({ paciente }) => {
         <td className="border px-2 py-1">{nombre}</td>
         <td className="border px-2 py-1 hidden xl:table-cell">{telefono}</td>
         <td className="border px-2 py-1 hidden xl:table-cell">{tipopaquete}</td>
-        <td className="border px-2 py-1 hidden xl:table-cell">{mesa}</td>
-        <td className="border px-2 py-1 text-center hidden xl:table-cell">
+        <td className="border px-2 py-1 text-center hidden xl:table-cell">{mesa}</td>
+       
+        <td className="border px-2 py-1 text-center hidden xl:table-cell">{diasadeber}</td>
+        <td className="border px-2 py-1 text-center ">
           {formatearFecha(fechaproxcita)}
         </td>
-        <td className="border px-2 py-1 hidden xl:table-cell">{diasadeber}</td>
         <td className="border px-2 py-1 text-center">
           <button
             type="button"

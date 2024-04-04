@@ -104,21 +104,22 @@ const ListadoPacientes = () => {
           </button>
         )}
       </div>
-      <div className="flex-grow flex justify-center"> {/* Nuevo contenedor centrado */}
+      <div className="flex-grow flex justify-center"> 
         <DatePicker
           selected={fechaSeleccionada}
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500 "
-          placeholder="Select date"
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  p-2.5 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500 "
           onChange={handleFechaSeleccionada}
           dateFormat="dd/MM/yyyy"
-          placeholderText="Próxima Cita"
+          placeholderText="Buscar por Fecha de Cita"
           showMonthDropdown
           showYearDropdown
           dropdownMode="select"
           isClearable
         />
+       
       </div>
-      <div className="ml-4 md:ml-8"> {/* Separación entre Próxima Cita y Crear Paciente */}
+      
+      <div className="ml-4 md:ml-8">
         <Link to="/admin/Formulario">
           <button
             type="button"
@@ -144,11 +145,11 @@ const ListadoPacientes = () => {
               <th className="px-4 py-2 text-center hidden xl:table-cell">
                 Mesa
               </th>
-              <th className="px-4 py-2 text-center">
-                Próxima Cita
-              </th>
               <th className="px-4 py-2 text-center hidden xl:table-cell">
-                Dias a Deber
+              Dias a Deber
+              </th>
+              <th className="px-4 py-2 text-center ">
+                Próxima Cita
               </th>
               <th className="px-4 py-2 text-center">Editar</th>
               <th className="px-4 py-2 text-center">Eliminar</th>
