@@ -7,7 +7,7 @@ const PacientesContext = createContext();
 export const PacientesProvider = ({ children }) => {
   const [pacientes, setPacientes] = useState([]);
   const [paciente, setPaciente] = useState({});
-  const {auth} = useAuth()
+  const { auth } = useAuth()
 
   useEffect(() => {
     const obtenerPacientes = async () => {
@@ -52,6 +52,12 @@ export const PacientesProvider = ({ children }) => {
           pacienteState._id === data._id ? data : pacienteState
         );
         setPacientes(pacienteActualizado);
+
+        await clienteAxios.post("/historial-pagos/almacenar", {
+          id: data._id,
+          monto: paciente.pago, // Debes asegurarte de que el pago esté presente en paciente
+          fecha: new Date().toISOString(), // Fecha actual
+        });
       } catch (error) {
         console.log(error);
       }
@@ -65,6 +71,12 @@ export const PacientesProvider = ({ children }) => {
 
         const { createdAt, updatedAt, __v, ...pacienteAlmacenado } = data;
         setPacientes([pacienteAlmacenado, ...pacientes]);
+
+        await clienteAxios.post("/historial-pagos/almacenar", {
+          id: data._id,
+          monto: paciente.pago, // Debes asegurarte de que el pago esté presente en paciente
+          fecha: new Date().toISOString(), // Fecha actual
+        });
       } catch (error) {
         console.log(error.response.data.msg);
       }
@@ -89,7 +101,7 @@ export const PacientesProvider = ({ children }) => {
         };
 
         const { data } = await clienteAxios.delete(`/pacientes/${id}`, config);
-        
+
         const pacientesActualizado = pacientes.filter(
           (pacientesState) => pacientesState._id !== id
         );

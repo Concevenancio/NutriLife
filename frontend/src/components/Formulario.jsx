@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 
 const Formulario = () => {
   const { state } = useLocation();
-  //console.log("state:", state);
+  const [userState] = useState(state?.paciente || "");
   const [nombre, setNombre] = useState("");
   const [telefono, setTelefono] = useState("");
   const [direccionDeEntrega, setDireccionDeEntrega] = useState("");
@@ -20,11 +20,12 @@ const Formulario = () => {
   const [mesa, setMesa] = useState("");
 
   const fechaActual = new Date().toISOString().split("T")[0];
-  const [fecha, setFecha] = useState(fechaActual);
+  const fechaInicial = userState?.fecha ? userState.fecha.split("T")[0] : fechaActual;
 
+  const [fecha, setFecha] = useState(fechaInicial);
   const [fechavencimiento, setFechaVencimiento] = useState("");
   const [fechaproxcita, setFechaProxCita] = useState("");
-  
+
   const [noconsume, setNoConsume] = useState("");
   const [formadepago, setFormadepago] = useState("");
   const [anticipo, setAnticipo] = useState("");
@@ -32,16 +33,15 @@ const Formulario = () => {
   const [diasadeber, setDiasADeber] = useState("0");
   const [pago, setPago] = useState("");
   const [id, setId] = useState(null);
-  const [userState] = useState(state?.paciente || "");
+
   const [resetAdeudo, setResetAdeudo] = useState(0);
   const [alerta, setAlerta] = useState({});
 
   const { guardarPaciente, paciente } = usePacientes();
 
   useEffect(() => {
-    //console.log("userState:", userState);
     if (userState) {
-      console.log("entre", userState);
+      //console.log("entre", userState);
       setNombre(userState.nombre);
       setTelefono(userState.telefono);
       setDireccionDeEntrega(userState.direccionDeEntrega);
@@ -62,18 +62,20 @@ const Formulario = () => {
 
       const fechaFormateada = userState.fecha.split("T")[0];
       setFecha(fechaFormateada);
+
       const fechaFormateadaProx = userState.fechaproxcita.split("T")[0];
       setFechaProxCita(fechaFormateadaProx);
+
       const fechaFormateadaVencimiento =
         userState.fechavencimiento.split("T")[0];
       setFechaVencimiento(fechaFormateadaVencimiento);
 
       setAdeudoNeto(userState.adeudoneto);
       setResetAdeudo(userState.adeudoneto);
-      setAnticipo(0);     
+      setAnticipo(0);
     }
   }, [userState]);
- 
+
   useEffect(() => {
     if (paciente?.nombre) {
       setNombre(paciente.nombre);
@@ -168,29 +170,6 @@ const Formulario = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log("ID antes de enviar el formulario:", id);
-    console.log({
-      nombre,
-      telefono,
-      direccionDeEntrega,
-      fechavencimiento,
-      ejercicio,
-      padecimiento,
-      alergias,
-      fecha,
-      fechaproxcita,
-      tipopaquete,
-      formadepago,
-      adeudoneto,
-      anticipo,
-      pago,
-      especial,
-      mesa,
-      diasadeber,
-      noconsume,
-      id,
-    });
-
     //Validar Formulario
     if (
       [
@@ -234,7 +213,7 @@ const Formulario = () => {
         { nombre: "Días a deber", valor: diasadeber },
         { nombre: "Alimentos que no consume", valor: noconsume },
       ].filter((campo) => campo.valor === "").map((campo) => campo.nombre);
-    
+
       setAlerta({
         msg: `Los siguientes campos son obligatorios: ${camposFaltantes.join(", ")}`,
         error: true,
@@ -263,6 +242,7 @@ const Formulario = () => {
       noconsume,
       id,
     });
+    
 
     // try {
     //   await clienteAxios.post("/historial-pagos/almacenar", {
@@ -276,8 +256,6 @@ const Formulario = () => {
     setAlerta({
       msg: "Guardado Correctamente",
     });
-
-    setId("")
   };
 
   const { msg } = alerta;
@@ -417,13 +395,13 @@ const Formulario = () => {
                 Fecha de Alta:
               </label>
               <input
-              id="fecha"
-              type="date"
-              className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-              value={fechaActual} // Establecer el valor predeterminado
-              //readOnly
-              disabled
-            />
+                id="fecha"
+                type="date"
+                className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                value={fechaInicial} // Establecer el valor predeterminado
+                readOnly
+                disabled
+              />
             </div>
 
             <div className="mb-5">
