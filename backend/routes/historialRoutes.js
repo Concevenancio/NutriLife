@@ -10,6 +10,6 @@ const router = express.Router();
 router.post('/almacenar', guardarPago);
 
 // Ruta para obtener el historial de pagos de un cliente
-router.get('/Pagos', obtenerHistorialPagosCliente);
+router.get('/pagos', obtenerHistorialPagosCliente);
 
 export default router;

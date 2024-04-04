@@ -13,10 +13,7 @@ const historialPagoSchema = mongoose.Schema({
     type: Number,
     required: true  
   },
-  pago: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Paciente.pago'
-  }
+
   // Otros campos que necesites
 }); 
 

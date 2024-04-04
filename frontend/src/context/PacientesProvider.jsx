@@ -53,11 +53,8 @@ export const PacientesProvider = ({ children }) => {
         );
         setPacientes(pacienteActualizado);
 
-        await clienteAxios.post("/historial-pagos/almacenar", {
-          id: data._id,
-          monto: paciente.pago, // Debes asegurarte de que el pago esté presente en paciente
-          fecha: new Date().toISOString(), // Fecha actual
-        });
+        await guardarPago(data._id, paciente.anticipo);
+
       } catch (error) {
         console.log(error);
       }
@@ -71,12 +68,8 @@ export const PacientesProvider = ({ children }) => {
 
         const { createdAt, updatedAt, __v, ...pacienteAlmacenado } = data;
         setPacientes([pacienteAlmacenado, ...pacientes]);
+        await guardarPago(pacienteAlmacenado._id, pacienteAlmacenado.monto);
 
-        await clienteAxios.post("/historial-pagos/almacenar", {
-          id: data._id,
-          monto: paciente.pago, // Debes asegurarte de que el pago esté presente en paciente
-          fecha: new Date().toISOString(), // Fecha actual
-        });
       } catch (error) {
         console.log(error.response.data.msg);
       }
@@ -110,6 +103,26 @@ export const PacientesProvider = ({ children }) => {
       } catch (error) {
         console.log(error);
       }
+    }
+  };
+
+  const guardarPago = async (clienteId, monto) => {
+    try {
+      const token = localStorage.getItem("token");
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      await clienteAxios.post(
+        "/historial-pagos/almacenar",
+        { clienteId, monto },
+        config
+      );
+    } catch (error) {
+      console.log(error);
     }
   };
 

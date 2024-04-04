@@ -41,7 +41,7 @@ const Formulario = () => {
 
   useEffect(() => {
     if (userState) {
-      //console.log("entre", userState);
+      console.log("entre", userState);
       setNombre(userState.nombre);
       setTelefono(userState.telefono);
       setDireccionDeEntrega(userState.direccionDeEntrega);

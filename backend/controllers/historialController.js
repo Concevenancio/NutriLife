@@ -1,17 +1,19 @@
 import HistorialPagos from "../models/HistorialPagos.js";
+import Paciente from "../models/Paciente.js";
 
 const guardarPago = async (req, res) => {
     try {
         const { clienteId, monto } = req.body;
-        console.log("clienteId:", clienteId); // Add this log statement
+        console.log("clienteId:", clienteId);
+        console.log("Monto:", monto); // Add this log statement
         const pago = new HistorialPagos({
             cliente: clienteId,
-            monto
+            monto: monto
             // Otros campos si es necesario
         });
         await pago.save();
         res.status(201).json({ mensaje: 'Pago guardado correctamente' });
-    } catch (error) {   
+    } catch (error) {
         console.error(error);
         res.status(500).json({ mensaje: 'Error al guardar el pago' });
     }
@@ -19,12 +21,10 @@ const guardarPago = async (req, res) => {
 
 const obtenerHistorialPagosCliente = async (req, res) => {
     try {
-        const { clienteId } = req.params;
-        const historialPagos = await HistorialPagos.find({ cliente: clienteId }).populate('cliente');
-        res.json(historialPagos);
+        const historialPago = await HistorialPagos.find();
+        res.json(historialPago);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ mensaje: 'Error al obtener el historial de pagos del cliente' });
+        res.status(500).json({ error: error.message });
     }
 };
 
