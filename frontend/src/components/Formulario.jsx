@@ -27,6 +27,7 @@ const Formulario = () => {
   const [fechaproxcita, setFechaProxCita] = useState("");
   const [pago, setPago] = useState("");
   const [id, setId] = useState(null);
+  const [resetAdeudo, setResetAdeudo] = useState(0);
   const [userState] = useState(state?.paciente || "");
 
   const [alerta, setAlerta] = useState({});
@@ -35,7 +36,6 @@ const Formulario = () => {
 
   useEffect(() => {
     if (userState) {
-      //console.log("entre", userState);
       setNombre(userState.nombre);
       setTelefono(userState.telefono);
       setDireccionDeEntrega(userState.direccionDeEntrega);
@@ -63,6 +63,10 @@ const Formulario = () => {
       const fechaFormateadaVencimiento =
         userState.fechavencimiento.split("T")[0];
       setFechaVencimiento(fechaFormateadaVencimiento);
+
+      setAdeudoNeto(userState.adeudoneto);
+      setResetAdeudo(userState.adeudoneto);
+      setAnticipo(0);
     }
   }, [userState]);
 
@@ -90,6 +94,22 @@ const Formulario = () => {
       setId(paciente._id);
     }
   }, [paciente]);
+  //NUMEROS
+  const handleKeyPress = (event) => {
+    const charCode = event.which ? event.which : event.keyCode;
+    if (charCode < 48 || charCode > 57) {
+      event.preventDefault();
+    }
+  };
+  //LETRAS
+  const handleKeyPress2 = (event) => {
+    const inputValue = event.key;
+    const regex = /^[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ\s]*$/; // Expresión regular para permitir letras con acentos, la letra "ñ" y espacios
+
+    if (!regex.test(inputValue)) {
+      event.preventDefault();
+    }
+  };
 
   const handleTelefonoChange = (e) => {
     const inputTelefono = e.target.value;
@@ -115,18 +135,16 @@ const Formulario = () => {
   };
 
   const handlePagoChange = (e) => {
-    const inputValue = e.target.value;
-    const numericValue = inputValue.replace(/\D/g, "");
-    setPago(numericValue);
+    /* const inputValue = e.target.value;
+    setPago(inputValue);
     // Calcular el adeudoneto al cambiar el pago
-    const adeudo = parseInt(pago) - parseInt(anticipo);
-    setAdeudoNeto(adeudo.toNumber());
+    const adeudo = parseFloat(pago) - parseFloat(anticipo); */
+    setAdeudoNeto(/* adeudo */);
   };
 
   const handleAdeudoChange = (e) => {
-    const inputValue = e.target.value;
-    const numericValue = inputValue.replace(/\D/g, ""); // Remueve todos los caracteres que no son números
-    setAdeudoNeto(numericValue); // Actualiza el estado solo con los números
+    const inputValue = parseFloat(e.target.value);
+    setAdeudoNeto(inputValue); // Actualiza el estado solo con los números
   };
 
   /*    const handleAnticipoChange = (e) => {
@@ -151,16 +169,9 @@ const Formulario = () => {
     setAdeudoNeto(adeudo);
   }; */
   const handleAnticipoChange = (e) => {
-    let inputValue = e.target.value;
-    if (inputValue.length === 2 && inputValue[0] === "0") {
-      inputValue = inputValue[1];
-    }
-    const numericValue = inputValue.replace(/\D/g, "");
-    setAnticipo(numericValue);
-    if (numericValue === "") {
-      setAnticipo(0);
-    }
-    const adeudo = parseInt(pago || 0) - parseInt(numericValue || 0);
+    let inputValue = parseFloat(e.target.value ? e.target.value : 0);
+    setAnticipo(parseFloat(inputValue));
+    const adeudo = parseFloat(resetAdeudo) - parseFloat(inputValue);
     setAdeudoNeto(adeudo);
   };
 
@@ -171,14 +182,17 @@ const Formulario = () => {
       case "Semanal":
         setPago("1099");
         setAdeudoNeto("1099");
+        setResetAdeudo("1099");
         break;
       case "Quincenal":
         setPago("2099");
         setAdeudoNeto("2099");
+        setResetAdeudo("2099");
         break;
       case "Mensual":
         setPago("3999");
         setAdeudoNeto("3999");
+        setResetAdeudo("3999");
         break;
       default:
         setPago(""); // Si no se selecciona un tipo de paquete, se borra el valor del pago
@@ -411,7 +425,6 @@ const Formulario = () => {
         </div>
 
         <div>
-       
           <div className="mb-5">
             <label
               htmlFor="fecha"
@@ -493,7 +506,6 @@ const Formulario = () => {
             />
           </div>
 
-
           <div className="mb-5">
             <label
               htmlFor="especial"
@@ -511,8 +523,6 @@ const Formulario = () => {
               <option value="Si">Si</option>
             </select>
           </div>
-
-        
         </div>
 
         <div>
@@ -593,6 +603,7 @@ const Formulario = () => {
                 type="text"
                 placeholder="Anticipo"
                 className="pl-8 border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                onKeyPress={handleKeyPress}
                 value={anticipo}
                 onChange={handleAnticipoChange}
               />
@@ -615,6 +626,7 @@ const Formulario = () => {
                 type="text"
                 placeholder="Adeudo"
                 className="pl-8 border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                onKeyPress={handleKeyPress}
                 value={adeudoneto}
                 onChange={handleAdeudoChange}
               />
@@ -640,15 +652,13 @@ const Formulario = () => {
             </select>
           </div>
         </div>
-        
 
-     
-      </form>
-      <input
+        <input
           type="submit"
           className="bg-green-600 w-1/2 items-center mt-10 p-3 text-white uppercase font-bold hover:bg-green-700 cursor-pointer transition-colors rounded-md mx-auto block"
           value={id ? "Guardar Cambios" : "Agregar Paciente"}
         />
+      </form>
     </>
   );
 };

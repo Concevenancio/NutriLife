@@ -18,6 +18,7 @@
     };
 
     const obtenerHistorialPagosCliente = async (req, res) => {
+        console.log("hist",req.body)
     try {
         const { clienteId } = req.params;
         const historialPagos = await HistorialPagos.find({ cliente: clienteId }).populate('cliente');
@@ -27,6 +28,7 @@
         res.status(500).json({ mensaje: 'Error al obtener el historial de pagos del cliente' });
     }
     };
+
 
     export {
     guardarPago,

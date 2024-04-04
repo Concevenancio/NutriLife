@@ -4,7 +4,8 @@ import {
     obtenerPacientes,
     obtenerPaciente,
     actualizarPaciente,
-    eliminarPaciente
+    eliminarPaciente,
+    prueba,
 } from '../controllers/pacienteController.js'
 import checkAuth from '../middleware/authMiddleware.js'
 
@@ -14,6 +15,7 @@ router
 .route('/')
 .post(checkAuth, agregarPaciente)
 .get(checkAuth, obtenerPacientes)
+.get(checkAuth, prueba)
 
 router
     .route('/:id')
