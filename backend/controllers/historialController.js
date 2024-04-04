@@ -13,6 +13,7 @@
     } catch (error) {   
         console.error(error);
         res.status(500).json({ mensaje: 'Error al guardar el pago' });
+        
     }
     };
 
