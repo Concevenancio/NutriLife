@@ -132,12 +132,28 @@ const Formulario = () => {
     setAdeudoNeto(inputValue); // Actualiza el estado solo con los números
   };
 
-  const handleAnticipoChange = (e) => {
-    let inputValue = parseFloat(e.target.value ? e.target.value : 0);
-    setAnticipo(parseFloat(inputValue));
-    const adeudo = parseFloat(resetAdeudo) - parseFloat(inputValue);
-    setAdeudoNeto(adeudo);
-  };
+const handleAnticipoChange = (e) => {
+  let inputValue = parseFloat(e.target.value ? e.target.value : 0);
+  setAnticipo(inputValue);
+  const adeudo = parseFloat(resetAdeudo) - parseFloat(inputValue);
+  //Calcular el adeudo neto basado en el tipo de paquete y el anticipo
+  // let adeudo1;
+  // switch (tipopaquete) {
+  //   case "Semanal":
+  //     adeudo = 1099 - inputValue;
+  //     break;
+  //   case "Quincenal":
+  //     adeudo = 2099 - inputValue;
+  //     break;
+  //   case "Mensual":
+  //     adeudo = 3999 - inputValue;
+  //     break;
+  //   default:
+  //     adeudo = 0;
+  //     break;
+  // }
+  setAdeudoNeto(adeudo);
+};
 
   const handleTipoPaqueteChange = (e) => {
     const newValue = e.target.value;
@@ -359,7 +375,7 @@ const Formulario = () => {
               >
                 Padecimiento:
               </label>
-              <textarea
+              <input
                 id="padecimiento"
                 type="text"
                 placeholder="Padecimiento del Paciente"
@@ -376,7 +392,7 @@ const Formulario = () => {
               >
                 Alergias:
               </label>
-              <textarea
+              <input
                 id="alergias"
                 placeholder="Alergias del Paciente"
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
@@ -460,7 +476,7 @@ const Formulario = () => {
               >
                 Alimentos que no consume:
               </label>
-              <textarea
+              <input
                 id="noconsume"
                 placeholder="Alimentos que no consume el Paciente"
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
