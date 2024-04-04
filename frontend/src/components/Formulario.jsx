@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 
 const Formulario = () => {
   const { state } = useLocation();
+  //console.log("state:", state);
   const [nombre, setNombre] = useState("");
   const [telefono, setTelefono] = useState("");
   const [direccionDeEntrega, setDireccionDeEntrega] = useState("");
@@ -17,14 +18,18 @@ const Formulario = () => {
   const [tipopaquete, setTipopaquete] = useState("");
   const [especial, setEspecial] = useState("");
   const [mesa, setMesa] = useState("");
-  const [fecha, setFecha] = useState("");
+
+  const fechaActual = new Date().toISOString().split("T")[0];
+  const [fecha, setFecha] = useState(fechaActual);
+
   const [fechavencimiento, setFechaVencimiento] = useState("");
+  const [fechaproxcita, setFechaProxCita] = useState("");
+  
   const [noconsume, setNoConsume] = useState("");
   const [formadepago, setFormadepago] = useState("");
   const [anticipo, setAnticipo] = useState("");
   const [adeudoneto, setAdeudoNeto] = useState("");
   const [diasadeber, setDiasADeber] = useState("0");
-  const [fechaproxcita, setFechaProxCita] = useState("");
   const [pago, setPago] = useState("");
   const [id, setId] = useState(null);
   const [userState] = useState(state?.paciente || "");
@@ -34,8 +39,9 @@ const Formulario = () => {
   const { guardarPaciente, paciente } = usePacientes();
 
   useEffect(() => {
+    //console.log("userState:", userState);
     if (userState) {
-      //console.log("entre", userState);
+      console.log("entre", userState);
       setNombre(userState.nombre);
       setTelefono(userState.telefono);
       setDireccionDeEntrega(userState.direccionDeEntrega);
@@ -63,9 +69,11 @@ const Formulario = () => {
       const fechaFormateadaVencimiento =
         userState.fechavencimiento.split("T")[0];
       setFechaVencimiento(fechaFormateadaVencimiento);
+
+      
     }
   }, [userState]);
-
+ 
   useEffect(() => {
     if (paciente?.nombre) {
       setNombre(paciente.nombre);
@@ -85,8 +93,7 @@ const Formulario = () => {
       setNoConsume(paciente.noconsume);
       setDiasADeber(paciente.diasadeber);
       setFecha(paciente.fecha);
-      setProxCita(paciente.fechaproxcita);
-
+      setFechaProxCita(paciente.fechaproxcita);
       setId(paciente._id);
     }
   }, [paciente]);
@@ -195,32 +202,75 @@ const Formulario = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // console.log("ID antes de enviar el formulario:", id);
+    console.log({
+      nombre,
+      telefono,
+      direccionDeEntrega,
+      fechavencimiento,
+      ejercicio,
+      padecimiento,
+      alergias,
+      fecha,
+      fechaproxcita,
+      tipopaquete,
+      formadepago,
+      adeudoneto,
+      anticipo,
+      pago,
+      especial,
+      mesa,
+      diasadeber,
+      noconsume,
+      id,
+    });
 
     //Validar Formulario
     if (
       [
-        nombre,
-        telefono,
-        direccionDeEntrega,
-        fechavencimiento,
-        ejercicio,
-        padecimiento,
-        alergias,
-        fecha,
-        fechaproxcita,
-        tipopaquete,
-        formadepago,
-        adeudoneto,
-        anticipo,
-        pago,
-        especial,
-        mesa,
-        diasadeber,
-        noconsume,
-      ].includes("")
+        { nombre: "Nombre del Paciente", valor: nombre },
+        { nombre: "Teléfono del Paciente", valor: telefono },
+        { nombre: "Dirección de Entrega del Paciente", valor: direccionDeEntrega },
+        { nombre: "Fecha de Vencimiento", valor: fechavencimiento },
+        { nombre: "Ejercicio", valor: ejercicio },
+        { nombre: "Padecimiento", valor: padecimiento },
+        { nombre: "Alergias", valor: alergias },
+        { nombre: "Fecha de Alta", valor: fecha },
+        { nombre: "Próxima Cita", valor: fechaproxcita },
+        { nombre: "Tipo de Paquete", valor: tipopaquete },
+        { nombre: "Forma de Pago", valor: formadepago },
+        { nombre: "Adeudo Neto", valor: adeudoneto },
+        { nombre: "Anticipo", valor: anticipo },
+        { nombre: "Pago", valor: pago },
+        { nombre: "Especial", valor: especial },
+        { nombre: "Mesa", valor: mesa },
+        { nombre: "Días a deber", valor: diasadeber },
+        { nombre: "Alimentos que no consume", valor: noconsume },
+      ].some((campo) => campo.valor === "")
     ) {
+      const camposFaltantes = [
+        { nombre: "Nombre del Paciente", valor: nombre },
+        { nombre: "Teléfono del Paciente", valor: telefono },
+        { nombre: "Dirección de Entrega del Paciente", valor: direccionDeEntrega },
+        { nombre: "Fecha de Vencimiento", valor: fechavencimiento },
+        { nombre: "Ejercicio", valor: ejercicio },
+        { nombre: "Padecimiento", valor: padecimiento },
+        { nombre: "Alergias", valor: alergias },
+        { nombre: "Fecha de Alta", valor: fecha },
+        { nombre: "Próxima Cita", valor: fechaproxcita },
+        { nombre: "Tipo de Paquete", valor: tipopaquete },
+        { nombre: "Forma de Pago", valor: formadepago },
+        { nombre: "Adeudo Neto", valor: adeudoneto },
+        { nombre: "Anticipo", valor: anticipo },
+        { nombre: "Pago", valor: pago },
+        { nombre: "Especial", valor: especial },
+        { nombre: "Mesa", valor: mesa },
+        { nombre: "Días a deber", valor: diasadeber },
+        { nombre: "Alimentos que no consume", valor: noconsume },
+      ].filter((campo) => campo.valor === "").map((campo) => campo.nombre);
+    
       setAlerta({
-        msg: "Todos los campos son obligatorios",
+        msg: `Los siguientes campos son obligatorios: ${camposFaltantes.join(", ")}`,
         error: true,
       });
       return;
@@ -261,25 +311,7 @@ const Formulario = () => {
       msg: "Guardado Correctamente",
     });
 
-    setNombre("");
-    setTelefono("");
-    setEjercicio("");
-    setPadecimiento("");
-    setDireccionDeEntrega("");
-    setAlergias("");
-    setFecha("");
-    setTipopaquete("");
-    setFormadepago("");
-    setPago("");
-    setEspecial("");
-    setFechaVencimiento("");
-    setMesa("");
-    setAnticipo("");
-    setAdeudoNeto("");
-    setNoConsume("");
-    setDiasADeber("");
-    setFechaProxCita("");
-    setId("");
+    setId("")
   };
 
   const { msg } = alerta;
@@ -419,12 +451,13 @@ const Formulario = () => {
                 Fecha de Alta:
               </label>
               <input
-                id="fecha"
-                type="date"
-                className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-                value={fecha}
-                onChange={(e) => setFecha(e.target.value)}
-              />
+              id="fecha"
+              type="date"
+              className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              value={fechaActual} // Establecer el valor predeterminado
+              //readOnly
+              disabled
+            />
             </div>
 
             <div className="mb-5">
@@ -432,7 +465,7 @@ const Formulario = () => {
                 htmlFor="fechaproxcita"
                 className=" uppercase text-gray-700 font-bold"
               >
-                Proxima Cita:
+                Próxima Cita:
               </label>
               <input
                 id="fechaproxcita"
@@ -569,7 +602,7 @@ const Formulario = () => {
               >
                 <option value="">Selecciona la forma de pago</option>
                 <option value="Tarjeta">Tarjeta</option>
-                <option value="Effectivo">Effectivo</option>
+                <option value="Effectivo">Efectivo</option>
               </select>
             </div>
 
@@ -639,9 +672,7 @@ const Formulario = () => {
               </select>
             </div>
           </div>
-          <div>
-            {/* Espacio para que quede centrado el botón */}
-          </div>
+          <div>{/* Espacio para que quede centrado el botón */}</div>
           <input
             type="submit"
             className="bg-green-600 w-full items-center mt-5 p-3 text-white uppercase font-bold hover:bg-green-700 cursor-pointer transition-colors rounded-md mx-auto block"
