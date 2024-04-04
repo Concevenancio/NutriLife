@@ -28,7 +28,7 @@ const Formulario = () => {
 
   const [noconsume, setNoConsume] = useState("");
   const [formadepago, setFormadepago] = useState("");
-  const [anticipo, setAnticipo] = useState("");
+  const [anticipo, setAnticipo] = useState("0");
   const [adeudoneto, setAdeudoNeto] = useState("");
   const [diasadeber, setDiasADeber] = useState("0");
   const [pago, setPago] = useState("");
@@ -136,22 +136,6 @@ const handleAnticipoChange = (e) => {
   let inputValue = parseFloat(e.target.value ? e.target.value : 0);
   setAnticipo(inputValue);
   const adeudo = parseFloat(resetAdeudo) - parseFloat(inputValue);
-  //Calcular el adeudo neto basado en el tipo de paquete y el anticipo
-  // let adeudo1;
-  // switch (tipopaquete) {
-  //   case "Semanal":
-  //     adeudo = 1099 - inputValue;
-  //     break;
-  //   case "Quincenal":
-  //     adeudo = 2099 - inputValue;
-  //     break;
-  //   case "Mensual":
-  //     adeudo = 3999 - inputValue;
-  //     break;
-  //   default:
-  //     adeudo = 0;
-  //     break;
-  // }
   setAdeudoNeto(adeudo);
 };
 
@@ -272,6 +256,8 @@ const handleAnticipoChange = (e) => {
     setAlerta({
       msg: "Guardado Correctamente",
     });
+
+    setAnticipo("0")
   };
 
   const { msg } = alerta;
@@ -498,6 +484,7 @@ const handleAnticipoChange = (e) => {
                 value={especial}
                 onChange={handleEspecialChange} // Cambiado a handleEspecialChange
               >
+                <option value=""></option>
                 <option value="No">No</option>
                 <option value="Si">Si</option>
               </select>
