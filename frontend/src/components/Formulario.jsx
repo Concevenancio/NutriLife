@@ -20,7 +20,9 @@ const Formulario = () => {
   const [mesa, setMesa] = useState("");
 
   const fechaActual = new Date().toISOString().split("T")[0];
-  const fechaInicial = userState?.fecha ? userState.fecha.split("T")[0] : fechaActual;
+  const fechaInicial = userState?.fecha
+    ? userState.fecha.split("T")[0]
+    : fechaActual;
 
   const [fecha, setFecha] = useState(fechaInicial);
   const [fechavencimiento, setFechaVencimiento] = useState("");
@@ -41,7 +43,6 @@ const Formulario = () => {
 
   useEffect(() => {
     if (userState) {
-      console.log("entre", userState);
       setNombre(userState.nombre);
       setTelefono(userState.telefono);
       setDireccionDeEntrega(userState.direccionDeEntrega);
@@ -132,12 +133,12 @@ const Formulario = () => {
     setAdeudoNeto(inputValue); // Actualiza el estado solo con los números
   };
 
-const handleAnticipoChange = (e) => {
-  let inputValue = parseFloat(e.target.value ? e.target.value : 0);
-  setAnticipo(inputValue);
-  const adeudo = parseFloat(resetAdeudo) - parseFloat(inputValue);
-  setAdeudoNeto(adeudo);
-};
+  const handleAnticipoChange = (e) => {
+    let inputValue = parseFloat(e.target.value ? e.target.value : 0);
+    setAnticipo(String(inputValue));
+    const adeudo = parseFloat(resetAdeudo) - parseFloat(inputValue);
+    setAdeudoNeto(String(adeudo));
+  };
 
   const handleTipoPaqueteChange = (e) => {
     const newValue = e.target.value;
@@ -146,14 +147,17 @@ const handleAnticipoChange = (e) => {
       case "Semanal":
         setPago("1099");
         setAdeudoNeto("1099");
+        setResetAdeudo("1099")
         break;
       case "Quincenal":
         setPago("2099");
         setAdeudoNeto("2099");
+        setResetAdeudo("2099")
         break;
       case "Mensual":
         setPago("3999");
         setAdeudoNeto("3999");
+        setResetAdeudo("3999")
         break;
       default:
         setPago(""); // Si no se selecciona un tipo de paquete, se borra el valor del pago
@@ -175,7 +179,10 @@ const handleAnticipoChange = (e) => {
       [
         { nombre: "Nombre del Paciente", valor: nombre },
         { nombre: "Teléfono del Paciente", valor: telefono },
-        { nombre: "Dirección de Entrega del Paciente", valor: direccionDeEntrega },
+        {
+          nombre: "Dirección de Entrega del Paciente",
+          valor: direccionDeEntrega,
+        },
         { nombre: "Fecha de Vencimiento", valor: fechavencimiento },
         { nombre: "Ejercicio", valor: ejercicio },
         { nombre: "Padecimiento", valor: padecimiento },
@@ -196,7 +203,10 @@ const handleAnticipoChange = (e) => {
       const camposFaltantes = [
         { nombre: "Nombre del Paciente", valor: nombre },
         { nombre: "Teléfono del Paciente", valor: telefono },
-        { nombre: "Dirección de Entrega del Paciente", valor: direccionDeEntrega },
+        {
+          nombre: "Dirección de Entrega del Paciente",
+          valor: direccionDeEntrega,
+        },
         { nombre: "Fecha de Vencimiento", valor: fechavencimiento },
         { nombre: "Ejercicio", valor: ejercicio },
         { nombre: "Padecimiento", valor: padecimiento },
@@ -212,10 +222,14 @@ const handleAnticipoChange = (e) => {
         { nombre: "Mesa", valor: mesa },
         { nombre: "Días a deber", valor: diasadeber },
         { nombre: "Alimentos que no consume", valor: noconsume },
-      ].filter((campo) => campo.valor === "").map((campo) => campo.nombre);
+      ]
+        .filter((campo) => campo.valor === "")
+        .map((campo) => campo.nombre);
 
       setAlerta({
-        msg: `Los siguientes campos son obligatorios: ${camposFaltantes.join(", ")}`,
+        msg: `Los siguientes campos son obligatorios: ${camposFaltantes.join(
+          ", "
+        )}`,
         error: true,
       });
       return;
@@ -242,7 +256,6 @@ const handleAnticipoChange = (e) => {
       noconsume,
       id,
     });
-    
 
     // try {
     //   await clienteAxios.post("/historial-pagos/almacenar", {
@@ -257,7 +270,7 @@ const handleAnticipoChange = (e) => {
       msg: "Guardado Correctamente",
     });
 
-    setAnticipo("0")
+    setAnticipo("0");
   };
 
   const { msg } = alerta;

@@ -6,8 +6,8 @@ const PacientesContext = createContext();
 
 export const PacientesProvider = ({ children }) => {
   const [pacientes, setPacientes] = useState([]);
-  const [paciente, setPaciente] = useState({});
-  const { auth } = useAuth()
+  //const [paciente, setPaciente] = useState({});
+  const { auth } = useAuth();
 
   useEffect(() => {
     const obtenerPacientes = async () => {
@@ -47,14 +47,13 @@ export const PacientesProvider = ({ children }) => {
           paciente,
           config
         );
-
+        
         const pacienteActualizado = pacientes.map((pacienteState) =>
           pacienteState._id === data._id ? data : pacienteState
         );
         setPacientes(pacienteActualizado);
 
         await guardarPago(data._id, paciente.anticipo);
-
       } catch (error) {
         console.log(error);
       }
@@ -69,7 +68,6 @@ export const PacientesProvider = ({ children }) => {
         const { createdAt, updatedAt, __v, ...pacienteAlmacenado } = data;
         setPacientes([pacienteAlmacenado, ...pacientes]);
         await guardarPago(pacienteAlmacenado._id, pacienteAlmacenado.monto);
-
       } catch (error) {
         console.log(error.response.data.msg);
       }
@@ -132,7 +130,7 @@ export const PacientesProvider = ({ children }) => {
         pacientes,
         guardarPaciente,
         setEdicion,
-        paciente,
+
         eliminarPaciente,
       }}
     >
