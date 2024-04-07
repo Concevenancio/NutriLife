@@ -147,17 +147,17 @@ const Formulario = () => {
       case "Semanal":
         setPago("1099");
         setAdeudoNeto("1099");
-        setResetAdeudo("1099")
+        setResetAdeudo("1099");
         break;
       case "Quincenal":
         setPago("2099");
         setAdeudoNeto("2099");
-        setResetAdeudo("2099")
+        setResetAdeudo("2099");
         break;
       case "Mensual":
         setPago("3999");
         setAdeudoNeto("3999");
-        setResetAdeudo("3999")
+        setResetAdeudo("3999");
         break;
       default:
         setPago(""); // Si no se selecciona un tipo de paquete, se borra el valor del pago
@@ -374,7 +374,7 @@ const Formulario = () => {
               >
                 Padecimiento:
               </label>
-              <input
+              <textarea
                 id="padecimiento"
                 type="text"
                 placeholder="Padecimiento del Paciente"
@@ -519,9 +519,9 @@ const Formulario = () => {
                 onChange={handleTipoPaqueteChange}
               >
                 <option value="">Selecciona el Paquete</option>
-                <option value="Semanal">Semanal</option>
-                <option value="Quincenal">Quincenal</option>
-                <option value="Mensual">Mensual</option>
+                <option value="Semanal">1 Semana</option>
+                <option value="Quincenal">2 Semanas</option>
+                <option value="Mensual">4 Semanas</option>
               </select>
             </div>
 
@@ -629,6 +629,9 @@ const Formulario = () => {
                 <option value="D">D</option>
                 <option value="E">E</option>
                 <option value="F">F</option>
+                <option value="G">G</option>
+                <option value="H">H</option>
+                <option value="I">I</option>
               </select>
             </div>
           </div>

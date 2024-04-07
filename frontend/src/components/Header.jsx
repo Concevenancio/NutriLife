@@ -46,6 +46,12 @@ const Header = () => {
                 >
                   Perfil
                 </Link>
+                <Link
+                  to="/admin/historial-pagos"
+                  className="text-white text-sm uppercase font-bold hover:text-green-200"
+                >
+                  Pagos
+                </Link>
 
                 <button
                   type="button"

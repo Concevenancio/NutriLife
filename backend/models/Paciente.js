@@ -74,7 +74,7 @@ const pacienteSchema = mongoose.Schema(
     },
     mesa:{
       type: String,
-      enum: ['A', 'B', 'C', 'D', 'E', 'F'],
+      enum: ['A', 'B', 'C', 'D', 'E', 'F','G','H','I',],
       required: true,
     },
 
