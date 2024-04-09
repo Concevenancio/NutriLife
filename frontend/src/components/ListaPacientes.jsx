@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
-
 import usePacientes from "../hooks/usePacientes";
-
+ 
 const Paciente = ({ paciente }) => {
   const { setEdicion, eliminarPaciente } = usePacientes();
   const { _id, nombre, telefono, tipopaquete, mesa, fechaproxcita, diasadeber } = paciente;

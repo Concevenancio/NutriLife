@@ -82,13 +82,7 @@ const Formulario = () => {
 
       const cita = formatDateTime(userState.fechaproxcita)
       setFechaProxCita(cita);
-      //console.log(cita)
-      /* const fechaFormateadaProx = userState.fechaproxcita.split("T")[0];
-     setFechaProxCita(fechaFormateadaProx);  */
-
-      /* const fechaproxcita = userState.fechaproxcita.split("T", " ");
-      setFechaProxCita(fechaProxCita);
-       */
+  
       const fechaFormateadaInicio = userState.fechainiciopaquete.split("T")[0];
       setFechaInicioPaquete(fechaFormateadaInicio);
 

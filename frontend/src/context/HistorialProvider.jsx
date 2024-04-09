@@ -4,34 +4,45 @@ import useAuth from "../hooks/useAuth";
 
 const HistorialContext = createContext();
 
-export const HistorialProvider =({children}) =>{
-    useEffect(() => {
-        const obtenerHistorial = async () => {
-          try {
-            const token = localStorage.getItem("token");
-            if (!token) return;
-    
-            const config = {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-            };
-    
-            const { data } = await clienteAxios("/historial-pagos", config);
-            setHistorial(data);
-          } catch (error) {
-            console.log(error);
-          }
+export const HistorialProvider = ({ children }) => {
+  const [historial, setHistorial] = useState([]);
+  const { auth } = useAuth();
+
+  useEffect(() => {
+    const obtenerHistorial = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) return;
+
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         };
-        obtenerHistorial();
-      }, [auth]);
 
-      
+        const { dataHistorial } = await clienteAxios("/historial-pagos", config);
+        console.log(dataHistorial)
+        setHistorial(dataHistorial);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    obtenerHistorial();
+  }, [auth]);
 
-}
 
-
+return (
+    <HistorialContext.Provider
+      value={{
+        historial,
+        obtenerHistorial,
+      }}
+    >
+      {children}
+    </HistorialContext.Provider>
+  );
+};
 
 
 export default HistorialContext;

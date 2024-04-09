@@ -5,4 +5,4 @@ const useHistorial = () => {
     return useContext(HistorialContext)
 }
 
-export default usePacientes
+export default useHistorial
