@@ -4,7 +4,6 @@ import Alerta from "./Alerta";
 import usePacientes from "../hooks/usePacientes";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
-//import clienteAxios from "../config/axios";
 
 const Formulario = () => {
   const { state } = useLocation();
@@ -14,11 +13,13 @@ const Formulario = () => {
   const [direccionDeEntrega, setDireccionDeEntrega] = useState("");
   const [ejercicio, setEjercicio] = useState("");
   const [padecimiento, setPadecimiento] = useState("");
-  const [fechainiciopaquete,setFechaInicioPaquete] = useState("");
+  const [fechainiciopaquete, setFechaInicioPaquete] = useState("");
   const [alergias, setAlergias] = useState("");
   const [tipopaquete, setTipopaquete] = useState("");
   const [especial, setEspecial] = useState("");
   const [mesa, setMesa] = useState("");
+  const [imagen, setImagen] = useState(null);
+  const [mostrarImagenEnGrande, setMostrarImagenEnGrande] = useState(false);
 
   const fechaActual = new Date().toISOString().split("T")[0];
   const fechaInicial = userState?.fecha
@@ -43,8 +44,9 @@ const Formulario = () => {
   const { guardarPaciente, paciente } = usePacientes();
 
   useEffect(() => {
+
     if (userState) {
-      
+      console.log("Datos de userState:", userState);
       setNombre(userState.nombre);
       setTelefono(userState.telefono);
       setDireccionDeEntrega(userState.direccionDeEntrega);
@@ -62,8 +64,9 @@ const Formulario = () => {
       setDiasADeber(userState.diasadeber);
       setFecha(userState.fecha);
       setFechaProxCita(userState.fechaproxcita);
+      setImagen(userState.imagen);
       setId(userState._id);
-      
+
       const fechaFormateada = userState.fecha.split("T")[0];
       setFecha(fechaFormateada);
 
@@ -76,13 +79,13 @@ const Formulario = () => {
         const minutes = `${date.getMinutes() < 10 ? '0' : ''}${date.getMinutes()}`;
         return `${year}-${month}-${day}T${hours}:${minutes}`;
       };
-      
-     const cita = formatDateTime(userState.fechaproxcita)
-    setFechaProxCita(cita);
-    console.log(cita)
-       /* const fechaFormateadaProx = userState.fechaproxcita.split("T")[0];
-      setFechaProxCita(fechaFormateadaProx);  */
-      
+
+      const cita = formatDateTime(userState.fechaproxcita)
+      setFechaProxCita(cita);
+      //console.log(cita)
+      /* const fechaFormateadaProx = userState.fechaproxcita.split("T")[0];
+     setFechaProxCita(fechaFormateadaProx);  */
+
       /* const fechaproxcita = userState.fechaproxcita.split("T", " ");
       setFechaProxCita(fechaProxCita);
        */
@@ -120,6 +123,7 @@ const Formulario = () => {
       setDiasADeber(paciente.diasadeber);
       setFecha(paciente.fecha);
       setFechaProxCita(paciente.fechaproxcita);
+      setImagen(paciente.imagen)
       setId(paciente._id);
     }
   }, [paciente]);
@@ -150,6 +154,7 @@ const Formulario = () => {
   const handlePagoChange = (e) => {
     setAdeudoNeto;
   };
+
 
   const handleAdeudoChange = (e) => {
     const inputValue = parseFloat(e.target.value);
@@ -195,6 +200,21 @@ const Formulario = () => {
       setMesa("F");
     }
   }; */
+
+  const handleImagenChange = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImagen(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const toggleImagenEnGrande = () => {
+    setMostrarImagenEnGrande(!mostrarImagenEnGrande);
+  };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     //Validar Formulario
@@ -278,17 +298,9 @@ const Formulario = () => {
       mesa,
       diasadeber,
       noconsume,
+      imagen,
       id,
     });
-
-    // try {
-    //   await clienteAxios.post("/historial-pagos/almacenar", {
-    //     id,
-    //     pago,
-    //   });
-    // } catch (error) {
-    //   console.error("Error al guardar el pago:", error);
-    // }
 
     setAlerta({
       msg: "Guardado Correctamente",
@@ -320,7 +332,7 @@ const Formulario = () => {
       </Link>
       <div className="flex justify-center">
         <form
-          className="bg-white py-10 px-5 mb-10 lg:mb-0 shadow-md rounded-md grid grid-cols-1 lg:grid-cols-3 gap-5 lg:items-center lg:justify-center"
+          className="bg-white py-10 px-5 mb-10 lg:mb-0 shadow-md rounded-md grid grid-cols-1 lg:grid-cols-3 gap-5 lg:items-start lg:justify-center"
           onSubmit={handleSubmit}
         >
           <div>
@@ -423,6 +435,29 @@ const Formulario = () => {
                 onChange={(e) => setAlergias(e.target.value)}
               />
             </div>
+
+            <div className="mb-5">
+              <label
+                htmlFor="especial"
+                className="uppercase text-gray-700 font-bold"
+              >
+                Especial:
+              </label>
+              <select
+                id="especial"
+                className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                value={especial}
+                //onChange={handleEspecialChange} // Cambiado a handleEspecialChange
+                onChange={(e) => setEspecial(e.target.value)}
+              >
+                <option value=""></option>
+                <option value="No">No</option>
+                <option value="Si">Si</option>
+              </select>
+            </div>
+
+
+
           </div>
 
           <div>
@@ -459,20 +494,20 @@ const Formulario = () => {
               />
             </div> */}
             <div className="mb-5">
-  <label
-    htmlFor="fechaproxcita"
-    className=" uppercase text-gray-700 font-bold"
-  >
-    Próxima Cita:
-  </label>
-  <input
-    id="fechaproxcita"
-    type="datetime-local"
-    className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-    value={fechaproxcita}
-    onChange={(e) => setFechaProxCita(e.target.value)}
-  />
-</div>
+              <label
+                htmlFor="fechaproxcita"
+                className=" uppercase text-gray-700 font-bold"
+              >
+                Próxima Cita:
+              </label>
+              <input
+                id="fechaproxcita"
+                type="datetime-local"
+                className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                value={fechaproxcita}
+                onChange={(e) => setFechaProxCita(e.target.value)}
+              />
+            </div>
 
             <div className="mb-5">
               <label
@@ -530,7 +565,7 @@ const Formulario = () => {
               >
                 Alimentos que no consume:
               </label>
-              <input
+              <textarea
                 id="noconsume"
                 placeholder="Alimentos que no consume el Paciente"
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
@@ -541,23 +576,31 @@ const Formulario = () => {
 
             <div className="mb-5">
               <label
-                htmlFor="especial"
+                htmlFor="mesa"
                 className="uppercase text-gray-700 font-bold"
               >
-                Especial:
+                Mesa
               </label>
               <select
-                id="especial"
+                id="mesa"
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-                value={especial}
-                //onChange={handleEspecialChange} // Cambiado a handleEspecialChange
-                onChange={(e) => setEspecial(e.target.value)}
+                value={mesa}
+                onChange={(e) => setMesa(e.target.value)}
               >
-                <option value=""></option>
-                <option value="No">No</option>
-                <option value="Si">Si</option>
+                <option value="">Selecciona Mesa</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+                <option value="G">G</option>
+                <option value="H">H</option>
+                <option value="I">I</option>
               </select>
             </div>
+
+
           </div>
 
           <div>
@@ -620,7 +663,7 @@ const Formulario = () => {
                 <option value="Tarjeta">Tarjeta</option>
                 <option value="Effectivo">Efectivo</option>
                 <option value="Transferencia">Transferencia</option>
-                
+
               </select>
             </div>
 
@@ -669,30 +712,46 @@ const Formulario = () => {
             </div>
             <div className="mb-5">
               <label
-                htmlFor="mesa"
+                htmlFor="imagen"
                 className="uppercase text-gray-700 font-bold"
               >
-                Mesa
+                Imagen Inbody:
               </label>
-              <select
-                id="mesa"
-                className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-                value={mesa}
-                onChange={(e) => setMesa(e.target.value)}
-              >
-                <option value="">Selecciona Mesa</option>
-                <option value="A">A</option>
-                <option value="B">B</option>
-                <option value="C">C</option>
-                <option value="D">D</option>
-                <option value="E">E</option>
-                <option value="F">F</option>
-                <option value="G">G</option>
-                <option value="H">H</option>
-                <option value="I">I</option>
-              </select>
+              {imagen ? (
+                <div className="flex justify-center items-center">
+                  <img
+                    src={imagen}
+                    alt="Imagen del paciente"
+                    className="w-60 h-32 mt-2 rounded-md cursor-pointer"
+                    onClick={toggleImagenEnGrande}
+                  />
+                  {mostrarImagenEnGrande && (
+                    <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-75 flex justify-center items-center z-50" onClick={toggleImagenEnGrande}>
+                      <div className="max-w-4xl w-full h-auto" onClick={(e) => e.stopPropagation()}>
+                        <img
+                          src={imagen}
+                          alt="Imagen del paciente"
+                          className="w-full rounded-md"
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div>No se encontró ninguna imagen para este paciente</div>
+              )}
+              <div className="relative">
+                <input
+                  id="imagen"
+                  type="file"
+                  placeholder="imagen"
+                  className="pl-8 border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                  onChange={(e) => handleImagenChange(e)}
+                />
+              </div>
             </div>
-            
+
+
           </div>
           <div>{/* Espacio para que quede centrado el botón */}</div>
           <input
