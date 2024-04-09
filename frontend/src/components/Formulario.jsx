@@ -14,6 +14,7 @@ const Formulario = () => {
   const [direccionDeEntrega, setDireccionDeEntrega] = useState("");
   const [ejercicio, setEjercicio] = useState("");
   const [padecimiento, setPadecimiento] = useState("");
+  const [fechainiciopaquete,setFechaInicioPaquete] = useState("");
   const [alergias, setAlergias] = useState("");
   const [tipopaquete, setTipopaquete] = useState("");
   const [especial, setEspecial] = useState("");
@@ -43,6 +44,7 @@ const Formulario = () => {
 
   useEffect(() => {
     if (userState) {
+      
       setNombre(userState.nombre);
       setTelefono(userState.telefono);
       setDireccionDeEntrega(userState.direccionDeEntrega);
@@ -53,6 +55,7 @@ const Formulario = () => {
       setFormadepago(userState.formadepago);
       setPago(userState.pago);
       setEspecial(userState.especial);
+      setFechaInicioPaquete(userState.fechainiciopaquete);
       setFechaVencimiento(userState.fechavencimiento);
       setMesa(userState.mesa);
       setNoConsume(userState.noconsume);
@@ -60,12 +63,31 @@ const Formulario = () => {
       setFecha(userState.fecha);
       setFechaProxCita(userState.fechaproxcita);
       setId(userState._id);
-
+      
       const fechaFormateada = userState.fecha.split("T")[0];
       setFecha(fechaFormateada);
 
-      const fechaFormateadaProx = userState.fechaproxcita.split("T")[0];
-      setFechaProxCita(fechaFormateadaProx);
+      const formatDateTime = (isoDateTime) => {
+        const date = new Date(isoDateTime);
+        const year = date.getFullYear();
+        const month = `${(date.getMonth() + 1) < 10 ? '0' : ''}${date.getMonth() + 1}`;
+        const day = `${date.getDate() < 10 ? '0' : ''}${date.getDate()}`;
+        const hours = `${date.getHours() < 10 ? '0' : ''}${date.getHours()}`;
+        const minutes = `${date.getMinutes() < 10 ? '0' : ''}${date.getMinutes()}`;
+        return `${year}-${month}-${day}T${hours}:${minutes}`;
+      };
+      
+     const cita = formatDateTime(userState.fechaproxcita)
+    setFechaProxCita(cita);
+    console.log(cita)
+       /* const fechaFormateadaProx = userState.fechaproxcita.split("T")[0];
+      setFechaProxCita(fechaFormateadaProx);  */
+      
+      /* const fechaproxcita = userState.fechaproxcita.split("T", " ");
+      setFechaProxCita(fechaProxCita);
+       */
+      const fechaFormateadaInicio = userState.fechainiciopaquete.split("T")[0];
+      setFechaInicioPaquete(fechaFormateadaInicio);
 
       const fechaFormateadaVencimiento =
         userState.fechavencimiento.split("T")[0];
@@ -86,6 +108,7 @@ const Formulario = () => {
       setPadecimiento(paciente.padecimiento);
       setAlergias(paciente.alergias);
       setTipopaquete(paciente.tipopaquete);
+      setFechaInicioPaquete(paciente.fechainiciopaquete);
       setFormadepago(paciente.formadepago);
       setFechaVencimiento(paciente.fechavencimiento);
       setPago(paciente.pago);
@@ -165,13 +188,13 @@ const Formulario = () => {
     }
   };
 
-  const handleEspecialChange = (e) => {
+  /* const handleEspecialChange = (e) => {
     const newValue = e.target.value;
     setEspecial(newValue);
     if (newValue === "Si") {
       setMesa("F");
     }
-  };
+  }; */
   const handleSubmit = async (e) => {
     e.preventDefault();
     //Validar Formulario
@@ -241,6 +264,7 @@ const Formulario = () => {
       direccionDeEntrega,
       ejercicio,
       padecimiento,
+      fechainiciopaquete,
       alergias,
       fecha,
       fechaproxcita,
@@ -419,7 +443,7 @@ const Formulario = () => {
               />
             </div>
 
-            <div className="mb-5">
+            {/* <div className="mb-5">
               <label
                 htmlFor="fechaproxcita"
                 className=" uppercase text-gray-700 font-bold"
@@ -428,10 +452,41 @@ const Formulario = () => {
               </label>
               <input
                 id="fechaproxcita"
-                type="date"
+                type="dateTime"
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
                 value={fechaproxcita}
                 onChange={(e) => setFechaProxCita(e.target.value)}
+              />
+            </div> */}
+            <div className="mb-5">
+  <label
+    htmlFor="fechaproxcita"
+    className=" uppercase text-gray-700 font-bold"
+  >
+    Próxima Cita:
+  </label>
+  <input
+    id="fechaproxcita"
+    type="datetime-local"
+    className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+    value={fechaproxcita}
+    onChange={(e) => setFechaProxCita(e.target.value)}
+  />
+</div>
+
+            <div className="mb-5">
+              <label
+                htmlFor="fechainiciopaquete"
+                className=" uppercase text-gray-700 font-bold"
+              >
+                Inicio de Paquete
+              </label>
+              <input
+                id="fechainiciopaquete"
+                type="date"
+                className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                value={fechainiciopaquete}
+                onChange={(e) => setFechaInicioPaquete(e.target.value)}
               />
             </div>
 
@@ -495,7 +550,8 @@ const Formulario = () => {
                 id="especial"
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
                 value={especial}
-                onChange={handleEspecialChange} // Cambiado a handleEspecialChange
+                //onChange={handleEspecialChange} // Cambiado a handleEspecialChange
+                onChange={(e) => setEspecial(e.target.value)}
               >
                 <option value=""></option>
                 <option value="No">No</option>
@@ -563,6 +619,8 @@ const Formulario = () => {
                 <option value="">Selecciona la forma de pago</option>
                 <option value="Tarjeta">Tarjeta</option>
                 <option value="Effectivo">Efectivo</option>
+                <option value="Transferencia">Transferencia</option>
+                
               </select>
             </div>
 
@@ -634,6 +692,7 @@ const Formulario = () => {
                 <option value="I">I</option>
               </select>
             </div>
+            
           </div>
           <div>{/* Espacio para que quede centrado el botón */}</div>
           <input

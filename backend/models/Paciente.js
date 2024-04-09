@@ -35,6 +35,11 @@ const pacienteSchema = mongoose.Schema(
       required: true,
       default: Date.now(),
     },
+    fechainiciopaquete:{
+      type: Date,
+      required: true,
+      default:Date.now(),
+    },
     fechaproxcita:{
       type: Date,
       required: true,
@@ -52,7 +57,7 @@ const pacienteSchema = mongoose.Schema(
     },
     formadepago:{
       type: String,
-      enum: ['Tarjeta', 'Effectivo'],
+      enum: ['Tarjeta','Transferencia', 'Effectivo'],
       required: true,
     },
     pago:{
@@ -81,6 +86,10 @@ const pacienteSchema = mongoose.Schema(
     diasadeber: {
       type: String,
       required: true,
+    },
+    imagen:{
+      type:Object,
+      required: false,
     },
     nutriologo: {
       type: mongoose.Schema.Types.ObjectId,

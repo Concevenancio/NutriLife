@@ -22,6 +22,7 @@ const Paciente = ({ paciente }) => {
   };
 
   const handleEditar = () => {
+    
     setEdicion(paciente);
     navigate("/admin/Formulario", { state: { paciente } });
   };
