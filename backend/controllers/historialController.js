@@ -19,7 +19,7 @@ const guardarPago = async (req, res) => {
     }
 };
 
-const obtenerHistorialPagosCliente = async (req, res) => {
+const obtenerHistorial = async (req, res) => {
     try {
         const historialPago = await HistorialPagos.find();
         res.json(historialPago);
@@ -30,5 +30,5 @@ const obtenerHistorialPagosCliente = async (req, res) => {
 
 export {
     guardarPago,
-    obtenerHistorialPagosCliente
+    obtenerHistorial
 };

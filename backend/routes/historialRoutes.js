@@ -1,6 +1,6 @@
 import express  from "express";
 import { guardarPago, 
-    obtenerHistorialPagosCliente }
+    obtenerHistorial }
     from "../controllers/historialController.js";
 
 
@@ -10,6 +10,6 @@ const router = express.Router();
 router.post('/almacenar', guardarPago);
 
 // Ruta para obtener el historial de pagos de un cliente
-router.get('/', obtenerHistorialPagosCliente);
+router.get('/', obtenerHistorial);
 
 export default router;
