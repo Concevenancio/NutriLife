@@ -24,7 +24,7 @@ function App() {
       <AuthProvider>
         <PacientesProvider>
           <Routes>
-            <Route path="/login" element={<AuthLayout />}>
+            <Route path="/" element={<AuthLayout />}>
               <Route index element={<Login />} />
               <Route path="registrar" element={<Registrar />} />
               <Route path="confirmar/:id" element={<ConfirmarCuenta />} />
