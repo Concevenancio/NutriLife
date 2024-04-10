@@ -17,32 +17,35 @@ import HistorialPagos from "./paginas/Admin/HistorialPagos";
 
 import { AuthProvider } from "./context/AuthProvider";
 import { PacientesProvider } from "./context/PacientesProvider";
+import { HistorialProvider } from "./context/HistorialProvider";
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
         <PacientesProvider>
-          <Routes>
-            <Route path="/" element={<AuthLayout />}>
-              <Route index element={<Login />} />
-              <Route path="registrar" element={<Registrar />} />
-              <Route path="confirmar/:id" element={<ConfirmarCuenta />} />
-              <Route path="olvide-password" element={<OlvidePassword />} />
-              <Route
-                path="olvide-password/:token"
-                element={<NuevoPassword />}
-              />
-            </Route>
+         <HistorialProvider>
+            <Routes>
+              <Route path="/" element={<AuthLayout />}>
+                <Route index element={<Login />} />
+                <Route path="registrar" element={<Registrar />} />
+                <Route path="confirmar/:id" element={<ConfirmarCuenta />} />
+                <Route path="olvide-password" element={<OlvidePassword />} />
+                <Route
+                  path="olvide-password/:token"
+                  element={<NuevoPassword />}
+                />
+              </Route>
 
-            <Route path="/admin" element={<AdminLayout />}>
-              <Route index element={<AdminPage />} />
-              <Route path="perfil" element={<EditarPerfil />} />
-              <Route path="cambiar-contraseña" element={<CambiarPassword />} />
-              <Route path="Formulario" element={<AdministrarPacientes />} />
-              <Route path="historial-pagos" element={<HistorialPagos />} />
-            </Route>
-          </Routes>
+              <Route path="/admin" element={<AdminLayout />}>
+                <Route index element={<AdminPage />} />
+                <Route path="perfil" element={<EditarPerfil />} />
+                <Route path="cambiar-contraseña" element={<CambiarPassword />} />
+                <Route path="Formulario" element={<AdministrarPacientes />} />
+                <Route path="historial-pagos" element={<HistorialPagos />} />
+              </Route>
+            </Routes>
+          </HistorialProvider>
         </PacientesProvider>
       </AuthProvider>
     </BrowserRouter>
@@ -50,4 +53,3 @@ function App() {
 }
 
 export default App;
-  

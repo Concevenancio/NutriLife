@@ -1,12 +1,11 @@
 import { createContext, useState, useEffect } from "react";
 import clienteAxios from "../config/axios";
-import useAuth from "../hooks/useAuth";
 
 const HistorialContext = createContext();
 
 export const HistorialProvider = ({ children }) => {
   const [historial, setHistorial] = useState([]);
-  const { auth } = useAuth();
+
 
   useEffect(() => {
     const obtenerHistorial = async () => {
@@ -21,28 +20,26 @@ export const HistorialProvider = ({ children }) => {
           },
         };
 
-        const { dataHistorial } = await clienteAxios("/historial-pagos", config);
-        console.log(dataHistorial)
-        setHistorial(dataHistorial);
+        const response = await clienteAxios.get("/historial-pagos", config); // Cambio en esta línea
+        console.log(response.data);
+        setHistorial(response.data);
       } catch (error) {
         console.log(error);
       }
     };
     obtenerHistorial();
-  }, [auth]);
+  }, []);
 
 
-return (
+  return (
     <HistorialContext.Provider
       value={{
         historial,
-        obtenerHistorial,
       }}
     >
       {children}
     </HistorialContext.Provider>
   );
 };
-
 
 export default HistorialContext;

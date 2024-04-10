@@ -21,7 +21,7 @@ const guardarPago = async (req, res) => {
 
 const obtenerHistorial = async (req, res) => {
     try {
-        const historialPago = await HistorialPagos.find();
+        const historialPago = await HistorialPagos.find().populate('cliente');
         res.json(historialPago);
     } catch (error) {
         res.status(500).json({ error: error.message });

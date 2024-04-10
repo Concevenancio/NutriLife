@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const historialPagoSchema = mongoose.Schema({
   cliente: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Paciente' // Referencia al modelo de cliente
+    ref: 'Paciente' 
   },
   fecha: {
     type: Date,
@@ -14,7 +14,6 @@ const historialPagoSchema = mongoose.Schema({
     required: true  
   },
 
-  // Otros campos que necesites
 }); 
 
 const HistorialPagos = mongoose.model('HistorialPagos', historialPagoSchema);
