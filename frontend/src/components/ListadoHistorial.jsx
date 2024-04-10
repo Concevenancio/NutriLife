@@ -2,17 +2,23 @@ import { useState, useEffect } from "react";
 import useHistorial from "../hooks/useHistorial";
 import ListaHistorial from "./ListaHistorial";
 import { Link } from "react-router-dom";
+import usePacientes from "../hooks/usePacientes";
 
 const ListadoHistorial = () => {
     const { historial } = useHistorial();
-    //console.log("historial", historial) 
-    
-
+   
+    const { pacientes } = usePacientes();
+    if (!Array.isArray(pacientes)) {
+        window.location.reload();
+      }
+ 
     return (
+        
         <div className="container mx-auto md:pl-4 lg:pl-8">
         <h2 className="font-black text-3xl text-center mb-5">
           Listado de <span className="text-green-800 font-bold"> Historial </span>
         </h2>
+      
             <>
                 {historial.length === 0 ? (
                     <div className="text-center">
