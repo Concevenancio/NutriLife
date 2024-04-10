@@ -12,13 +12,6 @@ const agregarPaciente = async (req, res) =>{
     }
 }
 
-const prueba = async(req, res)=> {
-    
-        const pacientes = await Paciente.find();
-        res.json(pacientes);   
-
-}
-
 const obtenerPacientes = async (req, res) =>{
     /* const result = await Paciente.find().select('nombre formadepago anticipo'); */
     const pacientes = await Paciente.find().where('nutriologo').equals(req.nutriologo);
@@ -107,5 +100,4 @@ export {
     obtenerPaciente,
     actualizarPaciente,
     eliminarPaciente,
-    prueba,
 };

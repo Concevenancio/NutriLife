@@ -4,6 +4,7 @@ import Alerta from "./Alerta";
 import usePacientes from "../hooks/usePacientes";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
+import useHistorial from "../hooks/useHistorial";
 
 const Formulario = () => {
   const { state } = useLocation();
@@ -42,6 +43,7 @@ const Formulario = () => {
   const [alerta, setAlerta] = useState({});
 
   const { guardarPaciente, paciente } = usePacientes();
+  const { guardarPagos } = useHistorial();
 
   useEffect(() => {
 
@@ -187,14 +189,6 @@ const Formulario = () => {
     }
   };
 
-  /* const handleEspecialChange = (e) => {
-    const newValue = e.target.value;
-    setEspecial(newValue);
-    if (newValue === "Si") {
-      setMesa("F");
-    }
-  }; */
-
   const handleImagenChange = (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
@@ -294,6 +288,13 @@ const Formulario = () => {
       noconsume,
       imagen,
       id,
+    });
+
+    guardarPagos({
+      id,
+      nombre,
+      anticipo,
+      formadepago
     });
 
     setAlerta({

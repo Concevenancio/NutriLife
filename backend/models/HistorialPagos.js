@@ -1,20 +1,29 @@
 import mongoose from "mongoose";
 
 const historialPagoSchema = mongoose.Schema({
-  cliente: {
+  clienteId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Paciente' 
+    ref: 'Paciente'
   },
-  fecha: {
+  clienteNombre: {
+    type: String,
+    require: false
+  },
+  fechaPago: {
     type: Date,
     default: Date.now
   },
   monto: {
     type: Number,
-    required: true  
+    required: true
   },
+  formaPago: {
+    type: String,
+    require: false,
+  }
 
-}); 
+
+});
 
 const HistorialPagos = mongoose.model('HistorialPagos', historialPagoSchema);
 

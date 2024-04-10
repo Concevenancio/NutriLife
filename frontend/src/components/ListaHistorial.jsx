@@ -3,11 +3,11 @@ import useHistorial from "../hooks/useHistorial";
  
 const ListaHistorial = ({ historial }) => {
   
-  const { _id, cliente, monto, fecha } = historial;
+  const {clienteId, clienteNombre, fechaPago, monto, formaPago } = historial;
   const navigate = useNavigate();
 
-  const formatearFecha = (fecha) => {
-    const nuevaFecha = new Date(fecha);
+  const formatearFecha = (fechaPago) => {
+    const nuevaFecha = new Date(fechaPago);
     const diferenciaMinutos = nuevaFecha.getTimezoneOffset();
     nuevaFecha.setMinutes(nuevaFecha.getMinutes() + diferenciaMinutos);
     const opcionesFecha = {
@@ -23,10 +23,10 @@ const ListaHistorial = ({ historial }) => {
   return (
     <>
       <tr className="border-b">
-        <td className="border px-2 py-1">{cliente}</td>
+        <td className="border px-2 py-1">{clienteNombre}</td>
         <td className="border px-2 py-1 hidden xl:table-cell">{monto}</td>
         <td className="border px-2 py-1 text-center ">
-          {formatearFecha(fecha)}
+          {formatearFecha(fechaPago)}
         </td>
         <td className="border px-2 py-1 text-center">
           <button

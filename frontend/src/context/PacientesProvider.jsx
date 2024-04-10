@@ -52,8 +52,6 @@ export const PacientesProvider = ({ children }) => {
           pacienteState._id === data._id ? data : pacienteState
         );
         setPacientes(pacienteActualizado);
-
-        await guardarPago(data._id, paciente.anticipo);
       } catch (error) {
         console.log(error);
       }
@@ -67,7 +65,6 @@ export const PacientesProvider = ({ children }) => {
 
         const { createdAt, updatedAt, __v, ...pacienteAlmacenado } = data;
         setPacientes([pacienteAlmacenado, ...pacientes]);
-        await guardarPago(pacienteAlmacenado._id, pacienteAlmacenado.monto);
       } catch (error) {
         console.log(error.response.data.msg);
       }
@@ -104,25 +101,6 @@ export const PacientesProvider = ({ children }) => {
     }
   };
 
-  const guardarPago = async (clienteId, monto) => {
-    try {
-      const token = localStorage.getItem("token");
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      };
-
-      await clienteAxios.post(
-        "/historial-pagos/almacenar",
-        { clienteId, monto },
-        config
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return (
     <PacientesContext.Provider
@@ -130,7 +108,6 @@ export const PacientesProvider = ({ children }) => {
         pacientes,
         guardarPaciente,
         setEdicion,
-
         eliminarPaciente,
       }}
     >
