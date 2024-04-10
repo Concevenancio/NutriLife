@@ -3,7 +3,7 @@ import clienteAxios from "../config/axios";
 import useAuth from "../hooks/useAuth";
 
 const PacientesContext = createContext();
-
+ 
 export const PacientesProvider = ({ children }) => {
   const [pacientes, setPacientes] = useState([]);
   //const [paciente, setPaciente] = useState({});
@@ -89,7 +89,7 @@ export const PacientesProvider = ({ children }) => {
         };
 
         const { data } = await clienteAxios.delete(`/pacientes/${id}`, config);
-
+ 
         const pacientesActualizado = pacientes.filter(
           (pacientesState) => pacientesState._id !== id
         );

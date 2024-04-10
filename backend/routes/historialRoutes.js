@@ -1,7 +1,9 @@
 import express  from "express";
 import { guardarPago, 
-    obtenerHistorial }
+    obtenerHistorial,
+eliminarPago }
     from "../controllers/historialController.js";
+import checkAuth from "../middleware/authMiddleware.js";
 
 
 const router = express.Router();
@@ -11,5 +13,6 @@ router.post('/almacenar', guardarPago);
 
 // Ruta para obtener el historial de pagos de un cliente
 router.get('/', obtenerHistorial);
+router.delete('/:id', checkAuth, eliminarPago)
 
 export default router;

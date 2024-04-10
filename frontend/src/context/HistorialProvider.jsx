@@ -6,7 +6,6 @@ const HistorialContext = createContext();
 export const HistorialProvider = ({ children }) => {
   const [historial, setHistorial] = useState([]);
 
-
   useEffect(() => {
     const obtenerHistorial = async () => {
       try {
@@ -39,24 +38,57 @@ export const HistorialProvider = ({ children }) => {
           Authorization: `Bearer ${token}`,
         },
       };
-  
+
       const data = {
-        id, nombre, anticipo, formadepago
+        id,
+        nombre,
+        anticipo,
+        formadepago,
       };
-  
-      const response = await clienteAxios.post("/historial-pagos/almacenar", data, config);
+
+      const response = await clienteAxios.post(
+        "/historial-pagos/almacenar",
+        data,
+        config
+      );
       console.log(response.data);
     } catch (error) {
       console.error(error);
     }
   };
 
+  const eliminarPago = async (id) => {
+    console.log(id);
+    const confirmar = confirm("¿Eliminar permanentemente el pago?");
+
+    if (confirmar) {
+      try {
+        const token = localStorage.getItem("token");
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        const { dataPago } = await clienteAxios.delete(`/historial-pagos/${id}`, config);
+
+        const historialActualizado = historial.filter(
+          (historialState) => historialState._id !== id
+        );
+
+        setHistorial(historialActualizado);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
 
   return (
     <HistorialContext.Provider
       value={{
         historial,
-        guardarPagos
+        guardarPagos,
+        eliminarPago,
       }}
     >
       {children}

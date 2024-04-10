@@ -2,8 +2,8 @@ import { useNavigate } from "react-router-dom";
 import useHistorial from "../hooks/useHistorial";
  
 const ListaHistorial = ({ historial }) => {
-  
-  const {clienteId, clienteNombre, fechaPago, monto, formaPago } = historial;
+  const { eliminarPago } = useHistorial();
+  const { _id, clienteNombre, fechaPago, monto, formaPago } = historial;
   const navigate = useNavigate();
 
   const formatearFecha = (fechaPago) => {
@@ -32,7 +32,6 @@ const ListaHistorial = ({ historial }) => {
           <button
             type="button"
             className="py-0.5 px-2 bg-green-700 hover:bg-green-800 text-white uppercase font-medium rounded-md"
-           
           >
             Editar
           </button>
@@ -41,7 +40,7 @@ const ListaHistorial = ({ historial }) => {
           <button
             type="button"
             className="py-0.5 px-2 bg-red-700 hover:bg-red-800 text-white uppercase font-medium rounded-md"
-           
+            onClick={() => eliminarPago(_id)}
           >
             Eliminar
           </button>
