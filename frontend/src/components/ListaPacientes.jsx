@@ -6,16 +6,31 @@ const Paciente = ({ paciente }) => {
   const { _id, nombre, telefono, tipopaquete, mesa, fechaproxcita, diasadeber } = paciente;
   const navigate = useNavigate();
 
+  // const formatearFecha = (fecha) => {
+  //   const nuevaFecha = new Date(fecha);
+  //   const diferenciaMinutos = nuevaFecha.getTimezoneOffset();
+  //   nuevaFecha.setMinutes(nuevaFecha.getMinutes() + diferenciaMinutos);
+  //   const opcionesFecha = {
+  //     day: "numeric",
+  //     month: "long",
+  //     year: "numeric",
+  //   };
+  //   let fechaFormateada = nuevaFecha.toLocaleDateString("es-MX", opcionesFecha);
+  //   fechaFormateada = fechaFormateada.replace(/^\w/, (c) => c.toUpperCase());
+  //   return fechaFormateada;
+  // };
+
   const formatearFecha = (fecha) => {
     const nuevaFecha = new Date(fecha);
-    const diferenciaMinutos = nuevaFecha.getTimezoneOffset();
-    nuevaFecha.setMinutes(nuevaFecha.getMinutes() + diferenciaMinutos);
     const opcionesFecha = {
       day: "numeric",
       month: "long",
       year: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true, // Para mostrar AM/PM
     };
-    let fechaFormateada = nuevaFecha.toLocaleDateString("es-MX", opcionesFecha);
+    let fechaFormateada = nuevaFecha.toLocaleString("es-MX", opcionesFecha);
     fechaFormateada = fechaFormateada.replace(/^\w/, (c) => c.toUpperCase());
     return fechaFormateada;
   };

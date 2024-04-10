@@ -5,59 +5,87 @@ import { Link } from "react-router-dom";
 import usePacientes from "../hooks/usePacientes";
 
 const ListadoHistorial = () => {
-    const { historial } = useHistorial();
-   
-    const { pacientes } = usePacientes();
-    if (!Array.isArray(pacientes)) {
-        window.location.reload();
-      }
- 
-    return (
-        
-        <div className="container mx-auto md:pl-4 lg:pl-8">
-        <h2 className="font-black text-3xl text-center mb-5">
-          Listado de <span className="text-green-800 font-bold"> Historial </span>
-        </h2>
-      
-            <>
-                {historial.length === 0 ? (
-                    <div className="text-center">
-                        <h2 className="font-black text-3xl mb-5">
-                            No hay historial de pagos
-                        </h2>
-                        <p className="text-xl mb-50">
-                            Comienza agregando historial de pagos y
-                            <span className="text-green-600 font-bold">
-                                {" "}
-                                aparecerán en este lugar
-                            </span>
-                        </p>
-                    </div>
-                ) : (
-                    <table className="w-full border-collapse border border-gray-300 mb-4 ">
-                        <thead className="bg-gray-200">
-                            <tr className="text-center">
-                                <th className="px-4 py-2 text-center">Nombre</th>
-                                <th className="px-4 py-2 text-center hidden xl:table-cell">
-                                    Pago
-                                </th>
-                                <th className="px-4 py-2 text-center hidden xl:table-cell">
-                                    Fecha
-                                </th>
-                                <th className="px-4 py-2 text-center">Editar</th>
-                                <th className="px-4 py-2 text-center">Eliminar</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {historial.map((item) => (
-                                <ListaHistorial key={item._id} historial={item} />
-                            ))}
-                        </tbody>
-                    </table>
-                )}
-            </>
-        </div>
-    );
+  const { historial } = useHistorial();
+  const { pacientes } = usePacientes();
+
+  if (!Array.isArray(pacientes)) {
+    window.location.reload();
+  }
+
+  const [filtroFecha, setFiltroFecha] = useState("");
+  const [filtroNombre, setFiltroNombre] = useState("");
+  const [fechasExpandidas, setFechasExpandidas] = useState([]);
+
+  const formatearFecha = (fecha) => {
+    const fechaObj = new Date(fecha);
+    const dia = fechaObj.getDate().toString().padStart(2, "0");
+    const mes = (fechaObj.getMonth() + 1).toString().padStart(2, "0");
+    const año = fechaObj.getFullYear();
+    return `${dia}-${mes}-${año}`;
+  };
+
+  return (
+    <div className="overflow-x-auto shadow-md sm:rounded-lg">
+      <div className="mb-4 mt-4 flex items-center justify-between mx-44">
+        <input
+          type="text"
+          placeholder="Buscar por nombre..."
+          value={filtroNombre}
+          onChange={(e) => setFiltroNombre(e.target.value)}
+          className="border border-gray-300 rounded-md p-2 pr-8 "
+        />
+        <input
+          type="date"
+          value={filtroFecha}
+          onChange={(e) => setFiltroFecha(e.target.value)}
+          className="border border-gray-300 rounded-md p-2 pr-8 mr-4"
+        />
+
+        {(filtroFecha || filtroNombre) && (
+          <span
+            className="px-4 text-gray-500 cursor-pointer"
+            onClick={() => {
+              setFiltroFecha("");
+              setFiltroNombre("");
+            }}
+          >
+            &#x2716;
+          </span>
+        )}
+      </div>
+
+      {historial.map((item) => {
+        const fecha = formatearFecha(item.fechaPago);
+        const nombreCliente = item.clienteNombre.toLowerCase();
+        if (
+          (filtroFecha && filtroFecha !== fecha) ||
+          (filtroNombre && !nombreCliente.includes(filtroNombre.toLowerCase()))
+        )
+          return null;
+        const estaExpandida = fechasExpandidas.includes(fecha);
+
+        return (
+          <div key={fecha} className="">
+            <h1
+              className="ps-6 cursor-pointer text-lg font-bold mt-4 mb-2"
+              onClick={() => {
+                setFechasExpandidas((prevFechasExpandidas) => {
+                  if (estaExpandida) {
+                    return prevFechasExpandidas.filter((f) => f !== fecha);
+                  } else {
+                    return [...prevFechasExpandidas, fecha];
+                  }
+                });
+              }}
+            >
+              Pagos del día {fecha}
+            </h1>
+            {estaExpandida && <ListaHistorial historial={item} />}
+          </div>
+        );
+      })}
+    </div>
+  );
 };
 
 export default ListadoHistorial;

@@ -50,12 +50,14 @@ const ListadoPacientes = () => {
   );
 
   const pacientesFiltradosPorFecha = fechaSeleccionada
-    ? pacientesFiltrados.filter(
-      (paciente) =>
-        new Date(paciente.fechaproxcita).toLocaleDateString() ===
-        new Date(fechaSeleccionada.getTime() - 86400000).toLocaleDateString()
-    )
-    : pacientesFiltrados;
+  ? pacientesFiltrados.filter((paciente) => {
+      const fechaPaciente = new Date(paciente.fechaproxcita);
+      fechaPaciente.setHours(0, 0, 0, 0); // Establecer la hora a las 00:00:00
+      const fechaSeleccionadaSinHora = new Date(fechaSeleccionada);
+      fechaSeleccionadaSinHora.setHours(0, 0, 0, 0); // Establecer la hora a las 00:00:00
+      return fechaPaciente.getTime() === fechaSeleccionadaSinHora.getTime();
+    })
+  : pacientesFiltrados;
 
   const pacientesMostrados = mostrarTodos
     ? pacientesFiltradosPorFecha
@@ -104,7 +106,7 @@ const ListadoPacientes = () => {
             </button>
           )}
         </div>
-        <div className="flex-grow flex justify-center">
+        <div className="flex-grow flex justify-center mb-5 ">
           <DatePicker
             selected={fechaSeleccionada}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  p-2.5 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500 "

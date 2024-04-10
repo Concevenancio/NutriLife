@@ -58,7 +58,7 @@ export const HistorialProvider = ({ children }) => {
   };
 
   const eliminarPago = async (id) => {
-    console.log(id);
+    //console.log(id);
     const confirmar = confirm("¿Eliminar permanentemente el pago?");
 
     if (confirmar) {
