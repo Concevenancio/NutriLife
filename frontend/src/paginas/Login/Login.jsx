@@ -95,13 +95,13 @@ const Login = () => {
         <nav className="mt-10 lg:flex lg:justify-between">
           <Link
             className="block text-gray-500 text-center my-5 hover:text-green-950"
-            to="/login/registrar"
+            to="/registrar"
           >
             ¿No tienes una cuenta? Registrate
           </Link>
           <Link
             className="block text-gray-500 text-center my-5 hover:text-green-950"
-            to="/login/olvide-password"
+            to="/olvide-password"
           >
             Olvide mi Contraseña
           </Link>

@@ -68,13 +68,13 @@ const OlvidePassword = () => {
         <nav className="mt-10 lg:flex lg:justify-between">
           <Link
             className="block text-gray-500 text-center my-5 hover:text-green-950"
-            to="/login"
+            to="/"
           >
             ¿Ya tienes una cuenta? Inicia Sesión
           </Link>
           <Link
             className="block text-gray-500 text-center my-5 hover:text-green-950"
-            to="/login/registrar"
+            to="/registrar"
           >
             ¿No tienes una cuenta? Regístrate
           </Link>
