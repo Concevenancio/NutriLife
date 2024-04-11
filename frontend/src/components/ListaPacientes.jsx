@@ -6,20 +6,6 @@ const Paciente = ({ paciente }) => {
   const { _id, nombre, telefono, tipopaquete, mesa, fechaproxcita, diasadeber } = paciente;
   const navigate = useNavigate();
 
-  // const formatearFecha = (fecha) => {
-  //   const nuevaFecha = new Date(fecha);
-  //   const diferenciaMinutos = nuevaFecha.getTimezoneOffset();
-  //   nuevaFecha.setMinutes(nuevaFecha.getMinutes() + diferenciaMinutos);
-  //   const opcionesFecha = {
-  //     day: "numeric",
-  //     month: "long",
-  //     year: "numeric",
-  //   };
-  //   let fechaFormateada = nuevaFecha.toLocaleDateString("es-MX", opcionesFecha);
-  //   fechaFormateada = fechaFormateada.replace(/^\w/, (c) => c.toUpperCase());
-  //   return fechaFormateada;
-  // };
-
   const formatearFecha = (fecha) => {
     const nuevaFecha = new Date(fecha);
     const opcionesFecha = {
@@ -36,7 +22,6 @@ const Paciente = ({ paciente }) => {
   };
 
   const handleEditar = () => {
-    
     setEdicion(paciente);
     navigate("/admin/Formulario", { state: { paciente } });
   };

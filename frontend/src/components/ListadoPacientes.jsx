@@ -64,7 +64,7 @@ const ListadoPacientes = () => {
     : pacientesFiltradosPorFecha.slice(indice, indice + 10);
 
   return (
-    <div className="container mx-auto md:pl-4 lg:pl-8">
+    <div className="container mx-auto ">
       <h2 className="font-black text-3xl text-center mb-2">
         Listado de Pacientes
       </h2>
@@ -106,7 +106,7 @@ const ListadoPacientes = () => {
             </button>
           )}
         </div>
-        <div className="flex-grow flex justify-center mb-5 ">
+        <div className="flex-grow flex justify-center md:mb-0 xl:mb-0 mb-5 mr-14  ">
           <DatePicker
             selected={fechaSeleccionada}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  p-2.5 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500 "

@@ -68,6 +68,9 @@ const ListadoHistorial = () => {
 
   return (
     <div className="overflow-x-auto shadow-md sm:rounded-lg">
+       <h2 className="font-black text-3xl text-center mb-12">
+        Historial de Pagos
+      </h2>
       <div className="mb-4 mt-4 flex items-center justify-start mx-14 gap-9 relative">
         <div className="flex relative">
           <input
@@ -87,7 +90,8 @@ const ListadoHistorial = () => {
           )}
         </div>
 
-        <div className="flex relative">
+        <div className="flex relative items-center">
+          <p className=" ml-16 mr-5 text-lg font-bold">Filtrar por fecha de vencimiento:</p>
           <input
             type="date"
             value={filtroFecha}
@@ -104,13 +108,7 @@ const ListadoHistorial = () => {
           )}
         </div>
 
-        <div className="flex justify-end flex-grow">
-          <button
-            className="bg-amber-800 hover:bg-amber-900 text-white px-4 py-2 rounded-lg"
-          >
-            Paquetes que vencen hoy
-          </button>
-        </div>
+
 
       
       </div>
@@ -121,7 +119,7 @@ const ListadoHistorial = () => {
           const estaExpandida = fechasExpandidas.includes(fecha);
 
           return (
-            <div key={fecha} className="">
+            <div key={fecha} className= "">
               <h1
                 className="ps-6 cursor-pointer text-lg font-bold mt-4 mb-2"
                 onClick={() => {

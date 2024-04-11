@@ -20,8 +20,11 @@ const historialPagoSchema = mongoose.Schema({
   formaPago: {
     type: String,
     require: false,
-  }
-
+  },
+  deudanetaHisto: {
+    type: String,
+    required: false,
+  },
 
 });
 

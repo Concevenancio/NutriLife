@@ -46,7 +46,6 @@ const Formulario = () => {
   const { guardarPagos } = useHistorial();
 
   useEffect(() => {
-
     if (userState) {
       console.log("Datos de userState:", userState);
       setNombre(userState.nombre);
@@ -98,31 +97,32 @@ const Formulario = () => {
     }
   }, [userState]);
 
-  useEffect(() => {
-    if (paciente?.nombre) {
-      setNombre(paciente.nombre);
-      setTelefono(paciente.telefono);
-      setDireccionDeEntrega(paciente.direccionDeEntrega);
-      setEjercicio(paciente.ejercicio);
-      setPadecimiento(paciente.padecimiento);
-      setAlergias(paciente.alergias);
-      setTipopaquete(paciente.tipopaquete);
-      setFechaInicioPaquete(paciente.fechainiciopaquete);
-      setFormadepago(paciente.formadepago);
-      setFechaVencimiento(paciente.fechavencimiento);
-      setPago(paciente.pago);
-      setEspecial(paciente.especial);
-      setMesa(paciente.mesa);
-      setAdeudoNeto(paciente.adeudoneto);
-      setAnticipo(paciente.anticipo);
-      setNoConsume(paciente.noconsume);
-      setDiasADeber(paciente.diasadeber);
-      setFecha(paciente.fecha);
-      setFechaProxCita(paciente.fechaproxcita);
-      setImagen(paciente.imagen)
-      setId(paciente._id);
-    }
-  }, [paciente]);
+  // useEffect(() => {
+  //   if (paciente?.nombre) {
+  //     console.log("adeudo", paciente.adeudoneto)
+  //     setNombre(paciente.nombre);
+  //     setTelefono(paciente.telefono);
+  //     setDireccionDeEntrega(paciente.direccionDeEntrega);
+  //     setEjercicio(paciente.ejercicio);
+  //     setPadecimiento(paciente.padecimiento);
+  //     setAlergias(paciente.alergias);
+  //     setTipopaquete(paciente.tipopaquete);
+  //     setFechaInicioPaquete(paciente.fechainiciopaquete);
+  //     setFormadepago(paciente.formadepago);
+  //     setFechaVencimiento(paciente.fechavencimiento);
+  //     setPago(paciente.pago);
+  //     setEspecial(paciente.especial);
+  //     setMesa(paciente.mesa);
+  //     setAdeudoNeto(paciente.adeudoneto);
+  //     setAnticipo(paciente.anticipo);
+  //     setNoConsume(paciente.noconsume);
+  //     setDiasADeber(paciente.diasadeber);
+  //     setFecha(paciente.fecha);
+  //     setFechaProxCita(paciente.fechaproxcita);
+  //     setImagen(paciente.imagen)
+  //     setId(paciente._id);
+  //   }
+  // }, [paciente]);
 
   const handleTelefonoChange = (e) => {
     const inputTelefono = e.target.value;
@@ -289,19 +289,25 @@ const Formulario = () => {
       imagen,
       id,
     });
-
+    if (window.confirm("¿Quieres guardar el pago?")) {
     guardarPagos({
       id,
       nombre,
       anticipo,
-      formadepago
-    });
+      formadepago,
+      adeudoneto
+    });  } else {
+      console.log("Pago no guardado")
+  }
 
     setAlerta({
       msg: "Guardado Correctamente",
     });
 
+     //window.location.reload(); 
+
     setAnticipo("0");
+    //setAdeudoNeto(adeudoneto)
   };
 
   const { msg } = alerta;
@@ -317,14 +323,14 @@ const Formulario = () => {
 
       {msg && <Alerta alerta={alerta} />}
 
-      <Link to="/admin">
+      {/* <Link to="/admin">
         <button
           type="button"
           className="py-2 px-4 bg-green-700 jus hover:bg-green-800 text-white uppercase font-medium rounded-lg mb-5"
         >
           Regresar
         </button>
-      </Link>
+      </Link> */}
       <div className="flex justify-center">
         <form
           className="bg-white py-10 px-5 mb-10 lg:mb-0 shadow-md rounded-md grid grid-cols-1 lg:grid-cols-3 gap-5 lg:items-start lg:justify-center"
@@ -473,21 +479,6 @@ const Formulario = () => {
               />
             </div>
 
-            {/* <div className="mb-5">
-              <label
-                htmlFor="fechaproxcita"
-                className=" uppercase text-gray-700 font-bold"
-              >
-                Próxima Cita:
-              </label>
-              <input
-                id="fechaproxcita"
-                type="dateTime"
-                className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-                value={fechaproxcita}
-                onChange={(e) => setFechaProxCita(e.target.value)}
-              />
-            </div> */}
             <div className="mb-5">
               <label
                 htmlFor="fechaproxcita"
