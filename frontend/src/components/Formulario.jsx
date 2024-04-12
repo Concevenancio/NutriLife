@@ -170,17 +170,17 @@ const Formulario = () => {
     const newValue = e.target.value;
     setTipopaquete(newValue);
     switch (newValue) {
-      case "Semanal":
+      case "1 Semana":
         setPago("1099");
         setAdeudoNeto("1099");
         setResetAdeudo("1099");
         break;
-      case "Quincenal":
+      case "2 Semanas":
         setPago("2099");
         setAdeudoNeto("2099");
         setResetAdeudo("2099");
         break;
-      case "Mensual":
+      case "4 Semanas":
         setPago("3999");
         setAdeudoNeto("3999");
         setResetAdeudo("3999");
@@ -605,7 +605,7 @@ const Formulario = () => {
                 onChange={handleTipoPaqueteChange}
               >
                 <option value="">Selecciona el Paquete</option>
-                <option value="1 Semanal">1 Semana</option>
+                <option value="1 Semana">1 Semana</option>
                 <option value="2 Semanas">2 Semanas</option>
                 <option value="4 Semanas">4 Semanas</option>
               </select>
