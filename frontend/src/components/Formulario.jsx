@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
-import { useLocation, Navigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Alerta from "./Alerta";
 import usePacientes from "../hooks/usePacientes";
+import { useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import useHistorial from "../hooks/useHistorial";
 
 const Formulario = () => {
@@ -19,7 +21,6 @@ const Formulario = () => {
   const [mesa, setMesa] = useState("");
   const [imagen, setImagen] = useState(null);
   const [mostrarImagenEnGrande, setMostrarImagenEnGrande] = useState(false);
-  const [redirectToAdmin, setRedirectToAdmin] = useState(false);
 
   const fechaActual = new Date().toISOString().split("T")[0];
   const fechaInicial = userState?.fecha
@@ -41,7 +42,7 @@ const Formulario = () => {
   const [resetAdeudo, setResetAdeudo] = useState(0);
   const [alerta, setAlerta] = useState({});
 
-  const { guardarPaciente,  } = usePacientes();
+  const { guardarPaciente, paciente } = usePacientes();
   const { guardarPagos } = useHistorial();
 
   useEffect(() => {
@@ -73,20 +74,16 @@ const Formulario = () => {
       const formatDateTime = (isoDateTime) => {
         const date = new Date(isoDateTime);
         const year = date.getFullYear();
-        const month = `${date.getMonth() + 1 < 10 ? "0" : ""}${
-          date.getMonth() + 1
-        }`;
-        const day = `${date.getDate() < 10 ? "0" : ""}${date.getDate()}`;
-        const hours = `${date.getHours() < 10 ? "0" : ""}${date.getHours()}`;
-        const minutes = `${
-          date.getMinutes() < 10 ? "0" : ""
-        }${date.getMinutes()}`;
+        const month = `${(date.getMonth() + 1) < 10 ? '0' : ''}${date.getMonth() + 1}`;
+        const day = `${date.getDate() < 10 ? '0' : ''}${date.getDate()}`;
+        const hours = `${date.getHours() < 10 ? '0' : ''}${date.getHours()}`;
+        const minutes = `${date.getMinutes() < 10 ? '0' : ''}${date.getMinutes()}`;
         return `${year}-${month}-${day}T${hours}:${minutes}`;
       };
 
-      const cita = formatDateTime(userState.fechaproxcita);
+      const cita = formatDateTime(userState.fechaproxcita)
       setFechaProxCita(cita);
-
+  
       const fechaFormateadaInicio = userState.fechainiciopaquete.split("T")[0];
       setFechaInicioPaquete(fechaFormateadaInicio);
 
@@ -150,9 +147,10 @@ const Formulario = () => {
     setTelefono(telefonoFormateado);
   };
 
-  const handlePagoChange = () => {
+  const handlePagoChange = (e) => {
     setAdeudoNeto;
   };
+
 
   const handleAdeudoChange = (e) => {
     const inputValue = parseFloat(e.target.value);
@@ -170,17 +168,17 @@ const Formulario = () => {
     const newValue = e.target.value;
     setTipopaquete(newValue);
     switch (newValue) {
-      case "1 Semana":
+      case "Semanal":
         setPago("1099");
         setAdeudoNeto("1099");
         setResetAdeudo("1099");
         break;
-      case "2 Semanas":
+      case "Quincenal":
         setPago("2099");
         setAdeudoNeto("2099");
         setResetAdeudo("2099");
         break;
-      case "4 Semanas":
+      case "Mensual":
         setPago("3999");
         setAdeudoNeto("3999");
         setResetAdeudo("3999");
@@ -203,6 +201,7 @@ const Formulario = () => {
   const toggleImagenEnGrande = () => {
     setMostrarImagenEnGrande(!mostrarImagenEnGrande);
   };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -291,29 +290,24 @@ const Formulario = () => {
       id,
     });
     if (window.confirm("¿Quieres guardar el pago?")) {
-      guardarPagos({
-        id,
-        nombre,
-        anticipo,
-        formadepago,
-        adeudoneto,
-      });
-    } else {
-      console.log("Pago no guardado");
-    }
+    guardarPagos({
+      id,
+      nombre,
+      anticipo,
+      formadepago,
+      adeudoneto
+    });  } else {
+      console.log("Pago no guardado")
+  }
 
     setAlerta({
       msg: "Guardado Correctamente",
     });
 
-    setTimeout(() => {
-      setRedirectToAdmin(true);
-    }, 2000);
-    //window.location.reload();
+     //window.location.reload(); 
 
-    //setAnticipo("0");
+    setAnticipo("0");
     //setAdeudoNeto(adeudoneto)
-    
   };
 
   const { msg } = alerta;
@@ -328,7 +322,7 @@ const Formulario = () => {
       </p>
 
       {msg && <Alerta alerta={alerta} />}
-      {redirectToAdmin && <Navigate to="/admin" />}
+
       {/* <Link to="/admin">
         <button
           type="button"
@@ -462,6 +456,9 @@ const Formulario = () => {
                 <option value="Si">Si</option>
               </select>
             </div>
+
+
+
           </div>
 
           <div>
@@ -588,6 +585,8 @@ const Formulario = () => {
                 <option value="I">I</option>
               </select>
             </div>
+
+
           </div>
 
           <div>
@@ -605,9 +604,9 @@ const Formulario = () => {
                 onChange={handleTipoPaqueteChange}
               >
                 <option value="">Selecciona el Paquete</option>
-                <option value="1 Semana">1 Semana</option>
-                <option value="2 Semanas">2 Semanas</option>
-                <option value="4 Semanas">4 Semanas</option>
+                <option value="Semanal">1 Semana</option>
+                <option value="Quincenal">2 Semanas</option>
+                <option value="Mensual">4 Semanas</option>
               </select>
             </div>
 
@@ -650,6 +649,7 @@ const Formulario = () => {
                 <option value="Tarjeta">Tarjeta</option>
                 <option value="Effectivo">Efectivo</option>
                 <option value="Transferencia">Transferencia</option>
+
               </select>
             </div>
 
@@ -712,14 +712,8 @@ const Formulario = () => {
                     onClick={toggleImagenEnGrande}
                   />
                   {mostrarImagenEnGrande && (
-                    <div
-                      className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-75 flex justify-center items-center z-50"
-                      onClick={toggleImagenEnGrande}
-                    >
-                      <div
-                        className="max-w-4xl w-full h-auto"
-                        onClick={(e) => e.stopPropagation()}
-                      >
+                    <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-75 flex justify-center items-center z-50" onClick={toggleImagenEnGrande}>
+                      <div className="max-w-4xl w-full h-auto" onClick={(e) => e.stopPropagation()}>
                         <img
                           src={imagen}
                           alt="Imagen del paciente"
@@ -742,15 +736,15 @@ const Formulario = () => {
                 />
               </div>
             </div>
+
+
           </div>
           <div>{/* Espacio para que quede centrado el botón */}</div>
           <input
             type="submit"
             className="bg-green-600 w-full items-center mt-5 p-3 text-white uppercase font-bold hover:bg-green-700 cursor-pointer transition-colors rounded-md mx-auto block"
-            value={id ? "Guardar Cambios" : "Agregar Paciente"
-          }
+            value={id ? "Guardar Cambios" : "Agregar Paciente"}
           />
-          
         </form>
       </div>
     </>
