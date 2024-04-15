@@ -47,12 +47,12 @@ const ListaHistorial = ({ historial, mostrarEncabezado, paciente }) => {
         {mostrarEncabezado && (
           <tr className="bg-green-800 text-white">
             <th className="px-6 py-3 ">Nombre</th>
-            <th className="px-6 py-3 ">Paquete</th>
-            <th className="px-6 py- 3 ">Método de Pago</th>
+            <th className="px-6 py-3 hidden lg:table-cell">Paquete</th>
+            <th className="px-6 py- 3 hidden lg:table-cell">Método de Pago</th>
             <th className="px-6 py-3 ">Monto</th>
-            <th className="px-6 py-3 ">Hora de Pago</th>
-            <th className="px-6 py-3 ">Resta</th>
-            <th className="px-6 py-3 ">Inicio</th>
+            <th className="px-6 py-3 hidden lg:table-cell">Hora de Pago</th>
+            <th className="px-6 py-3 hidden lg:table-cell">Resta</th>
+            <th className="px-6 py-3 hidden lg:table-cell">Inicio</th>
             <th className="px-6 py-3 ">Vencimiento</th>
             <th className="px-6 py-3 ">Eliminar</th>
           </tr>
@@ -60,12 +60,12 @@ const ListaHistorial = ({ historial, mostrarEncabezado, paciente }) => {
         <tr className="bg-white hover:bg-gray-200"
         onDoubleClick={handleEditar}>
           <td className="px-6 py-4 font-semibold">{clienteNombre}</td>
-          <td className="px-6 py-4">{tipopaquete}</td>
-          <td className="px-6 py-4">{formaPago}</td>
+          <td className="px-6 py-4 hidden lg:table-cell">{tipopaquete}</td>
+          <td className="px-6 py-4 hidden lg:table-cell">{formaPago}</td>
           <td className="px-6 py-4">${monto}</td>
-          <td className="px-6 py-4">{formatearHora(fechaPago)} hrs</td>
-          <td className="px-6 py-4">${deudanetaHisto}</td>
-          <td className="px-6 py-4">
+          <td className="px-6 py-4 hidden lg:table-cell">{formatearHora(fechaPago)} hrs</td>
+          <td className="px-6 py-4 hidden lg:table-cell">${deudanetaHisto}</td>
+          <td className="px-6 py-4 hidden lg:table-cell">
             {formatearFecha(fechainiciopaquete)}
           </td>
           <td className="px-6 py-4">

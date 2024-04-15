@@ -102,7 +102,7 @@ const ListadoHistorial = () => {
           )}
         </div>
 
-        <div className="flex relative items-center">
+        {/* <div className="flex relative items-center">
           <p className=" ml-16 mr-5 text-lg font-bold">
             Filtrar por fecha de vencimiento:
           </p>
@@ -120,7 +120,7 @@ const ListadoHistorial = () => {
               &#x2716;
             </span>
           )}
-        </div>
+        </div> */}
       </div>
 
       {Object.values(agruparPagosPorDia(historial))
