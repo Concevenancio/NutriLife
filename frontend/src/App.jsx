@@ -12,7 +12,7 @@ import AdministrarPacientes from "./paginas/Admin/AdministrarPacientes";
 import EditarPerfil from "./paginas/Admin/EditarPerfil";
 import CambiarPassword from "./paginas/Admin/CambiarPassword";
 import AdminPage from "./paginas/Admin/AdminPage";
-import EditarPacientes from "./paginas/Admin/EditarPacientes";
+//import EditarPacientes from "./paginas/Admin/EditarPacientes";
 import HistorialPagos from "./paginas/Admin/HistorialPagos";
 
 import { AuthProvider } from "./context/AuthProvider";

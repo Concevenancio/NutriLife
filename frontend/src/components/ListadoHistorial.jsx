@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useHistorial from "../hooks/useHistorial";
 import ListaHistorial from "./ListaHistorial";
 import usePacientes from "../hooks/usePacientes";
@@ -6,7 +6,6 @@ import usePacientes from "../hooks/usePacientes";
 const ListadoHistorial = () => {
   const { historial } = useHistorial();
   const { pacientes } = usePacientes();
-
 
   if (!Array.isArray(pacientes)) {
     window.location.reload();
@@ -17,6 +16,14 @@ const ListadoHistorial = () => {
   const [fechasExpandidas, setFechasExpandidas] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5; // Número de elementos por página
+
+  useEffect(() => {
+    // Expandir automáticamente las fechas cuando se realiza una búsqueda por nombre
+    if (filtroNombre) {
+      const nuevasFechasExpandidas = Object.keys(agruparPagosPorDia(historial));
+      setFechasExpandidas(nuevasFechasExpandidas);
+    }
+  }, [filtroNombre, historial]);
 
   const formatearFecha = (fecha) => {
     const fechaObj = new Date(fecha);
@@ -36,14 +43,6 @@ const ListadoHistorial = () => {
       pagosPorDia[fecha].push(item);
     });
     return pagosPorDia;
-  };
-
-  const filtrarPorNombre = (pagos) => {
-    return pagos.filter((item) => {
-      return item.clienteNombre
-        .toLowerCase()
-        .includes(filtroNombre.toLowerCase());
-    });
   };
 
   const limpiarFiltroFecha = () => {
@@ -66,9 +65,22 @@ const ListadoHistorial = () => {
     setCurrentPage((prevPage) => prevPage + 1);
   };
 
+  // Filtrar por nombre y fecha
+  const filtrarPagos = (pagos) => {
+    return pagos.filter((item) => {
+      const fecha = formatearFecha(item.fechaPago);
+      const nombreCoincide = filtroNombre
+        ? item.clienteNombre.toLowerCase().includes(filtroNombre.toLowerCase())
+        : true;
+      const fechaCoincide =
+        !filtroFecha || fecha === filtroFecha || fecha < filtroFecha;
+      return nombreCoincide && fechaCoincide;
+    });
+  };
+
   return (
     <div className="overflow-x-auto shadow-md sm:rounded-lg">
-       <h2 className="font-black text-3xl text-center mb-12">
+      <h2 className="font-black text-3xl text-center mb-12">
         Historial de Pagos
       </h2>
       <div className="mb-4 mt-4 flex items-center justify-start mx-14 gap-9 relative">
@@ -91,7 +103,9 @@ const ListadoHistorial = () => {
         </div>
 
         <div className="flex relative items-center">
-          <p className=" ml-16 mr-5 text-lg font-bold">Filtrar por fecha de vencimiento:</p>
+          <p className=" ml-16 mr-5 text-lg font-bold">
+            Filtrar por fecha de vencimiento:
+          </p>
           <input
             type="date"
             value={filtroFecha}
@@ -107,19 +121,18 @@ const ListadoHistorial = () => {
             </span>
           )}
         </div>
-
-
-
-      
       </div>
 
-      {Object.keys(agruparPagosPorDia(historial))
+      {Object.values(agruparPagosPorDia(historial))
+        .flat()
+        .sort((a, b) => new Date(b.fechaPago) - new Date(a.fechaPago))
         .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
-        .map((fecha) => {
+        .map((item) => {
+          const fecha = formatearFecha(item.fechaPago);
           const estaExpandida = fechasExpandidas.includes(fecha);
 
           return (
-            <div key={fecha} className= "">
+            <div key={fecha} className="">
               <h1
                 className="ps-6 cursor-pointer text-lg font-bold mt-4 mb-2"
                 onClick={() => {
@@ -135,7 +148,7 @@ const ListadoHistorial = () => {
                 Pagos del día {fecha}
               </h1>
               {estaExpandida &&
-                filtrarPorNombre(agruparPagosPorDia(historial)[fecha]).map(
+                filtrarPagos(agruparPagosPorDia(historial)[fecha]).map(
                   (item, index) => (
                     <ListaHistorial
                       key={`${fecha}-${index}`}
@@ -150,7 +163,6 @@ const ListadoHistorial = () => {
             </div>
           );
         })}
-
       <div className="flex justify-between items-center mx-14 mt-4">
         <button
           onClick={goToPreviousPage}
