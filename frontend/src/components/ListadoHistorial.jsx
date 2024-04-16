@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import useHistorial from "../hooks/useHistorial";
 import ListaHistorial from "./ListaHistorial";
 import usePacientes from "../hooks/usePacientes";
@@ -11,19 +11,10 @@ const ListadoHistorial = () => {
     window.location.reload();
   }
 
-  const [filtroFecha, setFiltroFecha] = useState("");
   const [filtroNombre, setFiltroNombre] = useState("");
   const [fechasExpandidas, setFechasExpandidas] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5; // Número de elementos por página
-
-  useEffect(() => {
-    // Expandir automáticamente las fechas cuando se realiza una búsqueda por nombre
-    if (filtroNombre) {
-      const nuevasFechasExpandidas = Object.keys(agruparPagosPorDia(historial));
-      setFechasExpandidas(nuevasFechasExpandidas);
-    }
-  }, [filtroNombre, historial]);
 
   const formatearFecha = (fecha) => {
     const fechaObj = new Date(fecha);
@@ -45,10 +36,6 @@ const ListadoHistorial = () => {
     return pagosPorDia;
   };
 
-  const limpiarFiltroFecha = () => {
-    setFiltroFecha("");
-  };
-
   const limpiarFiltroNombre = () => {
     setFiltroNombre("");
   };
@@ -57,25 +44,20 @@ const ListadoHistorial = () => {
     Object.keys(agruparPagosPorDia(historial)).length / itemsPerPage
   );
 
+  const filtrarPorNombre = (pagos) => {
+    return pagos.filter((item) => {
+      return item.clienteNombre
+        .toLowerCase()
+        .includes(filtroNombre.toLowerCase());
+    });
+  };
+
   const goToPreviousPage = () => {
     setCurrentPage((prevPage) => prevPage - 1);
   };
 
   const goToNextPage = () => {
     setCurrentPage((prevPage) => prevPage + 1);
-  };
-
-  // Filtrar por nombre y fecha
-  const filtrarPagos = (pagos) => {
-    return pagos.filter((item) => {
-      const fecha = formatearFecha(item.fechaPago);
-      const nombreCoincide = filtroNombre
-        ? item.clienteNombre.toLowerCase().includes(filtroNombre.toLowerCase())
-        : true;
-      const fechaCoincide =
-        !filtroFecha || fecha === filtroFecha || fecha < filtroFecha;
-      return nombreCoincide && fechaCoincide;
-    });
   };
 
   return (
@@ -101,55 +83,35 @@ const ListadoHistorial = () => {
             </span>
           )}
         </div>
-
-        {/* <div className="flex relative items-center">
-          <p className=" ml-16 mr-5 text-lg font-bold">
-            Filtrar por fecha de vencimiento:
-          </p>
-          <input
-            type="date"
-            value={filtroFecha}
-            onChange={(e) => setFiltroFecha(e.target.value)}
-            className="border border-gray-300 rounded-md p-2 pr-8 mr-4"
-          />
-          {filtroFecha && (
-            <span
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 px-4 text-gray-500 cursor-pointer"
-              onClick={limpiarFiltroFecha}
-            >
-              &#x2716;
-            </span>
-          )}
-        </div> */}
       </div>
 
-      {Object.values(agruparPagosPorDia(historial))
-        .flat()
-        .sort((a, b) => new Date(b.fechaPago) - new Date(a.fechaPago))
+      {Object.keys(agruparPagosPorDia(historial))
         .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
-        .map((item) => {
-          const fecha = formatearFecha(item.fechaPago);
+        .map((fecha) => {
           const estaExpandida = fechasExpandidas.includes(fecha);
+          const pagosDelDia = filtrarPorNombre(
+            agruparPagosPorDia(historial)[fecha]
+          );
 
           return (
-            <div key={fecha} className="">
-              <h1
-                className="ps-6 cursor-pointer text-lg font-bold mt-4 mb-2"
-                onClick={() => {
-                  setFechasExpandidas((prevFechasExpandidas) => {
-                    if (estaExpandida) {
-                      return prevFechasExpandidas.filter((f) => f !== fecha);
-                    } else {
-                      return [...prevFechasExpandidas, fecha];
-                    }
-                  });
-                }}
-              >
-                Pagos del día {fecha}
-              </h1>
-              {estaExpandida &&
-                filtrarPagos(agruparPagosPorDia(historial)[fecha]).map(
-                  (item, index) => (
+            pagosDelDia.length > 0 && (
+              <div key={fecha} className="">
+                <h1
+                  className="ps-6 cursor-pointer text-lg font-bold mt-4 mb-2"
+                  onClick={() => {
+                    setFechasExpandidas((prevFechasExpandidas) => {
+                      if (estaExpandida) {
+                        return prevFechasExpandidas.filter((f) => f !== fecha);
+                      } else {
+                        return [...prevFechasExpandidas, fecha];
+                      }
+                    });
+                  }}
+                >
+                  Pagos del día {fecha}
+                </h1>
+                {estaExpandida &&
+                  pagosDelDia.map((item, index) => (
                     <ListaHistorial
                       key={`${fecha}-${index}`}
                       historial={item}
@@ -158,11 +120,12 @@ const ListadoHistorial = () => {
                         (paciente) => paciente._id === item.clienteId
                       )}
                     />
-                  )
-                )}
-            </div>
+                  ))}
+              </div>
+            )
           );
         })}
+
       <div className="flex justify-between items-center mx-14 mt-4">
         <button
           onClick={goToPreviousPage}
