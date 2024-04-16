@@ -156,10 +156,18 @@ const Formulario = () => {
   };
 
   const handleAdeudoChange = (e) => {
-    const inputValue = parseFloat(e.target.value);
-    setAdeudoNeto(inputValue); // Actualiza el estado solo con los números
+    const inputValue = e.target.value;
+    // Verificar si el valor ingresado es numérico
+    if (!isNaN(inputValue)) {
+      // Convertir el valor a un número decimal
+      const adeudo = parseFloat(inputValue);
+      setAdeudoNeto(String(adeudo));
+    } else {
+      // Si el valor ingresado no es numérico, establecer adeudo neto en 0
+      setAdeudoNeto("0");
+    }
   };
-
+  
   const handleAnticipoChange = (e) => {
     let inputValue = parseFloat(e.target.value ? e.target.value : 0);
     setAnticipo(String(inputValue));
