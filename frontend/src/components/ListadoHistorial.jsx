@@ -36,6 +36,16 @@ const ListadoHistorial = () => {
     return pagosPorDia;
   };
 
+  const obtenerFechasOrdenadas = () => {
+    return Object.keys(agruparPagosPorDia(historial))
+      .sort((a, b) => {
+        const fechaA = new Date(a);
+        const fechaB = new Date(b);
+        return fechaA - fechaB;
+      })
+      .reverse(); // Revertir el orden para obtener de la más reciente a la más antigua
+  };
+
   const limpiarFiltroNombre = () => {
     setFiltroNombre("");
   };
@@ -85,13 +95,10 @@ const ListadoHistorial = () => {
         </div>
       </div>
 
-      {Object.keys(agruparPagosPorDia(historial))
-        .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
-        .map((fecha) => {
-          const estaExpandida = fechasExpandidas.includes(fecha);
-          const pagosDelDia = filtrarPorNombre(
-            agruparPagosPorDia(historial)[fecha]
-          );
+      {obtenerFechasOrdenadas().slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((fecha) => {
+        const estaExpandida = fechasExpandidas.includes(fecha);
+        const pagosDelDia = filtrarPorNombre(agruparPagosPorDia(historial)[fecha]);
+
 
           return (
             pagosDelDia.length > 0 && (
@@ -116,9 +123,8 @@ const ListadoHistorial = () => {
                       key={`${fecha}-${index}`}
                       historial={item}
                       mostrarEncabezado={index === 0}
-                      paciente={pacientes.find(
-                        (paciente) => paciente._id === item.clienteId
-                      )}
+                      paciente={pacientes.find((paciente) => paciente._id === item.clienteId) || pacientes.find((paciente) => paciente.nombre === item.clienteNombre)}
+
                     />
                   ))}
               </div>

@@ -171,17 +171,17 @@ const Formulario = () => {
     const newValue = e.target.value;
     setTipopaquete(newValue);
     switch (newValue) {
-      case "Semanal":
+      case "1 Semana":
         setPago("1099");
         setAdeudoNeto("1099");
         setResetAdeudo("1099");
         break;
-      case "Quincenal":
+      case "2 Semanas":
         setPago("2099");
         setAdeudoNeto("2099");
         setResetAdeudo("2099");
         break;
-      case "Mensual":
+      case "4 Semanas":
         setPago("3999");
         setAdeudoNeto("3999");
         setResetAdeudo("3999");
@@ -223,7 +223,7 @@ const Formulario = () => {
         { nombre: "Fecha de Alta", valor: fecha },
         { nombre: "Próxima Cita", valor: fechaproxcita },
         { nombre: "Tipo de Paquete", valor: tipopaquete },
-        { nombre: "Forma de Pago", valor: formadepago },
+       
         { nombre: "Adeudo Neto", valor: adeudoneto },
         { nombre: "Anticipo", valor: anticipo },
         { nombre: "Pago", valor: pago },
@@ -247,7 +247,7 @@ const Formulario = () => {
         { nombre: "Fecha de Alta", valor: fecha },
         { nombre: "Próxima Cita", valor: fechaproxcita },
         { nombre: "Tipo de Paquete", valor: tipopaquete },
-        { nombre: "Forma de Pago", valor: formadepago },
+       
         { nombre: "Adeudo Neto", valor: adeudoneto },
         { nombre: "Anticipo", valor: anticipo },
         { nombre: "Pago", valor: pago },
@@ -292,8 +292,9 @@ const Formulario = () => {
       id,
     });
 
-    if (anticipo === 0) {
+    if (anticipo === "0" || anticipo === 0) {
       console.log("No se guarda el pago");
+      
     } else {
       guardarPagos({
         id,
@@ -312,9 +313,7 @@ const Formulario = () => {
       window.history.back();
     }, 2000);
 
-    //window.location.reload();
 
-    //setAdeudoNeto(adeudoneto)
   };
 
   const { msg } = alerta;
@@ -606,9 +605,9 @@ const Formulario = () => {
                 onChange={handleTipoPaqueteChange}
               >
                 <option value="">Selecciona el Paquete</option>
-                <option value="Semanal">1 Semana</option>
-                <option value="Quincenal">2 Semanas</option>
-                <option value="Mensual">4 Semanas</option>
+                <option value="1 Semana">1 Semana</option>
+                <option value="2 Semanas">2 Semanas</option>
+                <option value="4 Semanas">4 Semanas</option>
               </select>
             </div>
 
