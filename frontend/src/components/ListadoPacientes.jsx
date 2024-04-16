@@ -59,10 +59,13 @@ const ListadoPacientes = () => {
     })
   : pacientesFiltrados;
 
-  const pacientesMostrados = mostrarTodos
-    ? pacientesFiltradosPorFecha
-    : pacientesFiltradosPorFecha.slice(indice, indice + 10);
+  
+  const pacientesOrdenados = pacientesFiltradosPorFecha.reverse(); // Revertir el orden
 
+  const pacientesMostrados = mostrarTodos
+    ? pacientesOrdenados
+    : pacientesOrdenados.slice(indice, indice + 10);
+    
   return (
     <div className="container mx-auto ">
       <h2 className="font-black text-3xl text-center mb-2">
