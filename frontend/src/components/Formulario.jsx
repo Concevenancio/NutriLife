@@ -704,7 +704,7 @@ const Formulario = () => {
                 />
               </div>
             </div>
-            {/* <div className="mb-5">
+            <div className="mb-5">
               <label
                 htmlFor="imagen"
                 className="uppercase text-gray-700 font-bold"
@@ -725,7 +725,7 @@ const Formulario = () => {
                       onClick={toggleImagenEnGrande}
                     >
                       <div
-                        className="max-w-4xl w-full h-auto"
+                        className="max-w-4xl w-full h-5/6 overflow-auto"
                         onClick={(e) => e.stopPropagation()}
                       >
                         <img
@@ -749,7 +749,7 @@ const Formulario = () => {
                   onChange={(e) => handleImagenChange(e)}
                 />
               </div>
-            </div> */}
+            </div>
           </div>
           <div>{/* Espacio para que quede centrado el botón */}</div>
           <input
