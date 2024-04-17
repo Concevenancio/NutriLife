@@ -64,7 +64,7 @@ const ListadoPacientes = () => {
 
   const pacientesMostrados = mostrarTodos
     ? pacientesOrdenados
-    : pacientesOrdenados.slice(indice, indice + 10);
+    : pacientesOrdenados.slice(indice, indice + 20);
     
   return (
     <div className="container mx-auto ">
