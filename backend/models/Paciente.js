@@ -88,8 +88,8 @@ const pacienteSchema = mongoose.Schema(
       required: true,
     },
     imagen:{
-      type:String,
-      required: false,
+      public_id: String,
+      secure_url: String,
     },
     nutriologo: {
       type: mongoose.Schema.Types.ObjectId,

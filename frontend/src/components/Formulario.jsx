@@ -275,7 +275,7 @@ const Formulario = () => {
       });
       return;
     }
-
+console.log("dfsafadfds",imagen);
     guardarPaciente({
       nombre,
       telefono,
@@ -319,7 +319,7 @@ const Formulario = () => {
 
     setTimeout(() => {
       window.history.back();
-    }, 2000);
+    }, 10000);
 
 
   };
@@ -714,7 +714,7 @@ const Formulario = () => {
               {imagen ? (
                 <div className="flex justify-center items-center">
                   <img
-                    src={imagen}
+                    src={imagen.secure_url}
                     alt="Imagen del paciente"
                     className="w-60 h-32 mt-2 rounded-md cursor-pointer"
                     onClick={toggleImagenEnGrande}
@@ -729,7 +729,7 @@ const Formulario = () => {
                         onClick={(e) => e.stopPropagation()}
                       >
                         <img
-                          src={imagen}
+                          src={imagen.secure_url}
                           alt="Imagen del paciente"
                           className="w-full rounded-md"
                         />

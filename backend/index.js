@@ -28,6 +28,8 @@ const corsOption = {
 }
 
 app.use(cors(corsOption));*/
+
+
 app.use(cors());
 app.use('/api/nutriologos', nutriologoRoutes);
 app.use('/api/pacientes', pacienteRoutes);

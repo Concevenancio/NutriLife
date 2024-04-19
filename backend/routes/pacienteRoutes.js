@@ -1,4 +1,5 @@
 import express from 'express'
+import fileUpload from 'express-fileupload';
 import {
     agregarPaciente,
     obtenerPacientes,
@@ -18,7 +19,12 @@ router
 router
     .route('/:id')
     .get(checkAuth, obtenerPaciente)
-    .put(checkAuth, actualizarPaciente)
+    .put(checkAuth,
+        fileUpload({
+            useTempFiles : true,
+            tempFileDir: './uploads'
+        })
+        , actualizarPaciente)
     .delete(checkAuth, eliminarPaciente)
 
 export default router;
