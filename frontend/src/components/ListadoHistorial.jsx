@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useHistorial from "../hooks/useHistorial";
 import ListaHistorial from "./ListaHistorial";
 import usePacientes from "../hooks/usePacientes";
@@ -7,14 +7,22 @@ const ListadoHistorial = () => {
   const { historial } = useHistorial();
   const { pacientes } = usePacientes();
 
-  if (!Array.isArray(pacientes)) {
-    window.location.reload();
-  }
-
+  const [error, setError] = useState(null); // Estado para manejar errores
   const [filtroNombre, setFiltroNombre] = useState("");
   const [fechasExpandidas, setFechasExpandidas] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5; // Número de elementos por página
+
+  useEffect(() => {
+    if (!Array.isArray(pacientes)) {
+      setError("No se pudieron cargar los pacientes"); // Establecer un mensaje de error
+    }
+  }, [pacientes]);
+
+  if (error) {
+    // Si hay un error, recargar la página
+    window.location.reload();
+  }
 
   const formatearFecha = (fecha) => {
     const fechaObj = new Date(fecha);
@@ -95,10 +103,16 @@ const ListadoHistorial = () => {
         </div>
       </div>
 
-      {obtenerFechasOrdenadas().slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((fecha) => {
-        const estaExpandida = fechasExpandidas.includes(fecha);
-        const pagosDelDia = filtrarPorNombre(agruparPagosPorDia(historial)[fecha]);
-
+      {obtenerFechasOrdenadas()
+        .slice(
+          (currentPage - 1) * itemsPerPage,
+          currentPage * itemsPerPage
+        )
+        .map((fecha) => {
+          const estaExpandida = fechasExpandidas.includes(fecha);
+          const pagosDelDia = filtrarPorNombre(
+            agruparPagosPorDia(historial)[fecha]
+          );
 
           return (
             pagosDelDia.length > 0 && (
@@ -123,8 +137,14 @@ const ListadoHistorial = () => {
                       key={`${fecha}-${index}`}
                       historial={item}
                       mostrarEncabezado={index === 0}
-                      paciente={pacientes.find((paciente) => paciente._id === item.clienteId) || pacientes.find((paciente) => paciente.nombre === item.clienteNombre)}
-
+                      paciente={
+                        pacientes.find(
+                          (paciente) => paciente._id === item.clienteId
+                        ) ||
+                        pacientes.find(
+                          (paciente) => paciente.nombre === item.clienteNombre
+                        )
+                      }
                     />
                   ))}
               </div>

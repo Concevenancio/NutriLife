@@ -5,7 +5,13 @@ import usePacientes from "../hooks/usePacientes";
 const ListaHistorial = ({ historial, mostrarEncabezado, paciente }) => {
   const { eliminarPago } = useHistorial();
   const { setEdicion } = usePacientes();
-  const { tipopaquete, fechainiciopaquete, fechavencimiento } = paciente;
+
+  // Desestructuración condicional para paciente
+  if (!paciente) {
+    return null; // O podrías mostrar un mensaje de error o hacer algo más
+  }
+
+  const { tipopaquete, fechainiciopaquete, fechavencimiento } = paciente || {};
 
   const { _id, clienteNombre, fechaPago, monto, formaPago, deudanetaHisto } = historial;
 
@@ -55,7 +61,8 @@ const ListaHistorial = ({ historial, mostrarEncabezado, paciente }) => {
       <tbody>
         <tr className="bg-white hover:bg-gray-200" onDoubleClick={handleEditar}>
           <td style={{ width: "150px" }} className="py-2 px-4">{clienteNombre}</td>
-          <td style={{ width: "150px" }} className="py-2 px-4 hidden lg:table-cell">{tipopaquete}</td>
+          {/* Usar valores predeterminados si paciente es undefined */}
+          <td style={{ width: "150px" }} className="py-2 px-4 hidden lg:table-cell">{tipopaquete || ""}</td>
           <td style={{ width: "150px" }} className="py-2 px-4 hidden lg:table-cell">{formaPago}</td>
           <td style={{ width: "150px" }} className="py-2 px-4">${monto}</td>
           <td style={{ width: "150px" }} className="py-2 px-4 hidden lg:table-cell">{formatearHora(fechaPago)} hrs</td>
