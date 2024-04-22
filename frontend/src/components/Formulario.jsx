@@ -347,7 +347,7 @@ const Formulario = () => {
 
     setTimeout(() => {
       window.history.back();
-    }, 2000);
+    }, 5000);
   };
 
   const { msg } = alerta;

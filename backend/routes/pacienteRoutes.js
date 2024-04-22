@@ -14,7 +14,7 @@ const router = express.Router();
 
 router
   .route("/")
-  .post(checkAuth, agregarPaciente)
+  .post(checkAuth, upload.single("imagen"), agregarPaciente)
   .get(checkAuth, obtenerPacientes);
 
 router
