@@ -99,7 +99,7 @@ const Formulario = () => {
       setResetAdeudo(userState.adeudoneto);
       setAnticipo(0);
     }
-    console.log("userstate",userState)
+    console.log("userstate", userState);
   }, [userState]);
 
   // useEffect(() => {
@@ -152,37 +152,36 @@ const Formulario = () => {
     setTelefono(telefonoFormateado);
   };
 
-/*   const handlePagoChange = (e) => {
+  /*   const handlePagoChange = (e) => {
     setAdeudoNeto;
   }; */
   const handlePagoChange = (e) => {
     // Obtener el valor actual ingresado
     let inputValue = e.target.value;
-  
+
     // Filtrar cualquier carácter que no sea numérico
-    inputValue = inputValue.replace(/[^0-9]/g, '');
-  
+    inputValue = inputValue.replace(/[^0-9]/g, "");
+
     // Convertir el valor a un número entero para evitar decimales
     let numericValue = parseInt(inputValue, 10);
-  
+
     // Si el valor está vacío o es NaN, establecer el pago en 0
-    if (isNaN(numericValue) || inputValue === '') {
+    if (isNaN(numericValue) || inputValue === "") {
       numericValue = 0;
     }
-  
+
     // Convertir el valor numérico a cadena
     const formattedValue = numericValue.toString();
-  
+
     // Actualizar el estado de pago con el valor formateado
     setPago(formattedValue);
-  
+
     // Actualizar el estado de adeudoneto con el mismo valor
     setAdeudoNeto(formattedValue);
     setResetAdeudo(formattedValue);
   };
-  
 
-   const handleAdeudoChange = (e) => {
+  const handleAdeudoChange = (e) => {
     const inputValue = e.target.value;
     // Verificar si el valor ingresado es numérico
     if (!isNaN(inputValue)) {
@@ -193,15 +192,15 @@ const Formulario = () => {
       // Si el valor ingresado no es numérico, establecer adeudo neto en 0
       setAdeudoNeto("0");
     }
-  }; 
-  
-     const handleAnticipoChange = (e) => {
+  };
+
+  const handleAnticipoChange = (e) => {
     let inputValue = parseFloat(e.target.value ? e.target.value : 0);
     setAnticipo(String(inputValue));
     const adeudoneto = parseFloat(resetAdeudo) - parseFloat(inputValue);
     setAdeudoNeto(String(adeudoneto));
-  };  
-   /* const handleAnticipoChange = (e) => {
+  };
+  /* const handleAnticipoChange = (e) => {
     // Obtener el valor ingresado como anticipo
     let inputValue = e.target.value;
 
@@ -230,8 +229,6 @@ const Formulario = () => {
 }; 
  */
 
-
-  
   const handleImagenChange = (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
@@ -263,7 +260,7 @@ const Formulario = () => {
         { nombre: "Fecha de Alta", valor: fecha },
         { nombre: "Próxima Cita", valor: fechaproxcita },
         { nombre: "Tipo de Paquete", valor: tipopaquete },
-       
+
         { nombre: "Adeudo Neto", valor: adeudoneto },
         { nombre: "Anticipo", valor: anticipo },
         { nombre: "Pago", valor: pago },
@@ -287,7 +284,7 @@ const Formulario = () => {
         { nombre: "Fecha de Alta", valor: fecha },
         { nombre: "Próxima Cita", valor: fechaproxcita },
         { nombre: "Tipo de Paquete", valor: tipopaquete },
-       
+
         { nombre: "Adeudo Neto", valor: adeudoneto },
         { nombre: "Anticipo", valor: anticipo },
         { nombre: "Pago", valor: pago },
@@ -332,9 +329,8 @@ const Formulario = () => {
       id,
     });
 
-     if (anticipo === "0" || anticipo === 0) {
+    if (anticipo === "0" || anticipo === 0) {
       console.log("No se guarda el pago");
-      
     } else {
       guardarPagos({
         id,
@@ -347,13 +343,11 @@ const Formulario = () => {
 
     setAlerta({
       msg: "Guardado Correctamente",
-    }); 
+    });
 
-     setTimeout(() => {
+    setTimeout(() => {
       window.history.back();
-    }, 2000); 
-
-
+    }, 2000);
   };
 
   const { msg } = alerta;
@@ -377,8 +371,8 @@ const Formulario = () => {
         Regresar
       </button>
       <div className="flex justify-center">
-        
         <form
+          encType="multipart/form-data"
           className="bg-white py-10 px-5 mb-10 lg:mb-0 shadow-md rounded-md grid grid-cols-1 lg:grid-cols-3 gap-5 lg:items-start lg:justify-center"
           onSubmit={handleSubmit}
         >
@@ -631,7 +625,7 @@ const Formulario = () => {
           </div>
 
           <div>
-          <div className="mb-5">
+            <div className="mb-5">
               <label
                 htmlFor="tipopaquete"
                 className=" uppercase text-gray-700 font-bold"
@@ -747,7 +741,7 @@ const Formulario = () => {
                 />
               </div>
             </div>
-             <div className="mb-5">
+            <div className="mb-5">
               <label
                 htmlFor="imagen"
                 className="uppercase text-gray-700 font-bold"
@@ -768,7 +762,7 @@ const Formulario = () => {
                       onClick={toggleImagenEnGrande}
                     >
                       <div
-                        className="max-w-4xl w-full h-auto"
+                        className="max-w-4xl w-full h-5/6 overflow-auto"
                         onClick={(e) => e.stopPropagation()}
                       >
                         <img
@@ -787,12 +781,14 @@ const Formulario = () => {
                 <input
                   id="imagen"
                   type="file"
+                  name="imagen"
                   placeholder="imagen"
+                  accept="image/*"
                   className="pl-8 border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
                   onChange={(e) => handleImagenChange(e)}
                 />
               </div>
-            </div> 
+            </div>
           </div>
           <div>{/* Espacio para que quede centrado el botón */}</div>
           <input

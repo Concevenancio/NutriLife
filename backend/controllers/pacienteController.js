@@ -47,24 +47,27 @@ const actualizarPaciente = async (req, res) => {
     return res.json({ msg: "Accion no valida" });
   }
   console.log(req.files);
-  try {
-    if (req.files?.imagen) {
-      const result = await uploadImage(req.files.imagen.tempFilePath);
-      //console.log("resultImage", result);
-      paciente.imagen = {
-        public_id: result.public_id,
-        secure_url: result.secure_url,
-      };
+  // try {
+  //   if (req.files?.imagen) {
+  //     const result = await uploadImage(req.files.imagen.tempFilePath);
+  //     //console.log("resultImage", result);
+  //     paciente.imagen = {
+  //       public_id: result.public_id,
+  //       secure_url: result.secure_url,
+  //     };
 
-      await fs.unlink(req.files.imagen.tempFilePath);
-    } else {
-      console.log("nothing");
-    }
-  } catch (error) {
-    console.error("Error uploading image:", error);
-    return res.status(500).json({ msg: "Error en el servidor" });
+  //     await fs.unlink(req.files.imagen.tempFilePath);
+  //   } else {
+  //     console.log("nothing");
+  //   }
+  // } catch (error) {
+  //   console.error("Error uploading image:", error);
+  //   return res.status(500).json({ msg: "Error en el servidor" });
+  // }
+  if(req.file){
+    const {filename} = req.file
+    paciente.setImagen(filename)
   }
-
   //Actualizar Paciente
   paciente.nombre = req.body.nombre || paciente.nombre;
   paciente.telefono = req.body.telefono || paciente.telefono;

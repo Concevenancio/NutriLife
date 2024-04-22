@@ -7,6 +7,11 @@ import pacienteRoutes from './routes/pacienteRoutes.js'
 import obtenerCitas from './routes/citaRoutes.js'
 import historialRoutes from './routes/historialRoutes.js'
 //import pagosRoutes from './routes/pagosRoutes.js'
+import { fileURLToPath } from 'url';
+import path from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(express.json());
@@ -35,6 +40,7 @@ app.use('/api/nutriologos', nutriologoRoutes);
 app.use('/api/pacientes', pacienteRoutes);
 app.use('/api/citas', obtenerCitas);
 app.use('/api/historial-pagos', historialRoutes);
+app.use('/api', express.static(`${__dirname}/storage/imgs`))
 //app.use('/api/pagos', pagosRoutes);
 
 const PORT = process.env.PORT || 4000

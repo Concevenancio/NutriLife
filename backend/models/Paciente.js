@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import dotenv from 'dotenv';
+dotenv.config();
 
 const pacienteSchema = mongoose.Schema(
   {
@@ -87,8 +89,8 @@ const pacienteSchema = mongoose.Schema(
       required: true,
     },
     imagen:{
-      public_id: String,
-      secure_url: String,
+      type: String,
+      require: false,
     },
     nutriologo: {
       type: mongoose.Schema.Types.ObjectId,
@@ -99,6 +101,12 @@ const pacienteSchema = mongoose.Schema(
     timestamps: true,
   }
 );
+
+pacienteSchema.methods.setImagen = function setImagen (filename) {
+  const host = process.env.APP_HOST
+  const port =process.env.APP_PORT
+  this.imagen = `${host}:${port}/api/${filename}`
+}
 
 const Paciente = mongoose.model("Paciente", pacienteSchema);
 
