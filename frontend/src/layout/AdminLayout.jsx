@@ -15,7 +15,7 @@ const AdminLayout = () => {
           <Outlet />{" "} 
         </main>
       ) : (
-        <Navigate to="/login" />
+        <Navigate to="/" />
       )}
       <Footer />
     </>

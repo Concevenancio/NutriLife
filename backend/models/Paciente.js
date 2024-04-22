@@ -52,7 +52,6 @@ const pacienteSchema = mongoose.Schema(
     },
     tipopaquete: {
       type: String,
-      enum: ['1 Semana', '2 Semanas', '4 Semanas'],
       required: true,
     },
     formadepago:{

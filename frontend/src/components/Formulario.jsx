@@ -36,7 +36,7 @@ const Formulario = () => {
   const [anticipo, setAnticipo] = useState("0");
   const [adeudoneto, setAdeudoNeto] = useState("");
   const [diasadeber, setDiasADeber] = useState("0");
-  const [pago, setPago] = useState("");
+  const [pago, setPago] = useState("0");
   const [id, setId] = useState(null);
 
   const [resetAdeudo, setResetAdeudo] = useState(0);
@@ -99,6 +99,7 @@ const Formulario = () => {
       setResetAdeudo(userState.adeudoneto);
       setAnticipo(0);
     }
+    console.log("userstate",userState)
   }, [userState]);
 
   // useEffect(() => {
@@ -151,11 +152,37 @@ const Formulario = () => {
     setTelefono(telefonoFormateado);
   };
 
-  const handlePagoChange = (e) => {
+/*   const handlePagoChange = (e) => {
     setAdeudoNeto;
+  }; */
+  const handlePagoChange = (e) => {
+    // Obtener el valor actual ingresado
+    let inputValue = e.target.value;
+  
+    // Filtrar cualquier carácter que no sea numérico
+    inputValue = inputValue.replace(/[^0-9]/g, '');
+  
+    // Convertir el valor a un número entero para evitar decimales
+    let numericValue = parseInt(inputValue, 10);
+  
+    // Si el valor está vacío o es NaN, establecer el pago en 0
+    if (isNaN(numericValue) || inputValue === '') {
+      numericValue = 0;
+    }
+  
+    // Convertir el valor numérico a cadena
+    const formattedValue = numericValue.toString();
+  
+    // Actualizar el estado de pago con el valor formateado
+    setPago(formattedValue);
+  
+    // Actualizar el estado de adeudoneto con el mismo valor
+    setAdeudoNeto(formattedValue);
+    setResetAdeudo(formattedValue);
   };
+  
 
-  const handleAdeudoChange = (e) => {
+   const handleAdeudoChange = (e) => {
     const inputValue = e.target.value;
     // Verificar si el valor ingresado es numérico
     if (!isNaN(inputValue)) {
@@ -166,40 +193,45 @@ const Formulario = () => {
       // Si el valor ingresado no es numérico, establecer adeudo neto en 0
       setAdeudoNeto("0");
     }
-  };
+  }; 
   
-  const handleAnticipoChange = (e) => {
+     const handleAnticipoChange = (e) => {
     let inputValue = parseFloat(e.target.value ? e.target.value : 0);
     setAnticipo(String(inputValue));
-    const adeudo = parseFloat(resetAdeudo) - parseFloat(inputValue);
-    setAdeudoNeto(String(adeudo));
-  };
+    const adeudoneto = parseFloat(resetAdeudo) - parseFloat(inputValue);
+    setAdeudoNeto(String(adeudoneto));
+  };  
+   /* const handleAnticipoChange = (e) => {
+    // Obtener el valor ingresado como anticipo
+    let inputValue = e.target.value;
 
-  const handleTipoPaqueteChange = (e) => {
-    const newValue = e.target.value;
-    setTipopaquete(newValue);
-    switch (newValue) {
-      case "1 Semana":
-        setPago("1099");
-        setAdeudoNeto("1099");
-        setResetAdeudo("1099");
-        break;
-      case "2 Semanas":
-        setPago("2099");
-        setAdeudoNeto("2099");
-        setResetAdeudo("2099");
-        break;
-      case "4 Semanas":
-        setPago("3999");
-        setAdeudoNeto("3999");
-        setResetAdeudo("3999");
-        break;
-      default:
-        setPago(""); // Si no se selecciona un tipo de paquete, se borra el valor del pago
-        break;
+    // Permitir solo caracteres numéricos y un punto decimal
+    inputValue = inputValue.replace(/[^0-9.]/g, '');
+
+    // Convertir el valor a un número flotante
+    let nuevoAnticipo = parseFloat(inputValue);
+
+    // Si el valor es NaN o está vacío, establecer anticipo en 0
+    if (isNaN(nuevoAnticipo) || inputValue === '') {
+        nuevoAnticipo = 0;
     }
-  };
 
+    // Calcular el nuevo adeudo neto
+    let nuevoAdeudoNeto = resetAdeudo - nuevoAnticipo;
+
+    // Asegurarse de que el adeudo neto no sea negativo
+    if (nuevoAdeudoNeto < 0) {
+        nuevoAdeudoNeto = 0;
+    }
+
+    // Actualizar los estados de anticipo y adeudo neto
+    setAnticipo(nuevoAnticipo);
+    setAdeudoNeto(nuevoAdeudoNeto);
+}; 
+ */
+
+
+  
   const handleImagenChange = (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
@@ -275,7 +307,7 @@ const Formulario = () => {
       });
       return;
     }
-console.log("dfsafadfds",imagen);
+
     guardarPaciente({
       nombre,
       telefono,
@@ -300,7 +332,7 @@ console.log("dfsafadfds",imagen);
       id,
     });
 
-    if (anticipo === "0" || anticipo === 0) {
+     if (anticipo === "0" || anticipo === 0) {
       console.log("No se guarda el pago");
       
     } else {
@@ -315,11 +347,11 @@ console.log("dfsafadfds",imagen);
 
     setAlerta({
       msg: "Guardado Correctamente",
-    });
+    }); 
 
-    setTimeout(() => {
+     setTimeout(() => {
       window.history.back();
-    }, 10000);
+    }, 2000); 
 
 
   };
@@ -599,27 +631,23 @@ console.log("dfsafadfds",imagen);
           </div>
 
           <div>
-            <div className="mb-5">
+          <div className="mb-5">
               <label
                 htmlFor="tipopaquete"
-                className="uppercase text-gray-700 font-bold"
+                className=" uppercase text-gray-700 font-bold"
               >
                 Tipo de Paquete:
               </label>
-              <select
+              <input
                 id="tipopaquete"
+                placeholder="Paquete"
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
                 value={tipopaquete}
-                onChange={handleTipoPaqueteChange}
-              >
-                <option value="">Selecciona el Paquete</option>
-                <option value="1 Semana">1 Semana</option>
-                <option value="2 Semanas">2 Semanas</option>
-                <option value="4 Semanas">4 Semanas</option>
-              </select>
+                onChange={(e) => setTipopaquete(e.target.value)}
+              />
             </div>
 
-            <div className="mb-5">
+            {/* <div className="mb-5">
               <label
                 htmlFor="pago"
                 className=" uppercase text-gray-700 font-bold"
@@ -639,6 +667,21 @@ console.log("dfsafadfds",imagen);
                   onChange={handlePagoChange} // Cambiado a handlePagoChange
                 />
               </div>
+            </div> */}
+            <div className="mb-5">
+              <label
+                htmlFor="pago"
+                className=" uppercase text-gray-700 font-bold"
+              >
+                pago del Paquete:
+              </label>
+              <input
+                id="pago"
+                placeholder="Pago"
+                className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                value={pago}
+                onChange={handlePagoChange}
+              />
             </div>
 
             <div className="mb-5">
@@ -704,7 +747,7 @@ console.log("dfsafadfds",imagen);
                 />
               </div>
             </div>
-            <div className="mb-5">
+             <div className="mb-5">
               <label
                 htmlFor="imagen"
                 className="uppercase text-gray-700 font-bold"
@@ -714,7 +757,7 @@ console.log("dfsafadfds",imagen);
               {imagen ? (
                 <div className="flex justify-center items-center">
                   <img
-                    src={imagen.secure_url}
+                    src={imagen}
                     alt="Imagen del paciente"
                     className="w-60 h-32 mt-2 rounded-md cursor-pointer"
                     onClick={toggleImagenEnGrande}
@@ -725,11 +768,11 @@ console.log("dfsafadfds",imagen);
                       onClick={toggleImagenEnGrande}
                     >
                       <div
-                        className="max-w-4xl w-full h-5/6 overflow-auto"
+                        className="max-w-4xl w-full h-auto"
                         onClick={(e) => e.stopPropagation()}
                       >
                         <img
-                          src={imagen.secure_url}
+                          src={imagen}
                           alt="Imagen del paciente"
                           className="w-full rounded-md"
                         />
@@ -749,7 +792,7 @@ console.log("dfsafadfds",imagen);
                   onChange={(e) => handleImagenChange(e)}
                 />
               </div>
-            </div>
+            </div> 
           </div>
           <div>{/* Espacio para que quede centrado el botón */}</div>
           <input
