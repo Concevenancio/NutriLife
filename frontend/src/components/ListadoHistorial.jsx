@@ -6,12 +6,16 @@ import usePacientes from "../hooks/usePacientes";
 const ListadoHistorial = () => {
   const { historial } = useHistorial();
   const { pacientes } = usePacientes();
+  
 
   const [error, setError] = useState(null); // Estado para manejar errores
   const [filtroNombre, setFiltroNombre] = useState("");
+  const [filtrovencimiento, setFiltroVencimiento] = useState("");
+  const [filtroFecha, setFiltroFecha] = useState(""); // Nuevo estado para el filtro de fecha
   const [fechasExpandidas, setFechasExpandidas] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5; // Número de elementos por página
+ 
 
   useEffect(() => {
     if (!Array.isArray(pacientes)) {
@@ -29,7 +33,7 @@ const ListadoHistorial = () => {
     const dia = fechaObj.getDate().toString().padStart(2, "0");
     const mes = (fechaObj.getMonth() + 1).toString().padStart(2, "0");
     const año = fechaObj.getFullYear();
-    return `${dia}-${mes}-${año}`;
+    return `${año}-${mes}-${dia}`; // Formato de fecha compatible con el input type="date"
   };
 
   const agruparPagosPorDia = (pagos) => {
@@ -58,6 +62,12 @@ const ListadoHistorial = () => {
     setFiltroNombre("");
   };
 
+  const limpiarFiltroFecha = () => {
+    setFiltroFecha("");
+  };
+  const limpiarFiltrovencimiento = () => {
+    setFiltroVencimiento('');
+  }
   const totalPages = Math.ceil(
     Object.keys(agruparPagosPorDia(historial)).length / itemsPerPage
   );
@@ -67,6 +77,35 @@ const ListadoHistorial = () => {
       return item.clienteNombre
         .toLowerCase()
         .includes(filtroNombre.toLowerCase());
+    });
+  };
+  const filtrarPorVencimiento = (pagos, filtroVencimiento) => {
+    return pagos.filter((item) => {
+      const fechaPago = new Date(item.vencimiento);
+      const fechaFiltro = new Date(filtroVencimiento);
+      
+      const fechaPagoSinHora = new Date(
+        fechaPago.getFullYear(),
+        fechaPago.getMonth(),
+        fechaPago.getDate()
+      );
+      const fechaFiltroSinHora = new Date(
+        fechaFiltro.getFullYear(),
+        fechaFiltro.getMonth(),
+        fechaFiltro.getDate()
+      );
+      
+      return fechaPagoSinHora.getTime() === fechaFiltroSinHora.getTime();
+    });
+  };
+  
+
+  const filtrarPorFecha = (pagos) => {
+    if (!filtroFecha) return pagos; // Si no hay filtro de fecha, retornar todos los pagos
+    const fechaFiltro = new Date(filtroFecha);
+    return pagos.filter((item) => {
+      const fechaPago = new Date(formatearFecha(item.fechaPago));
+      return fechaPago.getTime() === fechaFiltro.getTime();
     });
   };
 
@@ -101,6 +140,39 @@ const ListadoHistorial = () => {
             </span>
           )}
         </div>
+       {/*  <div className="flex relative">
+          <input
+            type="date"
+            value={filtroFecha}
+            onChange={(e) => setFiltroFecha(e.target.value)}
+            className="border border-gray-300 rounded-md p-2 pr-14" // Ajuste en el padding para hacer espacio para el botón
+          />
+          {filtroFecha && (
+            <span
+              className="absolute right-1 top-1/2 transform -translate-y-1/2 px-4 text-gray-500 cursor-pointer"
+              onClick={limpiarFiltroFecha}
+            >
+              &#x2716;
+            </span>
+          )}
+      </div> */}
+<div className="flex relative">
+      <input
+        type="date"
+        placeholder="vencimiento"
+        value={filtrovencimiento}
+        onChange={(e) => setFiltroVencimiento(e.target.value)}
+        className="border border-gray-300 rounded-md p-2 pr-12"
+      />
+      {filtrovencimiento && (
+        <span
+          className="absolute right-2 top-1/2 transform -translate-y-1/2 px-4 text-gray-500 cursor-pointer"
+          onClick={limpiarFiltrovencimiento}
+        >
+          &#x2716;
+        </span>
+      )}
+    </div>
       </div>
 
       {obtenerFechasOrdenadas()
@@ -110,10 +182,20 @@ const ListadoHistorial = () => {
         )
         .map((fecha) => {
           const estaExpandida = fechasExpandidas.includes(fecha);
-          const pagosDelDia = filtrarPorNombre(
-            agruparPagosPorDia(historial)[fecha]
-          );
-
+          let pagosDelDia; 
+          if (filtrovencimiento) {
+            // Si hay un filtro de vencimiento, aplicar el filtrado por vencimiento
+            pagosDelDia = filtrarPorVencimiento(
+              filtrarPorNombre(agruparPagosPorDia(historial)[fecha]),
+              filtrovencimiento
+            );
+          } else {
+            // Si no hay filtro de vencimiento, aplicar el filtrado por fecha
+            pagosDelDia = filtrarPorFecha(
+              filtrarPorNombre(agruparPagosPorDia(historial)[fecha])
+            );
+          }
+        
           return (
             pagosDelDia.length > 0 && (
               <div key={fecha} className="">
@@ -139,10 +221,13 @@ const ListadoHistorial = () => {
                       mostrarEncabezado={index === 0}
                       paciente={
                         pacientes.find(
-                          (paciente) => paciente._id === item.clienteId
+                          (paciente) => paciente._id === item.clienteId 
                         ) ||
                         pacientes.find(
                           (paciente) => paciente.nombre === item.clienteNombre
+                        ) ||
+                        pacientes.find(
+                          (paciente) => paciente.fechavencimiento === item.vencimiento
                         )
                       }
                     />

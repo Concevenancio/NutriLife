@@ -13,7 +13,7 @@ const ListaHistorial = ({ historial, mostrarEncabezado, paciente }) => {
 
   const { tipopaquete, fechainiciopaquete, fechavencimiento } = paciente || {};
 
-  const { _id, clienteNombre, fechaPago, monto, formaPago, deudanetaHisto } = historial;
+  const { _id, clienteNombre, fechaPago, monto, formaPago, deudanetaHisto, vencimiento } = historial;
 
   const navigate = useNavigate();
 
@@ -28,11 +28,13 @@ const ListaHistorial = ({ historial, mostrarEncabezado, paciente }) => {
       day: "numeric",
       month: "long",
       year: "numeric",
+      timeZone: "UTC" // Establecer la zona horaria a UTC
     };
     let fechaFormateada = nuevaFecha.toLocaleDateString("es-MX", opcionesFecha);
     fechaFormateada = fechaFormateada.replace(/^\w/, (c) => c.toUpperCase());
     return fechaFormateada;
   };
+  
 
   const formatearHora = (fecha) => {
     const nuevaFecha = new Date(fecha);
@@ -68,7 +70,7 @@ const ListaHistorial = ({ historial, mostrarEncabezado, paciente }) => {
           <td style={{ width: "150px" }} className="py-2 px-4 hidden lg:table-cell">{formatearHora(fechaPago)} hrs</td>
           <td style={{ width: "150px" }} className="py-2 px-4 hidden lg:table-cell">${deudanetaHisto}</td>
           <td style={{ width: "150px" }} className="py-2 px-4 hidden lg:table-cell">{formatearFecha(fechainiciopaquete)}</td>
-          <td style={{ width: "150px" }} className="py-2 px-4">{formatearFecha(fechavencimiento)}</td>
+          <td style={{ width: "150px" }} className="py-2 px-4">{formatearFecha(vencimiento)}</td>
           <td style={{ width: "150px" }} className="py-2 px-4 text-center">
             <button
               type="button"

@@ -338,6 +338,7 @@ const Formulario = () => {
         anticipo,
         formadepago,
         adeudoneto,
+        fechavencimiento,
       });
     }
 

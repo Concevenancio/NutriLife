@@ -29,7 +29,7 @@ export const HistorialProvider = ({ children }) => {
     obtenerHistorial();
   }, []);
 
-  const guardarPagos = async ({ id, nombre, anticipo, formadepago, adeudoneto }) => {
+  const guardarPagos = async ({ id, nombre, anticipo, formadepago, adeudoneto, fechavencimiento }) => {
     try {
       const token = localStorage.getItem("token");
       const config = {
@@ -44,7 +44,8 @@ export const HistorialProvider = ({ children }) => {
         nombre,
         anticipo,
         formadepago,
-        adeudoneto
+        adeudoneto,
+        fechavencimiento
       };
 
       const response = await clienteAxios.post(
